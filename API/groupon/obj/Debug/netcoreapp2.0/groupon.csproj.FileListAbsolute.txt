@@ -1,0 +1,12 @@
+C:\Users\ALFA\Documents\GroupUp\API\groupon\bin\Debug\netcoreapp2.0\groupon.deps.json
+C:\Users\ALFA\Documents\GroupUp\API\groupon\bin\Debug\netcoreapp2.0\groupon.runtimeconfig.json
+C:\Users\ALFA\Documents\GroupUp\API\groupon\bin\Debug\netcoreapp2.0\groupon.runtimeconfig.dev.json
+C:\Users\ALFA\Documents\GroupUp\API\groupon\bin\Debug\netcoreapp2.0\groupon.dll
+C:\Users\ALFA\Documents\GroupUp\API\groupon\bin\Debug\netcoreapp2.0\groupon.pdb
+C:\Users\ALFA\Documents\GroupUp\API\groupon\obj\Debug\netcoreapp2.0\groupon.csprojResolveAssemblyReference.cache
+C:\Users\ALFA\Documents\GroupUp\API\groupon\obj\Debug\netcoreapp2.0\groupon.csproj.CoreCompileInputs.cache
+C:\Users\ALFA\Documents\GroupUp\API\groupon\obj\Debug\netcoreapp2.0\groupon.AssemblyInfoInputs.cache
+C:\Users\ALFA\Documents\GroupUp\API\groupon\obj\Debug\netcoreapp2.0\groupon.AssemblyInfo.cs
+C:\Users\ALFA\Documents\GroupUp\API\groupon\obj\Debug\netcoreapp2.0\groupon.dll
+C:\Users\ALFA\Documents\GroupUp\API\groupon\obj\Debug\netcoreapp2.0\groupon.pdb
+C:\Users\ALFA\Documents\GroupUp\API\groupon\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs

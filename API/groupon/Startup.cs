@@ -36,6 +36,7 @@ namespace groupon
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddCors();
             services.AddMvc();
         }
 
@@ -56,6 +57,7 @@ namespace groupon
             app.UseStaticFiles();
 
             app.UseAuthentication();
+            app.UseCors(builder => builder.WithOrigins("https://localhost:44330/"));
 
             app.UseMvc(routes =>
             {
