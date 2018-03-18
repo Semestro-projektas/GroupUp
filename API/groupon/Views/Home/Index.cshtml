@@ -1,19 +1,39 @@
 ﻿<h1>API TEST PAGE</h1>
-<h4>To get all group entries to console press button:</h4>
-<button id="btn" class="btn btn-success">Get all</button>
+<div class="row">
+    <div class="col-lg-6">
+        <h4>To get all group entries to console press button:</h4>
+        <button id="btn" class="btn btn-success">Get all</button>
+    </div>
+    <div class="col-lg-6 right">
+        <h4>To get all company entries to console press button:</h4>
+        <button id="btnCompanies" class="btn btn-success">Get all</button>
+    </div>
+</div>
 <br />
 <br/>
 <div class="table-bordered">
     <div class="row" style="margin-left: 10px;">
-        <h5 style="margin-left: 5px;"><b> POST FORM to add new group:</b></h5>
         <div class="col-lg-2">
-            Title*: <input id="title" class="input-sm" />
+            <h5 style="margin-left: 5px;"><b> POST FORM to add new group:</b></h5>
+            Title*: <input id="title" class="input-sm"/>
+            <br/>
+            Description*: <input id="desc" class="input-sm"/>
+            <br/>
+            <br/>
+        </div>
+        <div class="col-lg-4"></div>
+        <div class="col-lg-2">
+            <h5 style="margin-left: 5px;"><b> POST FORM to add new company:</b></h5>
+            Title*: <input id="titleC" class="input-sm" />
             <br />
-            Description*: <input id="desc" class="input-sm" />
+            Description*: <input id="descC" class="input-sm" />
             <br />
             <br />
         </div>
         <div class="col-lg-2">
+            <br/>
+            <br/>
+            <br/>
             * Required fields
         </div>
         <br />
@@ -22,7 +42,10 @@
         <div class="col-lg-2">
             <button id="post" class="btn btn-info">Create</button>
         </div>
+        <div class="col-lg-4">
+        </div>
         <div class="col-lg-2">
+            <button id="postCompany" class="btn btn-info">Create</button>
         </div>
         <br />
         <br />
@@ -39,6 +62,8 @@
 <script>
     $("#btn").click(getAllGroups);
     $("#post").click(postNew);
+    $("#btnCompanies").click(getAllCompanies);
+    $("#postCompany").click(postNewCompany);
 
     function getAllGroups() {
         $.ajax({
@@ -56,11 +81,41 @@
         });
     }
 
+    function getAllCompanies() {
+        $.ajax({
+            type: "GET",
+            url: "https://localhost:44330/api/companies/all",
+            data: { },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (response) {
+                alert('error when loading groups');
+            }
+        });
+    }
+
     function postNew() {
         $.ajax({
             type: "POST",
             url: "https://localhost:44330/api/groups/create",
-            data: { title: $("#title").val(), desc: $("#desc").val(), ownerId: 1 },
+            data: { title: $("#title").val(), desc: $("#desc").val()},
+            success: function(data) {
+                if (data.toString() == '200')
+                    console.log("Succesful. " + data);
+                else
+                    console.log("Unsuccesful. " + data);
+            }
+        });
+    }
+
+    function postNewCompany() {
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44330/api/companies/create",
+            data: { title: $("#titleC").val(), desc: $("#descC").val()},
             success: function(data) {
                 if (data.toString() == '200')
                     console.log("Succesful. " + data);

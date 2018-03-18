@@ -27,9 +27,19 @@ namespace groupon
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(
+                    o =>
+                    {
+                        o.Password.RequireDigit = false;
+                        o.Password.RequireNonAlphanumeric = false;
+                        o.Password.RequireUppercase = false;
+                        o.Password.RequireLowercase = false;
+                        o.Password.RequiredLength = 6;
+                    })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
