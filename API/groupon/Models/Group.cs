@@ -68,4 +68,22 @@ namespace groupon.Models
             ShortDescription = group.ShortDescription;
         }
     }
+
+    public class GroupSearchListViewModel
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public GroupType Type { get; set; }
+        public string Image { get; set; }
+        public string ShortDescription { get; set; }
+
+        public GroupSearchListViewModel(Group group)
+        {
+            Id = group.Id;
+            Title = group.Title;
+            Type = group.Type;
+            Image = group.Image;
+            ShortDescription = group.ShortDescription;
+        }
+    }
 }

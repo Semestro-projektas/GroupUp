@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,24 +19,29 @@ using groupon.Services;
 namespace groupon.Controllers
 {
     [Authorize]
+    [Produces("application/json")]
     [Route("[controller]/[action]")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IAccountServices AServices;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IAccountServices accServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            AServices = accServices;
         }
 
         [TempData]
@@ -53,7 +60,7 @@ namespace groupon.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -430,11 +437,31 @@ namespace groupon.Controllers
             return View();
         }
 
-
         [HttpGet]
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        [HttpPost]
+        [Route("/api/profile/update")]
+        [AllowAnonymous]
+        public Task<UpdateProfileResult> UpdateProfile(string name, int company, string field, string workExperience, string education,
+            string location, string picture, string currentlyWorking)
+        {
+            return AServices.UpdateProfile(name, company, field, workExperience, education, location, picture,
+                currentlyWorking);
+        }
+
+        [HttpGet]
+        [Route("/api/profile/overview")]
+        [AllowAnonymous]
+        public JsonResult GetProfileOverview(string id)
+        {
+            if (id != null)
+                return Json(new ProfileOverviewModel(AServices.GetUserAsync(id).Result));
+            else
+                return Json(new RequestErrorViewModel("User not found."));
         }
 
         #region Helpers

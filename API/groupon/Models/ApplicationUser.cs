@@ -15,5 +15,36 @@ namespace groupon.Models
         public string WorkExperience { get; set; }
         public string Education { get; set; }
         public string Location { get; set; }
+        public string Picture { get; set; }
+        public string CurrentlyWorking { get; set; }
+    }
+
+    public class ProfileEditViewModel
+    {
+
+    }
+
+    public class ProfileOverviewModel
+    {
+        public string Name { get; set; }
+        public int Company { get; set; }
+        public string Field { get; set; }
+        public string WorkExperience { get; set; }
+        public string Education { get; set; }
+        public string Location { get; set; }
+        public string Picture { get; set; }
+        public string CurrentlyWorking { get; set; }
+
+        public ProfileOverviewModel(ApplicationUser user)
+        {
+            Name = user.Name;
+            Company = user.Company;
+            Field = user.Field;
+            WorkExperience = user.WorkExperience;
+            Education = user.Education;
+            Location = user.Location;
+            Picture = user.Picture;
+            CurrentlyWorking = user.CurrentlyWorking;
+        }
     }
 }

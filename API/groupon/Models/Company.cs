@@ -14,6 +14,7 @@ namespace groupon.Models
         public string Description { get; set; }
         public string ShortDescription { get; set; }
         public string Logo { get; set; }
+        public bool Approved { get; set; }
         [ForeignKey("UserId")]
         public virtual ApplicationUser Owner { get; set; }
     }
@@ -27,6 +28,7 @@ namespace groupon.Models
         public string ShortDescription { get; set; }
         public string Logo { get; set; }
         public string Owner { get; set; }
+        public bool Approved { get; set; }
 
         public CompanyListViewModel(Company c)
         {
@@ -37,6 +39,7 @@ namespace groupon.Models
             ShortDescription = c.ShortDescription;
             Logo = c.Logo;
             Owner = c.Owner.Name != null ? c.Owner.Name : "";
+            Approved = c.Approved;
         }
     }
 
@@ -49,6 +52,7 @@ namespace groupon.Models
         public string Description { get; set; }
         public string Logo { get; set; }
         public string Owner { get; set; }
+        public bool Approved { get; set; }
 
         public SingleCompanyViewModel(Company c)
         {
@@ -59,6 +63,28 @@ namespace groupon.Models
             Description = c.Description;
             Logo = c.Logo;
             Owner = c.Owner.Name != null ? c.Owner.Name : "";
+            Approved = c.Approved;
         }
+    }
+
+    public class CompanySearchListViewModel
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Location { get; set; }
+        public string Logo { get; set; }
+        public string Owner { get; set; }
+        public bool Approved { get; set; }
+
+        public CompanySearchListViewModel(Company c)
+        {
+            Id = c.Id;
+            Title = c.Title;
+            Location = c.Location;
+            Logo = c.Logo;
+            Owner = c.Owner.Name != null ? c.Owner.Name : "";
+            Approved = c.Approved;
+        }
+
     }
 }

@@ -101,7 +101,7 @@
         $.ajax({
             type: "POST",
             url: "https://localhost:44330/api/groups/create",
-            data: { title: $("#title").val(), desc: $("#desc").val()},
+            data: { title: $("#title").val(), description: $("#desc").val()},
             success: function(data) {
                 if (data.toString() == '200')
                     console.log("Succesful. " + data);

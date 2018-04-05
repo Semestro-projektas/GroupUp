@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Web.Http.Cors;
 using groupon.Data;
 using groupon.Models;
+using groupon.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,13 +17,15 @@ namespace groupon.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class GroupController : Controller
     {
-        private readonly ApplicationDbContext Context;
-        private readonly UserManager<ApplicationUser> UserManager;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IGroupServices _gServices;
 
-        public GroupController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public GroupController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IGroupServices groupServices)
         {
-            Context = context;
-            UserManager = userManager;
+            _context = context;
+            _userManager = userManager;
+            _gServices = groupServices;
         }
 
         [HttpGet]
@@ -29,59 +33,44 @@ namespace groupon.Controllers
         [Route("/api/groups/all")]
         public JsonResult GetAll()
         {
-            return Json(Context.Groups.Include(i => i.Owner).Select(i => new GroupListViewModel(i)).AsEnumerable());
+            return Json(_gServices.GetAll(null, null).Select(i => new GroupListViewModel(i)));
         }
 
         [HttpGet]
-        [Route("/api/groups/{position}-{count}")]
+        [Route("/api/groups/{position:int}/{count:int}")]
         public JsonResult GetAll(int position, int count)
         {
-            var groups = Context.Groups.Include(i => i.Owner).Select(i => new GroupListViewModel(i));
-
-            return Json(groups.Skip(position).Take(count));
+            return Json(_gServices.GetAll(position, count).Select(i => new GroupListViewModel(i)));
         }
 
         [HttpGet]
         [Route("/api/groups/{id}")]
         public JsonResult Get(int id)
         {
-            var entry = Context.Groups.Include(p => p.Owner).FirstOrDefault(i => i.Id == id);
-            if (entry != null)
-                return Json(new SingleGroupViewModel(entry));
-            else
-                return Json("No such entry exists");
+            return _gServices.Get(id) != null
+                ? new JsonResult(new SingleGroupViewModel (_gServices.Get(id)))
+                : new JsonResult(new RequestErrorViewModel("Group not found."));
+        }
+
+        [HttpGet]
+        [Route("api/groups/hot/{position:int}/{count:int}")]
+        public JsonResult GetHot(int position, int count)
+        {
+            return Json(_gServices.GetHot(position, count).Select(i => new GroupListViewModel(i)));
         }
 
         [HttpPost]
         [Route("/api/groups/create")]
-        public async Task<HttpStatusCode> Create(string title, string desc)
+        public async Task<JsonResult> Create(string title, string description)
         {
-            try
-            {
-                if (!User.Identity.IsAuthenticated)
-                    throw new UnauthorizedAccessException();
+           return Json(await _gServices.CreateAsync(title, description));
+        }
 
-                var newGroup = new Group();
-                newGroup.Title = title;
-                var user = await UserManager.GetUserAsync(HttpContext.User);
-                newGroup.Owner = user;
-                newGroup.Description = desc;
-
-                if (newGroup.Title == null || newGroup.Owner == null || newGroup.Description == null)
-                    throw new ArgumentException();
-
-                Context.Groups.Add(newGroup);
-                Context.SaveChanges();
-
-                return HttpStatusCode.OK;
-            }
-            catch (Exception ex)
-            {
-                if (ex is UnauthorizedAccessException)
-                    return HttpStatusCode.Unauthorized;
-                else
-                    return HttpStatusCode.BadRequest;
-            }
+        [HttpGet]
+        [Route("api/groups/search/")]
+        public JsonResult GetSearchResult(string filter)
+        {
+            return Json(_gServices.GetSearchResult(filter).Select(i => new GroupSearchListViewModel(i)));
         }
     }
 }
