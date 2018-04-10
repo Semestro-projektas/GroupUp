@@ -1,106 +1,49 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
+<div class="container-body">
+    <h1>HERE WE PUT SOME INSPIRATION<br /> STUFF WITH QUITE BIG FONT!</h1>
+    <button class="button-orange">Sign Up Now!</button>
+
+    <div class="inline">
+        <div data-box="1" class="box">
+            <div class="content">
+                <svg class="svg-images" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="341.183 423.683 157.634 157.634" height="9vw">
+                    <path d=" M 413.436 440 C 394.186 440 379.994 446.49 370.818 456.661 C 361.642 466.844 357.5 480.516 357.5 494.688 C 357.5 506.161 361.131 516.844 367.292 525.591 C 372.869 533.526 376.145 542.917 376.145 552.5 L 376.145 565 L 381.473 565 L 381.473 552.5 C 381.473 541.766 377.821 531.37 371.681 522.641 C 365.899 514.416 362.811 504.667 362.827 494.688 C 362.827 481.513 366.676 469.143 374.814 460.122 C 382.951 451.086 395.395 445.208 413.436 445.208 C 431.549 445.208 443.288 450.365 451.039 458.25 C 458.79 466.122 462.641 476.987 464.064 488.745 L 464.128 489.276 L 476.905 510.799 C 477.56 511.961 477.227 513.12 476.074 513.76 L 464.045 519.641 L 464.045 535.307 C 464.045 545.052 455.847 552.63 445.909 551.734 L 445.869 551.724 L 434.745 551.021 L 434.745 565 L 440.073 565 L 440.073 556.578 L 445.421 556.914 C 458.393 558.104 469.372 547.961 469.372 535.307 L 469.372 522.854 L 478.653 518.318 C 482.286 516.344 483.554 511.786 481.556 508.266 L 481.545 508.247 L 469.165 487.393 C 467.582 475.198 463.526 463.427 454.88 454.628 C 446.044 445.656 432.612 440 413.436 440 Z  M 424.091 458.229 L 424.091 463.703 C 422.425 464.039 420.842 464.689 419.429 465.615 L 415.455 461.729 L 411.689 465.411 L 415.663 469.297 C 414.716 470.678 414.052 472.226 413.708 473.854 L 408.109 473.854 L 408.109 479.063 L 413.708 479.063 C 414.049 480.721 414.736 482.258 415.663 483.62 L 411.689 487.505 L 415.455 491.188 L 419.429 487.302 C 420.842 488.228 422.425 488.877 424.091 489.214 L 424.091 494.688 L 429.418 494.688 L 429.418 489.214 C 431.084 488.877 432.667 488.228 434.079 487.302 L 438.053 491.188 L 441.82 487.505 L 437.846 483.62 C 438.793 482.239 439.457 480.691 439.801 479.063 L 445.4 479.063 L 445.4 473.854 L 439.801 473.854 C 439.457 472.226 438.793 470.678 437.846 469.297 L 441.82 465.411 L 438.053 461.729 L 434.079 465.615 C 432.667 464.689 431.084 464.039 429.418 463.703 L 429.418 458.229 L 424.091 458.229 Z  M 426.754 468.646 C 431.197 468.646 434.745 472.115 434.745 476.458 C 434.745 480.802 431.197 484.271 426.754 484.271 C 422.311 484.271 418.763 480.802 418.763 476.458 C 418.763 472.115 422.311 468.646 426.754 468.646 Z  M 392.127 479.063 L 392.127 484.536 C 390.463 484.878 388.883 485.534 387.476 486.469 L 383.492 482.562 L 379.725 486.245 L 383.721 490.151 C 382.775 491.525 382.11 493.066 381.763 494.688 L 376.145 494.688 L 376.145 499.896 L 381.744 499.896 C 382.085 501.555 382.773 503.091 383.699 504.453 L 379.725 508.339 L 383.492 512.021 L 387.466 508.135 C 388.879 509.061 390.462 509.711 392.127 510.047 L 392.127 515.521 L 397.454 515.521 L 397.454 510.047 C 399.12 509.711 400.703 509.061 402.116 508.135 L 406.09 512.021 L 409.856 508.339 L 405.882 504.453 C 406.829 503.072 407.493 501.524 407.837 499.896 L 413.436 499.896 L 413.436 494.688 L 407.816 494.688 C 407.47 493.066 406.806 491.526 405.861 490.151 L 409.856 486.245 L 406.09 482.562 L 402.105 486.469 C 400.699 485.534 399.119 484.878 397.454 484.536 L 397.454 479.063 L 392.127 479.063 Z  M 394.791 489.479 C 399.234 489.479 402.782 492.948 402.782 497.292 C 402.782 501.635 399.234 505.104 394.791 505.104 C 390.348 505.104 386.8 501.635 386.8 497.292 C 386.8 492.948 390.348 489.479 394.791 489.479 Z "
+                          fill="rgb(32,43,49)" vector-effect="non-scaling-stroke" stroke-width="2.634" stroke="rgb(32,43,49)" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" />
+                </svg>
+                <h2>Improve your skills</h2>
                 <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velitesse cillum dolore eu fugiat nulla pariatur.
                 </p>
             </div>
         </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
+        <div data-box="2" class="box">
+            <div class="content">
+                <svg class="svg-images" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="881.168 397.668 157.665 157.665" height="9vw">
+                    <path d=" M 947.509 414 C 943.397 414 940.01 417.849 940.01 422.523 L 940.01 431.045 L 905.014 431.045 C 900.902 431.045 897.515 434.895 897.515 439.568 L 897.515 481.651 C 897.495 481.827 897.495 482.005 897.515 482.182 L 897.515 530.477 C 897.515 535.151 900.902 539 905.014 539 L 1015.001 539 C 1019.113 539 1022.5 535.151 1022.5 530.477 L 1022.5 439.568 C 1022.5 434.895 1019.113 431.045 1015.001 431.045 L 980.005 431.045 L 980.005 422.523 C 980.005 417.849 976.618 414 972.506 414 L 947.509 414 Z  M 947.509 419.682 L 972.506 419.682 C 973.913 419.682 975.006 420.926 975.006 422.523 L 975.006 431.045 L 945.009 431.045 L 945.009 422.523 C 945.009 420.923 946.104 419.682 947.509 419.682 Z  M 905.014 436.727 L 1015.001 436.727 C 1016.408 436.727 1017.501 437.972 1017.501 439.568 L 1017.501 482.182 C 1017.501 483.781 1016.406 485.023 1015.001 485.023 L 905.014 485.023 C 903.606 485.023 902.514 483.778 902.514 482.182 C 902.534 482.004 902.534 481.825 902.514 481.648 L 902.514 439.568 C 902.514 437.969 903.609 436.727 905.014 436.727 Z  M 960.007 467.977 C 957.246 467.977 955.008 470.521 955.008 473.659 C 955.008 476.797 957.246 479.341 960.007 479.341 C 962.768 479.341 965.007 476.797 965.007 473.659 C 965.007 470.521 962.768 467.977 960.007 467.977 Z  M 902.514 490.173 C 903.314 490.514 904.16 490.693 905.014 490.705 L 1015.001 490.705 C 1015.855 490.692 1016.701 490.512 1017.501 490.17 L 1017.501 530.477 C 1017.501 532.077 1016.406 533.318 1015.001 533.318 L 905.014 533.318 C 903.606 533.318 902.514 532.074 902.514 530.477 L 902.514 490.173 Z "
+                          fill="rgb(32,43,49)" vector-effect="non-scaling-stroke" stroke-width="2.665" stroke="rgb(32,43,49)" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" />
+                </svg>
+                <h2>Create portfolio</h2>
                 <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velitesse cillum dolore eu fugiat nulla pariatur.
                 </p>
             </div>
         </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
-            <div class="carousel-caption" role="option">
+        <div data-box="3" class="box">
+            <div class="content">
+                <svg class="svg-images" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="1420.238 422.738 157.524 157.524" height="9vw">
+                    <path d=" M 1531.538 439 C 1521.026 439 1513.368 442.967 1508.519 448.327 C 1503.673 453.689 1501.576 460.296 1501.576 465.786 C 1501.576 474.196 1505.965 481.013 1511.798 485.556 C 1517.63 490.099 1524.896 492.571 1531.538 492.571 C 1538.169 492.571 1545.445 490.161 1551.278 485.635 C 1557.111 481.112 1561.5 474.276 1561.5 465.786 C 1561.5 452.273 1549.68 439 1531.538 439 Z  M 1531.538 444.102 C 1547.318 444.102 1556.506 455.321 1556.506 465.786 C 1556.506 472.52 1553.2 477.783 1548.314 481.571 C 1543.428 485.357 1536.951 487.469 1531.538 487.469 C 1526.145 487.469 1519.735 485.306 1514.839 481.49 C 1509.945 477.673 1506.569 472.423 1506.569 465.786 C 1506.569 461.671 1508.257 456.11 1512.187 451.755 C 1516.117 447.401 1522.224 444.102 1531.538 444.102 Z  M 1478.869 472.163 C 1468.952 472.352 1462.515 476.518 1459.753 482.926 C 1457.132 489.013 1457.656 496.548 1459.518 504.37 C 1458.535 505.656 1457.753 507.25 1458.035 509.633 C 1458.36 512.311 1459.072 514.296 1460.143 515.691 C 1460.67 516.378 1461.364 516.436 1462.015 516.806 C 1462.405 519.038 1463.049 521.25 1463.965 523.105 C 1464.502 524.191 1465.079 525.145 1465.683 525.974 C 1465.918 526.293 1466.297 526.492 1466.542 526.77 C 1466.562 529.301 1466.592 531.454 1466.385 534.105 C 1465.751 535.63 1464.25 536.885 1461.703 538.171 C 1459.072 539.505 1455.561 540.773 1452.028 542.316 C 1448.497 543.86 1444.879 545.694 1441.963 548.694 C 1439.047 551.694 1436.979 555.878 1436.657 561.291 L 1436.5 564 L 1479.104 564 L 1521.708 564 L 1521.55 561.288 C 1521.228 555.888 1519.153 551.694 1516.245 548.694 C 1513.338 545.694 1509.7 543.86 1506.18 542.316 C 1502.659 540.773 1499.206 539.505 1496.582 538.171 C 1494.055 536.885 1492.612 535.63 1491.978 534.105 C 1491.79 531.665 1491.713 529.217 1491.745 526.77 C 1491.988 526.482 1492.37 526.293 1492.602 525.974 C 1493.199 525.138 1493.793 524.189 1494.32 523.105 C 1495.206 521.25 1495.81 519.028 1496.192 516.806 C 1496.844 516.436 1497.538 516.378 1498.065 515.689 C 1499.139 514.296 1499.85 512.311 1500.17 509.63 C 1500.444 507.298 1499.713 505.727 1498.767 504.452 C 1499.8 501.013 1501.069 495.582 1500.639 489.941 C 1500.394 486.821 1499.625 483.722 1497.753 481.092 C 1495.978 478.592 1493.059 476.737 1489.403 476.069 C 1487.014 473.39 1483.261 472.163 1478.869 472.163 Z  M 1478.869 477.265 L 1478.949 477.265 C 1483.104 477.286 1485.698 478.561 1486.36 479.737 L 1486.984 480.852 L 1488.232 481.013 C 1491.071 481.411 1492.574 482.467 1493.695 484.041 C 1494.817 485.615 1495.451 487.908 1495.645 490.418 C 1496.035 495.441 1494.592 501.38 1493.695 504.13 L 1493.071 506.043 L 1494.787 507.161 C 1494.544 507.01 1495.451 507.449 1495.256 509.074 C 1495.011 511.115 1494.474 512.092 1494.162 512.5 C 1493.85 512.908 1493.763 512.832 1493.85 512.819 L 1491.745 512.98 L 1491.588 515.133 C 1491.403 516.906 1490.622 519.059 1489.793 520.791 C 1489.373 521.658 1488.994 522.426 1488.624 522.944 C 1488.35 523.334 1488.075 523.622 1488.075 523.663 L 1486.752 524.301 L 1486.752 525.814 C 1486.752 528.893 1486.662 531.454 1486.984 535.061 L 1486.984 535.38 L 1487.141 535.699 C 1488.4 539.128 1491.306 541.219 1494.397 542.796 C 1497.488 544.37 1500.951 545.505 1504.23 546.939 C 1507.506 548.375 1510.479 550.038 1512.657 552.281 C 1514.284 553.964 1515.318 556.209 1515.932 558.898 L 1459.165 558.898 L 1442.275 558.898 C 1442.889 556.207 1443.913 553.964 1445.554 552.281 C 1447.736 550.038 1450.772 548.375 1454.058 546.941 C 1457.344 545.505 1460.787 544.37 1463.888 542.793 C 1466.989 541.219 1469.888 539.138 1471.144 535.702 L 1471.301 535.38 L 1471.301 535.061 C 1471.623 531.454 1471.536 528.893 1471.536 525.814 L 1471.536 524.301 L 1470.287 523.582 C 1470.297 523.592 1470.287 523.622 1470.21 523.582 C 1470.007 523.388 1469.823 523.174 1469.661 522.944 C 1469.188 522.263 1468.77 521.544 1468.412 520.793 C 1467.556 519.059 1466.804 516.885 1466.62 515.13 L 1466.462 512.98 L 1464.357 512.819 C 1464.445 512.829 1464.357 512.911 1464.045 512.5 C 1463.733 512.092 1463.196 511.117 1462.952 509.074 C 1462.757 507.449 1463.653 507.01 1463.421 507.161 L 1464.982 506.122 L 1464.512 504.291 C 1462.542 496.597 1462.28 489.633 1464.278 484.997 C 1466.267 480.385 1470.228 477.446 1478.869 477.265 Z  M 1521.55 495.122 C 1516.294 495.122 1511.563 498.88 1511.563 504.051 C 1511.563 509.222 1516.294 512.98 1521.55 512.98 C 1526.806 512.98 1531.538 509.222 1531.538 504.051 C 1531.538 498.88 1526.806 495.122 1521.55 495.122 Z  M 1521.55 500.224 C 1524.564 500.224 1526.544 502.189 1526.544 504.051 C 1526.544 505.913 1524.564 507.878 1521.55 507.878 C 1518.537 507.878 1516.557 505.913 1516.557 504.051 C 1516.557 502.189 1518.537 500.224 1521.55 500.224 Z  M 1509.066 512.98 C 1507.183 512.98 1505.468 513.508 1504.072 514.574 C 1502.677 515.64 1501.576 517.385 1501.576 519.357 C 1501.576 521.329 1502.677 523.074 1504.072 524.14 C 1505.468 525.207 1507.183 525.735 1509.066 525.735 C 1510.949 525.735 1512.664 525.207 1514.06 524.14 C 1515.456 523.074 1516.557 521.329 1516.557 519.357 C 1516.557 517.385 1515.456 515.64 1514.06 514.574 C 1512.664 513.508 1510.949 512.98 1509.066 512.98 Z  M 1509.066 518.082 C 1509.945 518.082 1510.677 518.401 1511.096 518.719 C 1511.513 519.038 1511.563 519.217 1511.563 519.357 C 1511.563 519.497 1511.513 519.676 1511.094 519.995 C 1510.677 520.314 1509.945 520.633 1509.066 520.633 C 1508.187 520.633 1507.456 520.314 1507.036 519.995 C 1506.619 519.676 1506.569 519.497 1506.569 519.357 C 1506.569 519.217 1506.619 519.038 1507.039 518.719 C 1507.456 518.401 1508.187 518.082 1509.066 518.082 Z "
+                          fill="rgb(32,43,49)" vector-effect="non-scaling-stroke" stroke-width="2.524" stroke="rgb(32,43,49)" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" />
+                </svg>
+                <h2>Create portfolio</h2>
                 <p>
-                    Bring in libraries from NuGet and npm, and automate tasks using Grunt or Gulp.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velitesse cillum dolore eu fugiat nulla pariatur.
                 </p>
             </div>
         </div>
     </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
 </div>
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
-    </div>
-</div>

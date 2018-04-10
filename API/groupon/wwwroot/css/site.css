@@ -1,35 +1,324 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿/***
+h1,h2,h3,nav - opensans
+body, buttons - Roboto
+***/
+body {
+    background: #FFFFFF;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: #F2F0E6;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
+h1 {
+    padding-top: 5.09%;
+    padding-bottom: 4.05%;
+    font-weight: bold;
+    font-size: 24px;
+    font-family: 'Open Sans', sans-serif;
+    line-height: 28px;
+    color: #FFFFFF;
+}
+
+footer {
+    position: absolute;
+    height: 60px;
+    margin-top: 50px;
+    width: 100%;
+    background-color: #fff;
+    color: black;
+    text-align: center;
+    vertical-align: middle;
+}
+
+    footer p {
+        margin-bottom: 0;
+        padding-top: 1%;
+        padding-bottom: 1%;
+    }
+
+header {
+    background: #fff;
+    margin-top: auto;
+    margin-bottom: auto;
+    vertical-align: bottom;
+    height: 60px;
+}
+
+    header::after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+
+.container-nav {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.container-body {
+    background-image: linear-gradient(to bottom, #38ac07, #45b619, #51c026, #5dcb31, #68d53b);
+    width: 60%;
+    left: 20%;
+    margin: 0 auto;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.box {
+    text-align: center;
+    background: #FFFFFF;
+    width: 50.43%;
+    height: 46.29%;
+    overflow: hidden;
+    margin: auto;
+    margin-bottom: -20px;
+}
+
+    .box[data-box="1"] {
+        margin-bottom: -10%;
+        margin-top: 6%;
+        margin-left: -10%;
+        -webkit-box-shadow: 0px 10px 0px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 5px -5px 10px 0px rgba(0, 0, 0, 0.5);
+        box-shadow: 5px -5px 10px 0px rgba(0, 0, 0, 0.5);
+    }
+
+    .box[data-box="2"] {
+        margin-top: 5%;
+        margin-left: 10%;
+        margin-right: 10%;
+        -webkit-box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5);
+        box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.5);
+    }
+
+    .box[data-box="3"] {
+        margin-top: 6%;
+        float: right;
+        margin-right: -10%;
+        -webkit-box-shadow: -5px -5px 10px 0px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: -5px -5px 10px 0px rgba(0, 0, 0, 0.5);
+        box-shadow: -5px -5px 10px 0px rgba(0, 0, 0, 0.5);
+    }
+
+    .box .content {
+        padding: 7% 0% 0 0%;
+    }
+
+        .box .content p {
+            text-align: left;
+            padding: 0 12.22% 14.4% 12.22%;
+        }
+
+h2 {
+    font-size: 21px;
+    padding: 2.23% 0 2.23% 0;
+}
+
+.logo {
+    float: left;
+    width: 130px;
+    padding: 0;
+    margin-top: 14px;
     padding-left: 15px;
-    padding-right: 15px;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+nav {
+    float: right;
+    padding: 12px 19px 8px 0;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    nav li {
+        display: inline-block;
+        color: #202B31;
+        text-align: center;
+        padding-top: 2px;
+    }
+
+ul > li > a::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #F37022;
+    transition: width .3s;
+}
+
+ul > li > a:hover::after {
     width: 100%;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+div.inline {
+    display: flex;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
+nav .button {
+    background: #FFFFFF;
+    border: 1px solid #202B31;
+    font-weight: 600;
+    color: #202B31;
+    margin-left: 10px;
+}
+
+.button-orange {
+    Width: 20.625%;
+    Height: 7.7%;
+    font-size: 20px;
+    background: #F37022;
+    border: 1px solid #F37022;
+    border-radius: 6px;
+    color: #FFFFFF;
+    font-family: 'Open Sans', sans-serif;
+}
+
+nav li:not(:nth-child(2n)):nth-last-child(3n) {
+    border-right: 1px solid black;
+}
+
+nav li a {
+    text-decoration: none;
+    color: #202B31;
+}
+
+.svg-images {
+    width: 70.65%;
+}
+
+@media screen and (min-device-width: 1000px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 1) {
+    h1 {
+        font-size: 20px;
+    }
+
+    .box .content p {
+        font-size: 0.85em;
+    }
+
+    h2 {
+        font-size: 1em;
+    }
+
+    nav {
+        font-size: 1.0em;
+    }
+
+        nav li {
+            margin-left: 22px;
+        }
+
+        nav .button {
+            width: 90px;
+            height: 37px;
+            font-size: 0.95em;
+            border-radius: 6px;
+        }
+
+    .button-orange {
+        font-size: 21px;
+        border-radius: 6px;
+    }
+
+    nav li:not(:nth-child(2n)):nth-last-child(3n) {
+        padding-right: 20px;
+    }
+
+    nav li a {
+        font-size: 0.95em;
+    }
+
+    .svg-images {
+        width: 40.65%;
     }
 }
+
+@media only screen and (min-width: 1400px) and (max-width: 1600px) {
+    h1 {
+        font-size: 21px;
+    }
+
+    .box .content p {
+        font-size: 0.85em;
+    }
+
+    h2 {
+        font-size: 1.1em;
+    }
+
+    nav {
+        font-size: 0.85em;
+    }
+
+        nav li {
+            margin-left: 18px;
+        }
+
+        nav .button {
+            width: 90px;
+            height: 37px;
+            font-size: 0.9em;
+            border-radius: 6px;
+        }
+
+    .button-orange {
+        font-size: 21px;
+        border-radius: 6px;
+    }
+
+    nav li:not(:nth-child(2n)):nth-last-child(3n) {
+        padding-right: 20px;
+    }
+
+    nav li a {
+        font-size: 1.1em;
+    }
+}
+
+@media screen and (min-device-width: 1480px) and (max-device-width: 1980px) {
+    h1 {
+        font-size: 22px;
+    }
+
+    .box .content p {
+        font-size: 1em;
+    }
+
+    h2 {
+        font-size: 1.2em;
+    }
+
+    nav {
+        font-size: 1.0em;
+    }
+
+        nav li {
+            margin-left: 22px;
+        }
+
+        nav .button {
+            width: 90px;
+            height: 37px;
+            font-size: 0.9em;
+            border-radius: 6px;
+        }
+
+    .button-orange {
+        font-size: 21px;
+        border-radius: 6px;
+    }
+
+    nav li:not(:nth-child(2n)):nth-last-child(3n) {
+        padding-right: 20px;
+    }
+
+    nav li a {
+        font-size: 1em;
+    }
+}
+
+/* ----------- Retina Screens ----------- */
