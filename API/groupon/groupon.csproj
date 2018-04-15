@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\FrontPageViewModel\" />
+    <Folder Include="Models\MiscViewModels\" />
   </ItemGroup>
 
 </Project>

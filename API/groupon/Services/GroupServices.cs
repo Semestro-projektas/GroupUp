@@ -15,11 +15,17 @@ namespace groupon.Services
 {
     public interface IGroupServices
     {
-        Task<Result> CreateAsync(string title, string description);
+        Task<CreateGroupResult> CreateAsync(string title, string shortDescription);
         Group Get(int id);
         IEnumerable<Group> GetAll(int? position, int? count);
         IEnumerable<Group> GetHot(int? position, int? count);
         IEnumerable<Group> GetSearchResult(string filter);
+
+        Task<UpdateGroupResult> EditAsync(int id, string title, GroupType type, string shortDescription,
+            string description, string image, bool? hot);
+        Task<Result> AskToJoinRequestAsync(int groupId);
+        Task<Result> ApproveJoinRequest(string userId, int groupId);
+        IEnumerable<GroupTeam> ViewAllJoinRequests(int groupId, int? position, int? count, out string error);
     }
 
     public class GroupServices : IGroupServices
@@ -35,34 +41,52 @@ namespace groupon.Services
             _http = httpContext;
         }
 
-        public async Task<Result> CreateAsync(string title, string description)
+        public async Task<CreateGroupResult> CreateAsync(string title, string shortDescription)
         {
+            var result = new CreateGroupResult();
+
             try
             {
                 if (!_http.HttpContext.User.Identity.IsAuthenticated)
-                    throw new UnauthorizedAccessException();
+                    return new CreateGroupResult(401, "You must be logged in to this.");
 
-                var newGroup = new Group();
-                newGroup.Title = title;
                 var user = await _userManager.GetUserAsync(_http.HttpContext.User);
-                newGroup.Owner = user;
-                newGroup.Description = description;
 
-                if (newGroup.Title == null || newGroup.Owner == null || newGroup.Description == null)
-                    throw new ArgumentException();
+                if (!String.IsNullOrEmpty(title))
+                    result.Title = "OK";
+                else
+                    result.Title = "NO";
 
-                _context.Groups.Add(newGroup);
-                _context.SaveChanges();
+                if (!String.IsNullOrEmpty(shortDescription))
+                    result.Description = "OK";
+                else
+                    result.Description = "NO";
 
-                return new Result();
+                if (user != null)
+                    result.Owner = "OK";
+                else
+                    result.Owner = "NO";
+
+                if (result.Title == "NO" || result.Description == "NO" || result.Owner == "NO")
+                {
+                    result.Error = "Not all required fields were filled.";
+                    result.StatusCode = 412;
+                    return result;
+                }
+                else
+                {
+                    result.StatusCode = 200;
+                    var newGroup = new Group { Description = shortDescription, Title = title, Owner = user };
+                    _context.Groups.Add(newGroup);
+                    _context.SaveChanges();
+                }
+
+                return result;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex + " " + _http.HttpContext.Request.Query);
-                if (ex is UnauthorizedAccessException)
-                    return new Result("You need to be logged in to do this.");
-                else
-                    return new Result("Page not found.");
+                LogException(ex);
+                return new CreateGroupResult(400, ex.Message);
             }
         }
 
@@ -98,5 +122,198 @@ namespace groupon.Services
 
             return selectedGroups.AsEnumerable();
         }
+
+        public async Task<UpdateGroupResult> EditAsync(int id, string title, GroupType type, string shortDescription,
+            string description, string image, bool? hot)
+        {
+            var result = new UpdateGroupResult();
+
+            try
+            {
+                var group = _context.Groups.Include(i => i.Owner).FirstOrDefault(i => i.Id == id);
+                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+
+                if (!_http.HttpContext.User.Identity.IsAuthenticated)
+                    return new UpdateGroupResult(401, "You must be logged in to do this.");
+
+                if (group == null)
+                    return new UpdateGroupResult(404, "Company you're editing is not found.");
+
+                if (group.Owner != user && user.Role != Role.Admin)
+                    return new UpdateGroupResult(403, "You don't have permissions to do this.");
+
+                if (!String.IsNullOrEmpty(title))
+                {
+                    group.Title = title;
+                    result.Title = "OK";
+                }
+
+                if (type != group.Type)
+                {
+                    group.Type = type;
+                    result.Type = "OK";
+                }
+
+                if (!String.IsNullOrEmpty(shortDescription))
+                {
+                    group.ShortDescription = shortDescription;
+                    result.ShortDescription = "OK";
+                }
+
+                if (!String.IsNullOrEmpty(description))
+                {
+                    group.Description = description;
+                    result.Description = "OK";
+                }
+
+                if (!String.IsNullOrEmpty(image))
+                {
+                    group.Image = image;
+                    result.Image = "OK";
+                }
+
+                if (hot != null)
+                {
+                    if (user.Role == Role.Admin)
+                        group.Hot = true;
+                    else
+                        return new UpdateGroupResult(403, "You don't have required permissions to promote a group.");
+                }
+
+                _context.SaveChanges(true);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                return new UpdateGroupResult(400, ex.Message);
+            }
+        }
+
+        public async Task<Result> AskToJoinRequestAsync(int groupId)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+
+                if (!IsAuthenticated())
+                    return new Result("You must be logged in to do this.", 401);
+
+                if (_context.Groups.FirstOrDefault(i => i.Id == groupId) == null)
+                    return new Result("Requested group doesn't exist.", 404);
+
+                var request = new GroupTeam { GroupId = groupId, UserId = user.Id, RequestDate = DateTime.Now };
+
+                _context.GroupTeam.Add(request);
+                _context.SaveChanges(true);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                return new Result(ex.Message, 400);
+            }
+
+            return new Result();
+        }
+
+        public async Task<Result> ApproveJoinRequest(string userId, int groupId)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var group = _context.Groups.Include(i => i.Owner).FirstOrDefault(i => i.Id == groupId);
+
+                if (!IsAuthenticated())
+                    return new Result("You're not logged in.", 401);
+
+                // Nereikia checkinti ar company nera null, nes kuriant requesta company tuscia nebus padavinejama.
+
+                if (group == null)
+                    return new Result("This request doesn't exist.", 404);
+
+                if (group.Owner != user)
+                    return new Result("You're not owner of this group.", 401);
+
+                group.Hot = true;
+                _context.SaveChanges(true);
+
+                return new Result();
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                return new Result(ex.Message, 400);
+            }
+        }
+
+        public IEnumerable<GroupTeam> ViewAllJoinRequests(int groupId, int? position, int? count, out string error)
+        {
+            error = "";
+            try
+            {
+                var user = GetCurrentUser().Result;
+                var group = _context.Groups.Include(i => i.Owner).FirstOrDefault(i => i.Id == groupId);
+
+                if (!IsAuthenticated())
+                {
+                    error = "You must be logged in to do this.";
+                    return null;
+                }
+
+                if (group == null)
+                {
+                    error = "Requested company doesn't exist.";
+                    return null;
+                }
+
+                if (group.Owner != user)
+                {
+                    error = "You're not this company's owner.";
+                    return null;
+                }
+
+                if (position.HasValue && count.HasValue)
+                    return _context.GroupTeam.Where(i => i.GroupId == groupId).Include(i => i.User).Skip(position.Value).Take(count.Value);
+                else
+                {
+                    return _context.GroupTeam.Where(i => i.GroupId == groupId).Include(i => i.User);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+            }
+            return null;
+        }
+
+        #region Private functions
+        private bool IsAuthenticated()
+        {
+            try
+            {
+                if (_http.HttpContext.User.Identity.IsAuthenticated)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+            }
+
+            return false;
+        }
+
+        private void LogException(Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex + " " + _http.HttpContext.Request.Query);
+        }
+
+        private async Task<ApplicationUser> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(_http.HttpContext.User);
+        }
+        #endregion
     }
 }

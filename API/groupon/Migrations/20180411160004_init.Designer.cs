@@ -12,8 +12,8 @@ using System;
 namespace groupon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180318145642_v1")]
-    partial class v1
+    [Migration("20180411160004_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,6 +33,8 @@ namespace groupon.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<string>("CurrentlyWorking");
 
                     b.Property<string>("Education");
 
@@ -63,6 +65,10 @@ namespace groupon.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("Picture");
+
+                    b.Property<int>("Role");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -90,6 +96,8 @@ namespace groupon.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("Approved");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("Field");
@@ -97,6 +105,8 @@ namespace groupon.Migrations
                     b.Property<string>("Location");
 
                     b.Property<string>("Logo");
+
+                    b.Property<string>("ShortDescription");
 
                     b.Property<string>("Title");
 
@@ -109,12 +119,58 @@ namespace groupon.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("groupon.Models.CompanyTeam", b =>
+                {
+                    b.Property<int>("CompanyId");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<DateTime?>("ApprovalDate");
+
+                    b.Property<bool>("Approved");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<DateTime>("RequestDate");
+
+                    b.HasKey("CompanyId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CompanyTeam");
+                });
+
+            modelBuilder.Entity("groupon.Models.Connection", b =>
+                {
+                    b.Property<string>("User1Id");
+
+                    b.Property<string>("User2Id");
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<bool>("Confirmed");
+
+                    b.Property<DateTime>("RequestDate");
+
+                    b.HasKey("User1Id", "User2Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("User2Id");
+
+                    b.ToTable("Connections");
+                });
+
             modelBuilder.Entity("groupon.Models.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
+
+                    b.Property<bool>("Hot");
 
                     b.Property<string>("Image");
 
@@ -131,6 +187,44 @@ namespace groupon.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("groupon.Models.GroupTeam", b =>
+                {
+                    b.Property<int>("GroupId");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<DateTime?>("ApprovalDate");
+
+                    b.Property<bool>("Approved");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<DateTime>("RequestDate");
+
+                    b.HasKey("GroupId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("GroupTeam");
+                });
+
+            modelBuilder.Entity("groupon.Models.Message", b =>
+                {
+                    b.Property<string>("RecipientId");
+
+                    b.Property<string>("SenderId");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("RecipientId", "SenderId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -248,11 +342,67 @@ namespace groupon.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("groupon.Models.CompanyTeam", b =>
+                {
+                    b.HasOne("groupon.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("groupon.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("groupon.Models.Connection", b =>
+                {
+                    b.HasOne("groupon.Models.ApplicationUser")
+                        .WithMany("Connections")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("groupon.Models.ApplicationUser", "User1")
+                        .WithMany()
+                        .HasForeignKey("User1Id")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("groupon.Models.ApplicationUser", "User2")
+                        .WithMany()
+                        .HasForeignKey("User2Id")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("groupon.Models.Group", b =>
                 {
                     b.HasOne("groupon.Models.ApplicationUser", "Owner")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("groupon.Models.GroupTeam", b =>
+                {
+                    b.HasOne("groupon.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("groupon.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("groupon.Models.Message", b =>
+                {
+                    b.HasOne("groupon.Models.ApplicationUser", "Recipient")
+                        .WithMany()
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("groupon.Models.ApplicationUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

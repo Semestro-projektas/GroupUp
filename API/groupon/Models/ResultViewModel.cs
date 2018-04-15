@@ -45,17 +45,4 @@ namespace groupon.Models
             Error = error;
         }
     }
-
-    public class UpdateProfileResult
-    {
-        public string Authorized { get; set; }
-        public string Name { get; set; }
-        public string Company { get; set; }
-        public string Field { get; set; }
-        public string WorkExperience { get; set; }
-        public string Education { get; set; }
-        public string Location { get; set; }
-        public string Picture { get; set; }
-        public string CurrentlyWorking { get; set; }
-    }
 }

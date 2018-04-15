@@ -10,6 +10,7 @@ using groupon.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
 using System.Web.Http.Cors;
+using groupon.Models.CompanyViewModels;
 using groupon.Services;
 
 namespace groupon.Controllers
@@ -20,13 +21,13 @@ namespace groupon.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ICompanyServices _cServices;
+        private readonly ICompanyServices _main;
 
         public CompaniesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ICompanyServices companyServices)
         {
             _context = context;
             _userManager = userManager;
-            _cServices = companyServices;
+            _main = companyServices;
         }
 
         [HttpGet]
@@ -34,44 +35,77 @@ namespace groupon.Controllers
         [Route("/api/companies/all")]
         public JsonResult GetAll()
         {
-            return Json(_cServices.GetAll(null, null).Select(i => new CompanyListViewModel(i)));
+            return Json(_main.GetAll(null, null).Select(i => new CompanyListViewModel(i)));
         }
 
         [HttpGet]
         [Route("/api/companies/{position}-{count}")]
         public JsonResult GetAll(int position, int count)
         {
-            return Json(_cServices.GetAll(position, count).Select(i => new CompanyListViewModel(i)));
+            return Json(_main.GetAll(position, count).Select(i => new CompanyListViewModel(i)));
         }
 
         [HttpGet]
         [Route("/api/companies/{id}")]
         public JsonResult Get(int id)
         {
-            return _cServices.Get(id) != null
-                ? new JsonResult(new SingleCompanyViewModel(_cServices.Get(id)))
+            return _main.Get(id) != null
+                ? new JsonResult(new SingleCompanyViewModel(_main.Get(id)))
                 : new JsonResult(new RequestErrorViewModel("Company not found."));
         }
 
         [HttpGet]
         [Route("api/companies/hot/{position:int}/{count:int}")]
-        public JsonResult GetHot(int position, int count)
+        public IEnumerable<CompanyListViewModel> GetHot(int position, int count)
         {
-            return Json(_cServices.GetApproved(position, count).Select(i => new CompanyListViewModel(i)));
+            return _main.GetApproved(position, count).Select(i => new CompanyListViewModel(i));
         }
 
         [HttpPost]
         [Route("/api/companies/create")]
-        public async Task<JsonResult> Create(string title, string desc)
+        public async Task<CreateCompanyResult> CreateCompany(string title, string shortDescription)
         {
-            return Json(await _cServices.CreateAsync(title, desc));
+            return await _main.CreateAsync(title, shortDescription);
         }
 
         [HttpGet]
         [Route("api/companies/search/")]
-        public JsonResult GetSearchResult(string filter)
+        public IEnumerable<CompanySearchListViewModel> GetSearchResult(string filter)
         {
-            return Json(_cServices.GetSearchResult(filter).Select(i => new CompanySearchListViewModel(i)));
+            return _main.GetSearchResult(filter).Select(i => new CompanySearchListViewModel(i));
         }
+
+        [HttpPost]
+        [Route("api/companies/edit")]
+        public async Task<UpdateCompanyResult> EditCompany(int companyId, string title, string field, string location,
+            string description, string shortDescription, string logo, bool? approved)
+        {
+            return await _main.EditAsync(companyId, title, field, location, description, shortDescription, logo, approved);
+        }
+
+        // Nepilnai padarytas
+        [HttpPost]
+        [Route("api/companies/join")]
+        public async Task<Result> JoinCompany(int companyId)
+        {
+            return await _main.AskToJoinRequestAsync(companyId);
+        }
+
+        [HttpPost]
+        [Route("api/companies/approve")]
+        public async Task<Result> ApproveJoinRequest(int companyId, string userId)
+        {
+            return await _main.ApproveJoinRequest(userId, companyId);
+        }
+
+        [HttpGet]
+        [Route("api/companies/requests")]
+        public IEnumerable<CompanyMemberRequestViewModel> GetAllRequests(int companyId)
+        {
+            string test = "";
+            return _main.ViewAllJoinRequests(companyId, null, null, out test).Select(i => new CompanyMemberRequestViewModel(i));
+        }
+
+
     }
 }

@@ -10,13 +10,24 @@ namespace groupon.Models
     public class ApplicationUser : IdentityUser
     {
         public string Name { get; set; }
+        [System.ComponentModel.DefaultValue(Role.User)]
+        public Role Role { get; set; }
         public int Company { get; set; }
         public string Field { get; set; }
         public string WorkExperience { get; set; }
         public string Education { get; set; }
         public string Location { get; set; }
         public string Picture { get; set; }
+        public string Title { get; set; }
         public string CurrentlyWorking { get; set; }
+
+        public virtual List<Connection> Connections { get; set; }
+    }
+
+    public enum Role
+    {
+        User,
+        Admin
     }
 
     public class ProfileEditViewModel

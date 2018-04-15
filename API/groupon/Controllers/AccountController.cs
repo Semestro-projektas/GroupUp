@@ -29,21 +29,25 @@ namespace groupon.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly IAccountServices AServices;
+        private readonly IMessagingServices MsgServices;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
-            IAccountServices accServices)
+            IAccountServices accServices,
+            IMessagingServices msgServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             AServices = accServices;
+            MsgServices = msgServices;
         }
 
+        #region Base methods
         [TempData]
         public string ErrorMessage { get; set; }
 
@@ -442,7 +446,9 @@ namespace groupon.Controllers
         {
             return View();
         }
+        #endregion
 
+        #region Profile
         [HttpPost]
         [Route("/api/profile/update")]
         [AllowAnonymous]
@@ -463,6 +469,63 @@ namespace groupon.Controllers
             else
                 return Json(new RequestErrorViewModel("User not found."));
         }
+        #endregion
+
+        #region Messaging
+        [HttpPost]
+        [Route("/api/message/send")]
+        public Task<Result> SendMessage(string recipientId, string text)
+        {
+            return MsgServices.SendMessage(recipientId, text);
+        }
+
+        [HttpGet]
+        [Route("/api/messages/with")]
+        public IEnumerable<TextMessage> GetMessages(string recipientId)
+        {
+            return MsgServices.GetAllMessages(recipientId, 0).Select(i => new TextMessage(i));
+        }
+
+        [HttpGet]
+        [Route("/api/messages/all")]
+        public IEnumerable<Chat> GetAllChats()
+        {
+            return MsgServices.GetAllChats().Select(i => new Chat(i));
+        }
+        #endregion
+
+        #region Connections
+
+        [HttpPost]
+        [Route("/api/connections/invite")]
+        public async Task<Result> InviteConnection(string userId, string comment)
+        {
+            return await AServices.InviteToConnect(userId, comment);
+        }
+
+        // Double check this one
+        [HttpPost]
+        [Route("/api/connections/approve")]
+        public async Task<Result> ApproveConnection(string userId)
+        {
+            return await AServices.ApproveConnection(userId);
+        }
+
+        [HttpGet]
+        [Route("/api/connections/all")]
+        public IEnumerable<ConnectionViewModel> GetAllUsersConnections(string userId)
+        {
+            return AServices.GetAllUserConnection(null, null).Select(i => new ConnectionViewModel(i, userId));
+        }
+
+        [HttpGet]
+        [Route("/api/connections/requests")]
+        public IEnumerable<ConnectionViewModel> GetAllConnectionRequests(string userId)
+        {
+            return AServices.GetAllConnectionRequests(null, null).Select(i => new ConnectionViewModel(i));
+        }
+
+        #endregion
 
         #region Helpers
 
