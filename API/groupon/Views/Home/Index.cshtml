@@ -1,3 +1,4 @@
+
 ﻿
 @{
     ViewData["Title"] = "Home Page";
@@ -42,9 +43,61 @@
         </div>
         <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
             <img class="mt-3" src="~/images/logo-seatgeek.png" />
-        </div>
+        s</div>
+     </div>
+@*﻿<h1>API TEST PAGE</h1>
+<div class="row">
+    <div class="col-lg-6">
+        <h4>To get all group entries to console press button:</h4>
+        <button id="btn" class="btn btn-success">Get all</button>
+    </div>
+    <div class="col-lg-6 right">
+        <h4>To get all company entries to console press button:</h4>
+        <button id="btnCompanies" class="btn btn-success">Get all</button>
     </div>
 </div>
+<br />
+<br/>
+    <div class="table-bordered">
+    <div class="row" style="margin-left: 10px;">
+        <div class="col-lg-2">
+            <h5 style="margin-left: 5px;"><b> POST FORM to add new group:</b></h5>
+            Title*: <input id="title" class="input-sm"/>
+            <br/>
+            Description*: <input id="desc" class="input-sm"/>
+            <br/>
+            <br/>
+        </div>
+        <div class="col-lg-4"></div>
+        <div class="col-lg-2">
+            <h5 style="margin-left: 5px;"><b> POST FORM to add new company:</b></h5>
+            Title*: <input id="titleC" class="input-sm" />
+            <br />
+            Description*: <input id="descC" class="input-sm" />
+            <br />
+            <br />
+        </div>
+        <div class="col-lg-2">
+            <br/>
+            <br/>
+            <br/>
+            * Required fields
+        </div>
+        <br />
+    </div>
+    <div class="row" style="margin-left: 10px;">
+        <div class="col-lg-2">
+            <button id="post" class="btn btn-info">Create</button>
+        </div>
+        <div class="col-lg-4">
+        </div>
+        <div class="col-lg-2">
+            <button id="postCompany" class="btn btn-info">Create</button>
+        </div>
+        <br />
+        <br />
+    </div>
+</div>*@
 <hr></hr>
 <div class="container-fluid main mt-5 pb-5">
     <div class="header">
@@ -104,6 +157,78 @@
 
         </div>
 
-
     </div>
 </div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+        asp-fallback-test="window.jQuery"
+        crossorigin="anonymous"
+        integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+</script>
+<script>
+    $("#btn").click(getAllGroups);
+    $("#post").click(postNew);
+    $("#btnCompanies").click(getAllCompanies);
+    $("#postCompany").click(postNewCompany);
+
+    function getAllGroups() {
+        $.ajax({
+            type: "GET",
+            url: "https://localhost:44330/api/groups/all",
+            data: { },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (response) {
+                alert('error when loading groups');
+            }
+        });
+    }
+
+    function getAllCompanies() {
+        $.ajax({
+            type: "GET",
+            url: "https://localhost:44330/api/companies/all",
+            data: { },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (response) {
+                alert('error when loading groups');
+            }
+        });
+    }
+
+    function postNew() {
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44330/api/groups/create",
+            data: { title: $("#title").val(), description: $("#desc").val()},
+            success: function(data) {
+                if (data.toString() == '200')
+                    console.log("Succesful. " + data);
+                else
+                    console.log("Unsuccesful. " + data);
+            }
+        });
+    }
+
+    function postNewCompany() {
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44330/api/companies/create",
+            data: { title: $("#titleC").val(), desc: $("#descC").val()},
+            success: function(data) {
+                if (data.toString() == '200')
+                    console.log("Succesful. " + data);
+                else
+                    console.log("Unsuccesful. " + data);
+            }
+        });
+    }
+</script>

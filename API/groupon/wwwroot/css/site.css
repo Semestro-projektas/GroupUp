@@ -1,128 +1,113 @@
 ﻿/***
-h1,h2,h3,nav - opensans
-body, buttons - Roboto
+Quite responsive, but still needs some changes
 ***/
 .main {
     margin: 0 auto;
     width: 66.9%;
 }
 
-    .main .head-img {
-        width: 560px;
-    }
-
-    .main h1 {
-        color: #444;
-        font-size: 2em;
-        font-weight: lighter;
-        width: 45%;
-        margin: 0 auto;
-    }
-
-    .main h2 {
-        color: #777;
-        width: 53%;
-        margin: 0 auto;
-        font-size: 1.25em;
-        font-weight: 400;
-    }
-
-    .main h3 {
-        color: #444;
-        font-size: 1.5em;
-        font-weight: 500;
-        width: 45%;
-        margin: 0 auto;
-    }
-
-        .main h3.long {
-            width: 85%;
-            font-size: 1.8em;
-        }
-
-    .main .header {
-        text-align: center;
-    }
-
-        .main .header .btn {
-            cursor: pointer;
-            margin: 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            padding: 12px;
-            font-size: 1.42em;
-            transition: .3s;
-            -webkit-transition: .3s;
-            -moz-transition: .3s;
-            -o-transition: .3s;
-            display: inline-block;
-        }
-
-        .main .header .blue {
-            color: #55acee;
-            border: 2px #55acee solid;
-        }
-
-            .main .header .blue:hover {
-                background-color: #55acee;
-                color: #fff;
-            }
-
-    .main .row-companies {
-        text-align: center;
-        vertical-align: middle;
-    }
-
-        .main .row-companies .box-company {
-            padding: 5px;
-        }
-
-            .main .row-companies .box-company img {
-                padding: 9px;
-                max-width: 180px;
-            }
-
-                .main .row-companies .box-company img::after {
-                    position: absolute;
-                    top: 100%;
-                    right: -16px;
-                    left: -16px;
-                    display: inline-block;
-                    margin-top: 13px;
-                    content: "";
-                    border-bottom: 2px solid #e0e0e0;
-                }
-
-            .main .row-companies .box-company p {
-                font-size: 0.90em;
-            }
-
-    .main .container-svg {
-        width: 50%;
-        height: 0;
-        padding-top: 48%;
-        position: relative;
-    }
-
-    .main svg {
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-
-footer .container {
-    text-align: center;
-    border-top: 1px solid #444;
+.main .head-img {
+    width: 560px;
 }
 
-    footer .container span {
-        color: #444;
-        font-size: 1.2em;
-    }
+.main h1 {
+    color: #444;
+    font-size: 2em;
+    font-weight: lighter;
+    width: 45%;
+    margin: 0 auto;
+}
 
-    footer .container .navbar-brand {
-        padding-left: 0;
-    }
+.main h2 {
+    color: #777;
+    width: 53%;
+    margin: 0 auto;
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
+.main h3 {
+    color: #444;
+    font-size: 1.5em;
+    font-weight: 500;
+    width: 45%;
+    margin: 0 auto;
+}
+
+.main h3.long {
+    width: 85%;
+    font-size: 1.8em;
+}
+
+.main .header {
+    text-align: center;
+}
+
+.main .header .btn {
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    padding: 12px;
+    font-size: 1.42em;
+    transition: .3s;
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -o-transition: .3s;
+    display: inline-block;
+}
+
+.main .header .blue {
+    color: #55acee;
+    border: 2px #55acee solid;
+}
+
+.main .header .blue:hover {
+    background-color: #55acee;
+    color: #fff;
+}
+
+.main .row-companies {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.main .row-companies .box-company {
+    padding: 5px;
+}
+
+.main .row-companies .box-company img {
+    padding: 9px;
+    max-width: 180px;
+}
+
+.main .row-companies .box-company img::after {
+    position: absolute;
+    top: 100%;
+    right: -16px;
+    left: -16px;
+    display: inline-block;
+    margin-top: 13px;
+    content: "";
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.main .row-companies .box-company p {
+    font-size: 0.90em;
+}
+
+.main .container-svg {
+    width: 50%;
+    height: 0;
+    padding-top: 48%;
+    position: relative;
+}
+
+.main svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
 nav {
     background: #FFFFFF;
@@ -136,15 +121,43 @@ nav {
         margin-right: 19.75%;
     }
 
-/*==========  Mobile First Method  ==========*/
-/* Custom, iPhone Retina */
-/* Extra Small Devices, Phones */
-/* Small Devices, Tablets */
-/* Medium Devices, Desktops */
-/* Large Devices, Wide Screens */
-/*==========  Non-Mobile First Method  ==========*/
-/* Large Devices, Wide Screens */
-/* Medium Devices, Desktops */
+footer {
+    padding-top: 32px;
+}
+
+footer .container {
+    text-align: center;
+    width: 42%;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    padding-top: 4px;
+}
+
+footer .footer-copyright {
+    margin-bottom: 35px;
+    text-align: center;
+    color: #777;
+}
+
+footer .link a {
+    color: #282b2d;
+    font-size: 1.1em;
+}
+
+footer .link {
+    display: inline-block;
+    margin-bottom: 18px;
+}
+
+footer {
+    flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
+}
+
+/*************
+Standard media queries
+**************/
+
+/* Lage Devices, Laptops */
 @media only screen and (max-width: 992px) {
     nav a.navbar-brand {
         padding-left: 12%;
@@ -158,21 +171,21 @@ nav {
         width: 97%;
     }
 
-        .main h1 {
-            width: 97%;
-        }
+    .main h1 {
+        width: 97%;
+    }
 
-        .main h2 {
-            width: 97%;
-        }
+    .main h2 {
+        width: 97%;
+    }
 
-        .main h3 {
-            width: 97%;
-        }
+    .main h3 {
+        width: 97%;
+    }
 
-        .main .head-img {
-            width: 370px;
-        }
+    .main .head-img {
+        width: 370px;
+    }
 
     .nav-seperator {
         display: none;
@@ -182,14 +195,9 @@ nav {
         padding-left: 6%;
     }
 
-    footer .container {
-        text-align: center;
+    #myFooter .container {
+        width: 82%;
     }
-
-        footer .container .navbar-brand {
-            padding-left: 0px;
-            margin-left: 0;
-        }
 }
 
 /* Extra Small Devices, Phones */
@@ -200,17 +208,12 @@ nav {
         margin-top: 0;
     }
 
-        .main .head-img {
-            width: 330px;
-        }
-
-    footer .container .navbar-brand {
-        display: none;
-        padding-left: 0;
+    .main .head-img {
+        width: 330px;
     }
 
-    footer .container .ml-auto {
-        margin-right: 0 !important;
+    #myFooter .container {
+        width: 60%;
     }
 }
 
@@ -222,7 +225,7 @@ nav {
         margin-top: 0;
     }
 
-        .main .head-img {
-            width: 280px;
-        }
+    .main .head-img {
+        width: 280px;
+    }
 }

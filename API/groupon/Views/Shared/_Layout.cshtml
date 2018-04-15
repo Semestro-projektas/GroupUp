@@ -4,6 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@ViewData["Title"] - groupon</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GroupUp Front page</title>
+
     <environment include="Development">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -30,59 +34,34 @@
                 <li class="nav-link" hreaf="#">Start Hiring</li>
                 <li class="nav-link" hreaf="#">Abous Us</li>
                 <li class="nav-link mr-4" hreaf="#">FAQ</li>
-
             </ul>
-            <button type="button" class="btn btn-light bg-white active nav-button">LOG IN</button>
+            <button type="button" class="btn btn-light bg-white active nav-button">LOG IN</button> @*hover, click css needs to be added*@
+</nav>
 
-    </nav>
     @RenderBody()
-    <footer class="page-footer font-small indigo mt-5">
 
         <!--Footer Links-->
-        <div class="container">
-
-            <!--First row-->
-            <div class="row">
-
-                <!--First column-->
-                <div class="col">
-                    <nav class="navbar navbar-expand-md navbar-light">
-                        <a class="navbar-brand mr-auto ml-5"><img src="~/images/logo2.png" width="150"></a>
-                        <div class="mr-auto"></div>
-                        <div class=" flex-center ml-auto ">
-
-                            <!--Facebook-->
-                            <ul class="nav navbar-nav mr-5 footer-list">
-                                <li class="nav-link">
-                                    <a>About Us</a>
-                                </li>
-                                <li class="nav-link">
-                                    <a>FAQ</a>
-                                </li>
-                                <li class="nav-link">
-                                    <a>Terms</a>
-                                </li>
-                                <li class="nav-link">
-                                    <a>Privacy</a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </nav>
+        <footer id="myFooter"> @*not the final solution(should have more info displeyd)*@
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 col-xl-4 link">
+                        <a href="#">About Us</a>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 col-xl-4 link">
+                        <a href="#">FAQ</a>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 col-xl-4 link">
+                        <a href="#">Terms of service</a>
+                    </div>
                 </div>
-                <!--/First column-->
+                <p class="footer-copyright">© 2018 GroupUp</p>
             </div>
-            <!--/First row-->
-        </div>
-        <!--/Footer Links-->
-        <!--Copyright-->
-        <div class="footer-copyright py-3 text-center">
-            © 2018 Copyright:
-            GroupUp
-        </div>
-        <!--/Copyright-->
+        </footer>
 
-    </footer>
+             @*   @await Html.PartialAsync("_LoginPartial")   Loginas*@
+          
+
+   
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
