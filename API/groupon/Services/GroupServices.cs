@@ -15,16 +15,16 @@ namespace groupon.Services
 {
     public interface IGroupServices
     {
-        Task<CreateGroupResult> CreateAsync(string title, string shortDescription);
+        CreateGroupResult Create(string title, string shortDescription);
         Group Get(int id);
         IEnumerable<Group> GetAll(int? position, int? count);
         IEnumerable<Group> GetHot(int? position, int? count);
         IEnumerable<Group> GetSearchResult(string filter);
 
-        Task<UpdateGroupResult> EditAsync(int id, string title, GroupType type, string shortDescription,
+        UpdateGroupResult Edit(int id, string title, GroupType type, string shortDescription,
             string description, string image, bool? hot);
-        Task<Result> AskToJoinRequestAsync(int groupId);
-        Task<Result> ApproveJoinRequest(string userId, int groupId);
+        Result AskToJoinRequest(int groupId);
+        Result ApproveJoinRequest(string userId, int groupId);
         IEnumerable<GroupTeam> ViewAllJoinRequests(int groupId, int? position, int? count, out string error);
     }
 
@@ -41,7 +41,7 @@ namespace groupon.Services
             _http = httpContext;
         }
 
-        public async Task<CreateGroupResult> CreateAsync(string title, string shortDescription)
+        public CreateGroupResult Create(string title, string shortDescription)
         {
             var result = new CreateGroupResult();
 
@@ -50,7 +50,7 @@ namespace groupon.Services
                 if (!_http.HttpContext.User.Identity.IsAuthenticated)
                     return new CreateGroupResult(401, "You must be logged in to this.");
 
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
 
                 if (!String.IsNullOrEmpty(title))
                     result.Title = "OK";
@@ -123,7 +123,7 @@ namespace groupon.Services
             return selectedGroups.AsEnumerable();
         }
 
-        public async Task<UpdateGroupResult> EditAsync(int id, string title, GroupType type, string shortDescription,
+        public UpdateGroupResult Edit(int id, string title, GroupType type, string shortDescription,
             string description, string image, bool? hot)
         {
             var result = new UpdateGroupResult();
@@ -131,7 +131,7 @@ namespace groupon.Services
             try
             {
                 var group = _context.Groups.Include(i => i.Owner).FirstOrDefault(i => i.Id == id);
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
 
                 if (!_http.HttpContext.User.Identity.IsAuthenticated)
                     return new UpdateGroupResult(401, "You must be logged in to do this.");
@@ -191,17 +191,27 @@ namespace groupon.Services
             }
         }
 
-        public async Task<Result> AskToJoinRequestAsync(int groupId)
+        public Result AskToJoinRequest(int groupId)
         {
             try
             {
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
-
                 if (!IsAuthenticated())
                     return new Result("You must be logged in to do this.", 401);
 
-                if (_context.Groups.FirstOrDefault(i => i.Id == groupId) == null)
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
+                var group = _context.Groups.FirstOrDefault(i => i.Id == groupId);
+                var req = _context.GroupTeam.FirstOrDefault(i => i.GroupId == groupId && i.UserId == user.Id);
+
+                if (group == null)
                     return new Result("Requested group doesn't exist.", 404);
+
+                if (req != null)
+                {
+                    if (req.Approved)
+                        return new Result("You already belong to this group.", 400);
+                    else
+                        return new Result("You already sent this request.", 400);
+                }
 
                 var request = new GroupTeam { GroupId = groupId, UserId = user.Id, RequestDate = DateTime.Now };
 
@@ -217,12 +227,13 @@ namespace groupon.Services
             return new Result();
         }
 
-        public async Task<Result> ApproveJoinRequest(string userId, int groupId)
+        public Result ApproveJoinRequest(string userId, int groupId)
         {
             try
             {
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
                 var group = _context.Groups.Include(i => i.Owner).FirstOrDefault(i => i.Id == groupId);
+                var request = _context.GroupTeam.FirstOrDefault(i => i.GroupId == groupId);
 
                 if (!IsAuthenticated())
                     return new Result("You're not logged in.", 401);
@@ -230,12 +241,16 @@ namespace groupon.Services
                 // Nereikia checkinti ar company nera null, nes kuriant requesta company tuscia nebus padavinejama.
 
                 if (group == null)
+                    return new Result("This group doesn't exist.", 404);
+
+                if (request == null)
                     return new Result("This request doesn't exist.", 404);
 
                 if (group.Owner != user)
                     return new Result("You're not owner of this group.", 401);
 
-                group.Hot = true;
+                request.Approved = true;
+                request.ApprovalDate = DateTime.Now;
                 _context.SaveChanges(true);
 
                 return new Result();

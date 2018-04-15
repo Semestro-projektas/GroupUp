@@ -14,7 +14,7 @@ namespace groupon.Services
 {
     public interface IMessagingServices
     {
-        Task<Result> SendMessage(string recipientId, string text);
+        Result SendMessage(string recipientId, string text);
         IEnumerable<Message> GetAllMessages(string recipientId, int type);
         IEnumerable<ApplicationUser> GetAllChats();
     }
@@ -33,7 +33,7 @@ namespace groupon.Services
         }
 
         // Send message
-        public async Task<Result> SendMessage(string recipientId, string text)
+        public Result SendMessage(string recipientId, string text)
         {
             Result result = new Result();
 

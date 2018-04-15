@@ -12,6 +12,7 @@ using System.Net;
 using System.Web.Http.Cors;
 using groupon.Models.CompanyViewModels;
 using groupon.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace groupon.Controllers
 {
@@ -31,23 +32,22 @@ namespace groupon.Controllers
         }
 
         [HttpGet]
-        [Route("/api/companies/")]
         [Route("/api/companies/all")]
-        public JsonResult GetAll()
+        public IActionResult GetAll()
         {
             return Json(_main.GetAll(null, null).Select(i => new CompanyListViewModel(i)));
         }
 
         [HttpGet]
-        [Route("/api/companies/{position}-{count}")]
-        public JsonResult GetAll(int position, int count)
+        [Route("/api/companies/all/{position}-{count}")]
+        public IActionResult GetAll(int position, int count)
         {
             return Json(_main.GetAll(position, count).Select(i => new CompanyListViewModel(i)));
         }
 
         [HttpGet]
         [Route("/api/companies/{id}")]
-        public JsonResult Get(int id)
+        public IActionResult Get(int id)
         {
             return _main.Get(id) != null
                 ? new JsonResult(new SingleCompanyViewModel(_main.Get(id)))
@@ -63,9 +63,12 @@ namespace groupon.Controllers
 
         [HttpPost]
         [Route("/api/companies/create")]
-        public async Task<CreateCompanyResult> CreateCompany(string title, string shortDescription)
+        [Authorize] 
+        public IActionResult CreateCompany(string title, string shortDescription)
         {
-            return await _main.CreateAsync(title, shortDescription);
+            var result = _main.Create(title, shortDescription);
+
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet]
@@ -77,35 +80,42 @@ namespace groupon.Controllers
 
         [HttpPost]
         [Route("api/companies/edit")]
-        public async Task<UpdateCompanyResult> EditCompany(int companyId, string title, string field, string location,
+        [Authorize]
+        public IActionResult EditCompany(int companyId, string title, string field, string location,
             string description, string shortDescription, string logo, bool? approved)
         {
-            return await _main.EditAsync(companyId, title, field, location, description, shortDescription, logo, approved);
+            var result = _main.Edit(companyId, title, field, location, description, shortDescription, logo, approved);
+
+            return StatusCode(result.StatusCode, result);
         }
 
-        // Nepilnai padarytas
         [HttpPost]
         [Route("api/companies/join")]
-        public async Task<Result> JoinCompany(int companyId)
+        [Authorize]
+        public IActionResult JoinCompany(int companyId)
         {
-            return await _main.AskToJoinRequestAsync(companyId);
+            var result = _main.AskToJoinRequest(companyId);
+
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpPost]
         [Route("api/companies/approve")]
-        public async Task<Result> ApproveJoinRequest(int companyId, string userId)
+        [Authorize]
+        public IActionResult ApproveJoinRequestAsync(int companyId, string userId)
         {
-            return await _main.ApproveJoinRequest(userId, companyId);
+            var result = _main.ApproveJoinRequest(userId, companyId);
+
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet]
         [Route("api/companies/requests")]
+        [Authorize]
         public IEnumerable<CompanyMemberRequestViewModel> GetAllRequests(int companyId)
         {
             string test = "";
             return _main.ViewAllJoinRequests(companyId, null, null, out test).Select(i => new CompanyMemberRequestViewModel(i));
         }
-
-
     }
 }

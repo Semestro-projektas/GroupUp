@@ -11,11 +11,11 @@ namespace groupon.Services
 {
     public interface IAccountServices
     {
-        Task<UpdateProfileResult> UpdateProfile(string name, int company, string field, string workExperience, string education,
+        UpdateProfileResult UpdateProfile(string name, int company, string field, string workExperience, string education,
             string location, string picture, string currentlyWorking);
-        Task<ApplicationUser> GetUserAsync(string id);
-        Task<Result> InviteToConnect(string userId, string comment);
-        Task<Result> ApproveConnection(string userId);
+        ApplicationUser GetUser(string id);
+        Result InviteToConnect(string userId, string comment);
+        Result ApproveConnection(string userId);
         IEnumerable<Connection> GetAllConnectionRequests(int? position, int? count);
         IEnumerable<Connection> GetAllUserConnection(int? position, int? count);
     }
@@ -33,12 +33,12 @@ namespace groupon.Services
             _http = httpContext;
         }
 
-        public async Task<ApplicationUser> GetUserAsync(string id)
+        public ApplicationUser GetUser(string id)
         {
-            return await _userManager.FindByIdAsync(id);
+            return _userManager.FindByIdAsync(id).Result;
         }
 
-        public async Task<UpdateProfileResult> UpdateProfile(string name, int company, string field, string workExperience, string education, string location, 
+        public UpdateProfileResult UpdateProfile(string name, int company, string field, string workExperience, string education, string location, 
             string picture, string currentlyWorking)
         {
             UpdateProfileResult result = new UpdateProfileResult();
@@ -48,7 +48,7 @@ namespace groupon.Services
                 if (!IsAuthenticated())
                     return new UpdateProfileResult(ResultType.Unauthorized);
 
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
 
                 if (!String.IsNullOrEmpty(name))
                 {
@@ -98,7 +98,7 @@ namespace groupon.Services
                     result.CurrentlyWorking = "OK";
                 }
 
-                await _userManager.UpdateAsync(user);
+                _context.SaveChanges(true);
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace groupon.Services
             return result;
         }
 
-        public async Task<Result> InviteToConnect(string userId, string comment)
+        public Result InviteToConnect(string userId, string comment)
         {
             Result result = new Result();
 
@@ -119,7 +119,7 @@ namespace groupon.Services
                 if(!IsAuthenticated())
                     return new Result(ResultType.Unauthorized);
 
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
 
                 if(userId == null)
                     return new Result("Bad request.", 400);
@@ -160,7 +160,7 @@ namespace groupon.Services
             return result;
         }
 
-        public async Task<Result> ApproveConnection(string userId)
+        public Result ApproveConnection(string userId)
         {
             Result result = new Result();
 
@@ -172,7 +172,7 @@ namespace groupon.Services
                 if (_userManager.FindByIdAsync(userId) == null)
                     return new Result("Requested user doesn't exist.", 400);
 
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
                 var connection = _context.Connections.FirstOrDefault(i => i.User1Id == userId && i.User2Id == user.Id);
 
                 if(connection == null)

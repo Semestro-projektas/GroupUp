@@ -27,6 +27,7 @@ namespace groupon.Models
     {
         Job,
         Startup,
+        Study
     }
 
  

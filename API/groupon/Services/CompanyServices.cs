@@ -17,15 +17,15 @@ namespace groupon.Services
 {
     public interface ICompanyServices
     {
-        Task<CreateCompanyResult> CreateAsync(string title, string shortDescription);
+        CreateCompanyResult Create(string title, string shortDescription);
         Company Get(int id);
         IEnumerable<Company> GetAll(int? position, int? count);
         IEnumerable<Company> GetApproved(int? position, int? count);
         IEnumerable<Company> GetSearchResult(string filter);
-        Task<UpdateCompanyResult> EditAsync(int id, string title, string field, string location, string desc,
+        UpdateCompanyResult Edit(int id, string title, string field, string location, string desc,
             string shortDesc, string logo, bool? approved);
-        Task<Result> AskToJoinRequestAsync(int companyId);
-        Task<Result> ApproveJoinRequest(string userId, int companyId);
+        Result AskToJoinRequest(int companyId);
+        Result ApproveJoinRequest(string userId, int companyId);
         IEnumerable<CompanyTeam> ViewAllJoinRequests(int companyId, int? position, int? count, out string error);
     }
 
@@ -42,7 +42,7 @@ namespace groupon.Services
             _http = httpContext;
         }
 
-        public async Task<CreateCompanyResult> CreateAsync(string title, string shortDescription)
+        public CreateCompanyResult Create(string title, string shortDescription)
         {
             var result = new CreateCompanyResult();
 
@@ -51,7 +51,7 @@ namespace groupon.Services
                 if (!_http.HttpContext.User.Identity.IsAuthenticated)
                     return new CreateCompanyResult(ResultType.Unauthorized);
 
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
 
                 if (!String.IsNullOrEmpty(title))
                     result.Title = "OK";
@@ -77,7 +77,7 @@ namespace groupon.Services
                 else
                 {
                     result.StatusCode = 200;
-                    var newCompany = new Company { Description = shortDescription, Title = title, Owner = user };
+                    var newCompany = new Company { ShortDescription = shortDescription, Title = title, Owner = user };
                     _context.Companies.Add(newCompany);
                     _context.SaveChanges();
                 }
@@ -124,7 +124,7 @@ namespace groupon.Services
             return selectedCompanies.AsEnumerable();
         }
 
-        public async Task<UpdateCompanyResult> EditAsync(int id, string title, string field, string location, string desc,
+        public UpdateCompanyResult Edit(int id, string title, string field, string location, string desc,
             string shortDesc, string logo, bool? approved)
         {
             var result = new UpdateCompanyResult();
@@ -132,7 +132,7 @@ namespace groupon.Services
             try
             {
                 var company = _context.Companies.Include(i => i.Owner).FirstOrDefault(i => i.Id == id);
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
 
                 if (!_http.HttpContext.User.Identity.IsAuthenticated)
                     return new UpdateCompanyResult(401, "You must be logged in to do this.");
@@ -189,6 +189,7 @@ namespace groupon.Services
 
 
                 _context.SaveChanges(true);
+                result.StatusCode = 200;
 
                 return result;
             }
@@ -199,22 +200,27 @@ namespace groupon.Services
             }
         }
 
-        public async Task<Result> AskToJoinRequestAsync(int companyId)
+        public Result AskToJoinRequest(int companyId)
         {
             try
             {
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
+                var company = _context.Companies.FirstOrDefault(i => i.Id == companyId);
+                var req = _context.CompanyTeam.FirstOrDefault(i => i.UserId == user.Id && i.CompanyId == companyId);
 
                 if (!IsAuthenticated())
                     return new Result("You must be logged in to do this.", 401);
 
-                if (_context.Companies.FirstOrDefault(i => i.Id == companyId) == null)
+                if (company == null)
                     return new Result("Requested company doesn't exist.", 404);
 
-                // Patikrint ar kartais jau nepriklauso
-                //if(_context.CompanyTeam.FirstOrDefault(i => i.CompanyId == company)
-
-                // Patikrint ar kartais priklauso, bet yra/nera confirmed
+                if (req != null)
+                {
+                    if (req.Approved)
+                        return new Result("You already belong to this group.", 400);
+                    else
+                        return new Result("You've already sent this request.", 400);
+                }
 
                 var request = new CompanyTeam { CompanyId = companyId, UserId = user.Id, RequestDate = DateTime.Now };
 
@@ -230,25 +236,35 @@ namespace groupon.Services
             return new Result();
         }
 
-        public async Task<Result> ApproveJoinRequest(string userId, int companyId)
+        public Result ApproveJoinRequest(string userId, int companyId)
         {
             try
             {
-                var user = await _userManager.GetUserAsync(_http.HttpContext.User);
+                var user = _userManager.GetUserAsync(_http.HttpContext.User).Result;
+                var requestor = _context.Users.FirstOrDefault(i => i.Id == userId);
                 var company = _context.Companies.Include(i => i.Owner).FirstOrDefault(i => i.Id == companyId);
+                var request = _context.CompanyTeam.FirstOrDefault(i => i.CompanyId == companyId);
 
                 if (!IsAuthenticated())
                     return new Result("You're not logged in.", 401);
 
+                if (requestor == null)
+                    return new Result("Such users doesn't exist.", 404);
+
                 // Nereikia checkinti ar company nera null, nes kuriant requesta company tuscia nebus padavinejama.
 
                 if (company == null)
+                    return new Result("This company doesn't exist.", 404);
+
+                if (request == null)
                     return new Result("This request doesn't exist.", 404);
 
                 if (company.Owner != user)
                     return new Result("You're not owner of this company.", 401);
 
-                company.Approved = true;
+
+                request.Approved = true;
+                request.ApprovalDate = DateTime.Now;
                 _context.SaveChanges(true);
 
                 return new Result();

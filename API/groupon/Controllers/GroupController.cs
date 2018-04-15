@@ -33,40 +33,51 @@ namespace groupon.Controllers
         [HttpGet]
         [Route("/api/groups/")]
         [Route("/api/groups/all")]
-        public JsonResult GetAll()
+        public IEnumerable<GroupListViewModel> GetAll()
         {
-            return Json(_main.GetAll(null, null).Select(i => new GroupListViewModel(i)));
+            var result = _main.GetAll(null, null).Select(i => new GroupListViewModel(i));
+
+            return result;
         }
 
         // Needs to be filtered by category
         [HttpGet]
         [Route("/api/groups/{position:int}/{count:int}")]
-        public JsonResult GetAllGroups(int position, int count)
+        public IEnumerable<GroupListViewModel> GetAllGroups(int position, int count)
         {
-            return Json(_main.GetAll(position, count).Select(i => new GroupListViewModel(i)));
+            var result = _main.GetAll(position, count).Select(i => new GroupListViewModel(i));
+
+            return result;
         }
 
         [HttpGet]
         [Route("/api/groups/{id}")]
-        public JsonResult GetGroup(int id)
+        public IActionResult GetGroup(int id)
         {
-            return _main.Get(id) != null
-                ? new JsonResult(new SingleGroupViewModel (_main.Get(id)))
-                : new JsonResult(new RequestErrorViewModel("Group not found."));
+            var result = _main.Get(id);
+
+            if (result != null)
+                return Json(new SingleGroupViewModel(result));
+
+            return Json(new RequestErrorViewModel("Group not found."));
         }
 
         [HttpGet]
         [Route("api/groups/hot/{position:int}/{count:int}")]
-        public JsonResult GetHot(int position, int count)
+        public IEnumerable<GroupListViewModel> GetHot(int position, int count)
         {
-            return Json(_main.GetHot(position, count).Select(i => new GroupListViewModel(i)));
+            var result = _main.GetHot(position, count).Select(i => new GroupListViewModel(i));
+
+            return result;
         }
 
         [HttpPost]
         [Route("/api/groups/create")]
-        public async Task<JsonResult> CreateGroup(string title, string description)
+        public IActionResult CreateGroup(string title, string description)
         {
-           return Json(await _main.CreateAsync(title, description));
+            var result = _main.Create(title, description);
+
+            return StatusCode(result.StatusCode, result);
         }
         
         // Can be merged with getAll
@@ -74,29 +85,37 @@ namespace groupon.Controllers
         [Route("api/groups/search")]
         public IEnumerable<GroupSearchListViewModel> GetSearchResult(string filter)
         {
-            return _main.GetSearchResult(filter).Select(i => new GroupSearchListViewModel(i));
+            var result = _main.GetSearchResult(filter).Select(i => new GroupSearchListViewModel(i));
+
+            return result;
         }
 
         [HttpPost]
         [Route("api/groups/edit")]
-        public async Task<UpdateGroupResult> EditGroup(int groupId, string title, GroupType type,
+        public IActionResult EditGroup(int groupId, string title, GroupType type,
             string shortDescription, string description, string image, bool? hot)
         {
-            return await _main.EditAsync(groupId, title, type, shortDescription, description, image, hot);
+            var result = _main.Edit(groupId, title, type, shortDescription, description, image, hot);
+
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpPost]
         [Route("api/groups/join")]
-        public async Task<Result> AskToJoinRequestAsync(int groupId)
+        public IActionResult AskToJoinRequest(int groupId)
         {
-            return await _main.AskToJoinRequestAsync(groupId);
+            var result = _main.AskToJoinRequest(groupId);
+
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpPost]
         [Route("api/groups/approve")]
-        public async Task<Result> ApproveJoinRequest(string userId, int groupId)
+        public IActionResult ApproveJoinRequest(string userId, int groupId)
         {
-            return await _main.ApproveJoinRequest(userId, groupId);
+            var result = _main.ApproveJoinRequest(userId, groupId);
+
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet]
@@ -104,7 +123,10 @@ namespace groupon.Controllers
         public IEnumerable<GroupMemberRequestViewModel> GetAllRequests(int groupId, int? position, int? count)
         {
             string test = "";
-            return _main.ViewAllJoinRequests(groupId, null, null, out test).Select(i => new GroupMemberRequestViewModel(i));
+            var result = _main.ViewAllJoinRequests(groupId, null, null, out test)
+                .Select(i => new GroupMemberRequestViewModel(i));
+
+            return result;
         }
     }
 }

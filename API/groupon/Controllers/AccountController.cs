@@ -28,8 +28,8 @@ namespace groupon.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-        private readonly IAccountServices AServices;
-        private readonly IMessagingServices MsgServices;
+        private readonly IAccountServices _main;
+        private readonly IMessagingServices _msg;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -43,8 +43,8 @@ namespace groupon.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
-            AServices = accServices;
-            MsgServices = msgServices;
+            _main = accServices;
+            _msg = msgServices;
         }
 
         #region Base methods
@@ -452,20 +452,22 @@ namespace groupon.Controllers
         [HttpPost]
         [Route("/api/profile/update")]
         [AllowAnonymous]
-        public Task<UpdateProfileResult> UpdateProfile(string name, int company, string field, string workExperience, string education,
+        public IActionResult UpdateProfile(string name, int company, string field, string workExperience, string education,
             string location, string picture, string currentlyWorking)
         {
-            return AServices.UpdateProfile(name, company, field, workExperience, education, location, picture,
+            var result = _main.UpdateProfile(name, company, field, workExperience, education, location, picture,
                 currentlyWorking);
+
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet]
         [Route("/api/profile/overview")]
         [AllowAnonymous]
-        public JsonResult GetProfileOverview(string id)
+        public IActionResult GetProfileOverview(string id)
         {
             if (id != null)
-                return Json(new ProfileOverviewModel(AServices.GetUserAsync(id).Result));
+                return Json(new ProfileOverviewModel(_main.GetUser(id)));
             else
                 return Json(new RequestErrorViewModel("User not found."));
         }
@@ -474,23 +476,25 @@ namespace groupon.Controllers
         #region Messaging
         [HttpPost]
         [Route("/api/message/send")]
-        public Task<Result> SendMessage(string recipientId, string text)
+        public IActionResult SendMessage(string recipientId, string text)
         {
-            return MsgServices.SendMessage(recipientId, text);
+            var result = _msg.SendMessage(recipientId, text);
+
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet]
         [Route("/api/messages/with")]
         public IEnumerable<TextMessage> GetMessages(string recipientId)
         {
-            return MsgServices.GetAllMessages(recipientId, 0).Select(i => new TextMessage(i));
+            return _msg.GetAllMessages(recipientId, 0).Select(i => new TextMessage(i));
         }
 
         [HttpGet]
         [Route("/api/messages/all")]
         public IEnumerable<Chat> GetAllChats()
         {
-            return MsgServices.GetAllChats().Select(i => new Chat(i));
+            return _msg.GetAllChats().Select(i => new Chat(i));
         }
         #endregion
 
@@ -498,31 +502,35 @@ namespace groupon.Controllers
 
         [HttpPost]
         [Route("/api/connections/invite")]
-        public async Task<Result> InviteConnection(string userId, string comment)
+        public IActionResult InviteConnection(string userId, string comment)
         {
-            return await AServices.InviteToConnect(userId, comment);
+            var result = _main.InviteToConnect(userId, comment);
+
+            return StatusCode(result.StatusCode, result);
         }
 
         // Double check this one
         [HttpPost]
         [Route("/api/connections/approve")]
-        public async Task<Result> ApproveConnection(string userId)
+        public IActionResult ApproveConnection(string userId)
         {
-            return await AServices.ApproveConnection(userId);
+            var result = _main.ApproveConnection(userId);
+
+            return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet]
         [Route("/api/connections/all")]
         public IEnumerable<ConnectionViewModel> GetAllUsersConnections(string userId)
         {
-            return AServices.GetAllUserConnection(null, null).Select(i => new ConnectionViewModel(i, userId));
+            return _main.GetAllUserConnection(null, null).Select(i => new ConnectionViewModel(i, userId));
         }
 
         [HttpGet]
         [Route("/api/connections/requests")]
         public IEnumerable<ConnectionViewModel> GetAllConnectionRequests(string userId)
         {
-            return AServices.GetAllConnectionRequests(null, null).Select(i => new ConnectionViewModel(i));
+            return _main.GetAllConnectionRequests(null, null).Select(i => new ConnectionViewModel(i));
         }
 
         #endregion
