@@ -12,7 +12,7 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link media="all" type="text/css" rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment exclude="Development">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
@@ -26,7 +26,7 @@
         <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand mr-auto"><img src="~/images/logo2.png" width="150"></a>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand mr-auto"><img src="~/images/logo2.png" width="150"></a>
         <div class="collapse navbar-collapse right" id="collapse_target">
             <div class="mr-auto"></div>
             <ul class="navbar-nav" id="collapse_target">
@@ -35,28 +35,35 @@
                 <li class="nav-link" hreaf="#">Abous Us</li>
                 <li class="nav-link mr-4" hreaf="#">FAQ</li>
             </ul>
-            <button type="button" class="btn btn-light bg-white active nav-button">LOG IN</button> @*hover, click css needs to be added*@
+            <button  onclick="location.href='@Url.Action("Login", "Account")'" type="button" class="btn btn-light bg-white active nav-button">LOG IN</button> @*hover, click css needs to be added*@
 </nav>
 
     @RenderBody()
 
         <!--Footer Links-->
-        <footer id="myFooter"> @*not the final solution(should have more info displeyd)*@
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 col-xl-4 link">
-                        <a href="#">About Us</a>
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 col-xl-4 link">
-                        <a href="#">FAQ</a>
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 col-xl-4 link">
-                        <a href="#">Terms of service</a>
-                    </div>
+    <footer id="myFooter">
+        <div class="container">
+            <!-- ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Terms of service</a></li>
+        </ul>< -->
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 col-xl-4 link">
+                    <a href="#">About Us</a>
                 </div>
-                <p class="footer-copyright">© 2018 GroupUp</p>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 col-xl-4 link">
+                    <a href="#">FAQ</a>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 col-xl-4 link">
+                    <a href="#">Terms of service</a>
+                </div>
+
+
             </div>
-        </footer>
+            <p class="footer-copyright">© 2018 GroupUp</p>
+        </div>
+    </footer>
 
              @*   @await Html.PartialAsync("_LoginPartial")   Loginas*@
           

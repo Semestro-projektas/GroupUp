@@ -5,11 +5,34 @@
 @model LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
-@{
-    ViewData["Title"] = "Log in";
-}
+<div class="container-fluid main-register-login mt-5 mb-5">
+    <h1>Log in</h1>
+    <hr>
+    <!-- <h2 class="mb-5">Sign Up to GroupUp and start using our service.</h2>        -->
+    <div class="container sub-register-login">
+        <form>
+            <div class="row mt-4 text-left">
+                <div class="col">
+                    <label>Email Address</label>
+                    <input type="text" class="form-control" placeholder="jonsnow@mail.com">
+                </div>
+            </div>
+            <div class="row mt-3 text-left">
+                <div class="col">
+                    <label>Password</label>
+                    <input type="password" class="form-control mb-2" placeholder="*********">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
 
-<h2>@ViewData["Title"]</h2>
+            <button id="LoginButton" class="btn-special btn-light blue pr-5 mt-4 pl-5">Log In</button>
+        </form>
+    </div>
+
+</div>
+
+
+@*<h2>@ViewData["Title"]</h2>
 <div class="row">
     <div class="col-md-4">
         <section>
@@ -80,8 +103,26 @@
             }
         </section>
     </div>
-</div>
+</div>*@
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
+
+<script>
+    $("#LoginButton").click(postNew);
+
+    function postNew() {
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44330/Account/Login",
+            data: { Email: $("#Email").val(), Password: $("#Password").val() },
+            success: function (data) {
+                if (data.toString() == '200')
+                    console.log("Succesful. " + data);
+                else
+                    console.log("Unsuccesful. " + data);
+            }
+        });
+    }
+</script>
