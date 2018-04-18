@@ -67,6 +67,18 @@ Quite responsive, but still needs some changes
     color: #fff;
 }
 
+.navbar .navbar-collapse .nav-button {
+    color: #212529;
+    background-color: #fff;
+    border-color: #55acee;
+    margin-right: 19.75%;
+}
+
+.navbar .navbar-collapse .nav-button:hover {
+    background-color: #55acee;
+    color: #fff;
+}
+
 .main .row-companies {
     text-align: center;
     vertical-align: middle;
