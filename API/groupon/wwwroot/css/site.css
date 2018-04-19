@@ -1,4 +1,5 @@
-﻿/***
+﻿Skip to content This repository Search Pull requests Issues Marketplace Explore @zdrukteinis Sign out 2 0 0 Semestro-projektas/GroupUp Code Issues 0 Pull requests 1 Projects 0 Wiki Insights Settings GroupUp/API/groupon/wwwroot/css/site.css fb8e697 19 hours ago @LeMarkiz LeMarkiz Unified buttons. Top-Right login button is a little bit different though @zdrukteinis @LeMarkiz @martinshop 271 lines (222 sloc) 4.01 KB
+/***
 Quite responsive, but still needs some changes
 ***/
 .main {
@@ -34,51 +35,78 @@ Quite responsive, but still needs some changes
     margin: 0 auto;
 }
 
-.main h3.long {
-    width: 85%;
-    font-size: 1.8em;
-}
+    .main h3.long {
+        width: 85%;
+        font-size: 1.8em;
+    }
 
 .main .header {
     text-align: center;
 }
 
-.main .header .btn {
-    cursor: pointer;
-    margin: 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    padding: 12px;
-    font-size: 1.42em;
-    transition: .3s;
-    -webkit-transition: .3s;
-    -moz-transition: .3s;
-    -o-transition: .3s;
-    display: inline-block;
-}
+    .main .header .btn {
+        cursor: pointer;
+        margin: 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        padding: 12px;
+        font-size: 1.42em;
+        transition: .3s;
+        -webkit-transition: .3s;
+        -moz-transition: .3s;
+        -o-transition: .3s;
+        display: inline-block;
+    }
 
-.main .header .blue {
+.blue {
     color: #55acee;
+    background-color: #fff;
     border: 2px #55acee solid;
 }
 
-.main .header .blue:hover {
-    background-color: #55acee;
-    color: #fff;
+    .blue:hover {
+        background-color: #55acee;
+        color: #fff;
+    }
+
+.navbar .navbar-collapse .nav-button {
+    color: #444;
+    background-color: #fff;
+    border-color: #55acee;
+    margin-right: 19.75%;
 }
+
+    .navbar .navbar-collapse .nav-button:hover {
+        background-color: #55acee;
+        color: #fff;
+    }
 
 .main .row-companies {
     text-align: center;
     vertical-align: middle;
 }
 
-.main .row-companies .box-company {
-    padding: 5px;
-}
+    .main .row-companies .box-company {
+        padding: 5px;
+    }
 
-.main .row-companies .box-company img {
-    padding: 9px;
-    max-width: 180px;
+        .main .row-companies .box-company img {
+            padding: 9px;
+            max-width: 180px;
+        }
+
+.btn-special {
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-decoration: none;
+    padding: 8px;
+    font-size: 1.42em;
+    transition: .3s;
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -o-transition: .3s;
+    display: inline-block;
 }
 
 .main .row-companies .box-company img::after {
@@ -117,36 +145,41 @@ nav {
         padding-left: 16.75%;
     }
 
-    nav button.btn-light {
-        margin-right: 19.75%;
-    }
+.nav-link:hover {
+    background: #F5F5F5;
+    outline: 1px #DDD solid;
+}
+
+nav button.btn-light {
+    margin-right: 19.75%;
+}
 
 footer {
     padding-top: 32px;
 }
 
-footer .container {
-    text-align: center;
-    width: 42%;
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-    padding-top: 4px;
-}
+    footer .container {
+        text-align: center;
+        width: 42%;
+        border-top: 1px solid rgba(0, 0, 0, 0.2);
+        padding-top: 4px;
+    }
 
-footer .footer-copyright {
-    margin-bottom: 35px;
-    text-align: center;
-    color: #777;
-}
+    footer .footer-copyright {
+        margin-bottom: 35px;
+        text-align: center;
+        color: #777;
+    }
 
-footer .link a {
-    color: #282b2d;
-    font-size: 1.1em;
-}
+    footer .link a {
+        color: #282b2d;
+        font-size: 1.1em;
+    }
 
-footer .link {
-    display: inline-block;
-    margin-bottom: 18px;
-}
+    footer .link {
+        display: inline-block;
+        margin-bottom: 18px;
+    }
 
 footer {
     flex: 0 0 auto;
@@ -171,21 +204,21 @@ Standard media queries
         width: 97%;
     }
 
-    .main h1 {
-        width: 97%;
-    }
+        .main h1 {
+            width: 97%;
+        }
 
-    .main h2 {
-        width: 97%;
-    }
+        .main h2 {
+            width: 97%;
+        }
 
-    .main h3 {
-        width: 97%;
-    }
+        .main h3 {
+            width: 97%;
+        }
 
-    .main .head-img {
-        width: 370px;
-    }
+        .main .head-img {
+            width: 370px;
+        }
 
     .nav-seperator {
         display: none;
@@ -193,6 +226,10 @@ Standard media queries
 
     nav a.navbar-brand {
         padding-left: 6%;
+    }
+
+    .navbar .navbar-collapse .nav-button {
+        margin-top: 10px;
     }
 
     #myFooter .container {
@@ -208,9 +245,9 @@ Standard media queries
         margin-top: 0;
     }
 
-    .main .head-img {
-        width: 330px;
-    }
+        .main .head-img {
+            width: 330px;
+        }
 
     #myFooter .container {
         width: 60%;
@@ -225,7 +262,8 @@ Standard media queries
         margin-top: 0;
     }
 
-    .main .head-img {
-        width: 280px;
-    }
+        .main .head-img {
+            width: 280px;
+        }
 }
+
