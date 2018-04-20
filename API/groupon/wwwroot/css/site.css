@@ -1,106 +1,91 @@
-﻿Skip to content This repository Search Pull requests Issues Marketplace Explore @zdrukteinis Sign out 2 0 0 Semestro-projektas/GroupUp Code Issues 0 Pull requests 1 Projects 0 Wiki Insights Settings GroupUp/API/groupon/wwwroot/css/site.css fb8e697 19 hours ago @LeMarkiz LeMarkiz Unified buttons. Top-Right login button is a little bit different though @zdrukteinis @LeMarkiz @martinshop 271 lines (222 sloc) 4.01 KB
-/***
-Quite responsive, but still needs some changes
+﻿/***
+h1,h2,h3,nav - opensans
+body, buttons - Roboto
 ***/
 .main {
     margin: 0 auto;
     width: 66.9%;
 }
 
-.main .head-img {
-    width: 560px;
-}
-
-.main h1 {
-    color: #444;
-    font-size: 2em;
-    font-weight: lighter;
-    width: 45%;
-    margin: 0 auto;
-}
-
-.main h2 {
-    color: #777;
-    width: 53%;
-    margin: 0 auto;
-    font-size: 1.25em;
-    font-weight: 400;
-}
-
-.main h3 {
-    color: #444;
-    font-size: 1.5em;
-    font-weight: 500;
-    width: 45%;
-    margin: 0 auto;
-}
+    .main .head-img {
+        width: 560px;
+    }
 
     .main h3.long {
         width: 85%;
         font-size: 1.8em;
     }
 
-.main .header {
-    text-align: center;
-}
-
-    .main .header .btn {
-        cursor: pointer;
-        margin: 10px;
-        border-radius: 5px;
-        text-decoration: none;
-        padding: 12px;
-        font-size: 1.42em;
-        transition: .3s;
-        -webkit-transition: .3s;
-        -moz-transition: .3s;
-        -o-transition: .3s;
-        display: inline-block;
+    .main .header {
+        text-align: center;
     }
 
-.blue {
-    color: #55acee;
-    background-color: #fff;
-    border: 2px #55acee solid;
-}
-
-    .blue:hover {
-        background-color: #55acee;
-        color: #fff;
-    }
-
-.navbar .navbar-collapse .nav-button {
-    color: #444;
-    background-color: #fff;
-    border-color: #55acee;
-    margin-right: 19.75%;
-}
-
-    .navbar .navbar-collapse .nav-button:hover {
-        background-color: #55acee;
-        color: #fff;
-    }
-
-.main .row-companies {
-    text-align: center;
-    vertical-align: middle;
-}
-
-    .main .row-companies .box-company {
-        padding: 5px;
-    }
-
-        .main .row-companies .box-company img {
-            padding: 9px;
-            max-width: 180px;
+        .main .header h1 {
+            color: #444;
+            font-size: 2em;
+            font-weight: lighter;
+            width: 45%;
+            margin: 0 auto;
         }
+
+        .main .header h2 {
+            color: #777;
+            width: 53%;
+            margin: 0 auto;
+            font-size: 1.25em;
+            font-weight: 400;
+        }
+
+        .main .header h3 {
+            color: #444;
+            font-size: 1.5em;
+            font-weight: 500;
+            width: 45%;
+            margin: 0 auto;
+        }
+
+    .main .row-companies {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+        .main .row-companies .box-company {
+            padding: 5px;
+        }
+
+            .main .row-companies .box-company img {
+                padding: 9px;
+                max-width: 180px;
+            }
+
+                .main .row-companies .box-company img::after {
+                    position: absolute;
+                    top: 100%;
+                    right: -16px;
+                    left: -16px;
+                    display: inline-block;
+                    margin-top: 13px;
+                    content: "";
+                    border-bottom: 2px solid #e0e0e0;
+                }
+
+            .main .row-companies .box-company p {
+                font-size: 0.90em;
+            }
+
+    .main .container-svg {
+        width: 50%;
+        height: 0;
+        padding-top: 48%;
+        position: relative;
+    }
 
 .btn-special {
     cursor: pointer;
+    margin: 10px;
     border-radius: 5px;
-    margin-top: 10px;
     text-decoration: none;
-    padding: 8px;
+    padding: 12px;
     font-size: 1.42em;
     transition: .3s;
     -webkit-transition: .3s;
@@ -109,33 +94,41 @@ Quite responsive, but still needs some changes
     display: inline-block;
 }
 
-.main .row-companies .box-company img::after {
-    position: absolute;
-    top: 100%;
-    right: -16px;
-    left: -16px;
-    display: inline-block;
-    margin-top: 13px;
-    content: "";
-    border-bottom: 2px solid #e0e0e0;
+.blue {
+    color: #55acee;
+    border: 2px #55acee solid;
 }
 
-.main .row-companies .box-company p {
-    font-size: 0.90em;
+    .blue:hover {
+        background-color: #55acee;
+        color: #fff;
+    }
+
+.main-register-login {
+    margin: 0 auto;
+    width: 40.9%;
 }
 
-.main .container-svg {
-    width: 50%;
-    height: 0;
-    padding-top: 48%;
-    position: relative;
-}
+    .main-register-login h1 {
+        color: #444;
+        font-size: 2em;
+        font-weight: lighter;
+    }
 
-.main svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
+    .main-register-login h2 {
+        color: #444;
+        font-size: 1.4em;
+        font-weight: lighter;
+    }
+
+    .main-register-login .sub-register-login {
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .main-register-login .row {
+        margin-left: 0;
+    }
 
 nav {
     background: #FFFFFF;
@@ -145,14 +138,9 @@ nav {
         padding-left: 16.75%;
     }
 
-.nav-link:hover {
-    background: #F5F5F5;
-    outline: 1px #DDD solid;
-}
-
-nav button.btn-light {
-    margin-right: 19.75%;
-}
+    nav button.btn-light {
+        margin-right: 19.75%;
+    }
 
 footer {
     padding-top: 32px;
@@ -176,7 +164,7 @@ footer {
         font-size: 1.1em;
     }
 
-    footer .link {
+    footer.link {
         display: inline-block;
         margin-bottom: 18px;
     }
@@ -186,14 +174,34 @@ footer {
     -webkit-flex: 0 0 auto;
 }
 
-/*************
-Standard media queries
-**************/
+/*==========  Mobile First Method  ==========*/
+/* Custom, iPhone Retina */
+/* Extra Small Devices, Phones */
+/* Small Devices, Tablets */
+/* Medium Devices, Desktops */
+/* Large Devices, Wide Screens */
+/*==========  Non-Mobile First Method  ==========*/
+@media only screen and (max-width: 1400px) {
+    .main-register-login {
+        width: 45.9%;
+    }
+}
 
-/* Lage Devices, Laptops */
+/* Large Devices, Wide Screens */
+@media only screen and (max-width: 1200px) {
+    .main-register-login {
+        width: 50.9%;
+    }
+}
+
+/* Medium Devices, Desktops */
 @media only screen and (max-width: 992px) {
     nav a.navbar-brand {
         padding-left: 12%;
+    }
+
+    .main-register-login {
+        width: 65.9%;
     }
 }
 
@@ -228,12 +236,12 @@ Standard media queries
         padding-left: 6%;
     }
 
-    .navbar .navbar-collapse .nav-button {
-        margin-top: 10px;
-    }
-
     #myFooter .container {
         width: 82%;
+    }
+
+    .main-register-login {
+        width: 75.9%;
     }
 }
 
@@ -252,6 +260,10 @@ Standard media queries
     #myFooter .container {
         width: 60%;
     }
+
+    .main-register-login {
+        width: 95.9%;
+    }
 }
 
 /* Custom, iPhone Retina */
@@ -266,4 +278,3 @@ Standard media queries
             width: 280px;
         }
 }
-
