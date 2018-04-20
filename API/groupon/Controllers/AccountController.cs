@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,26 +19,35 @@ using groupon.Services;
 namespace groupon.Controllers
 {
     [Authorize]
+    [Produces("application/json")]
     [Route("[controller]/[action]")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IAccountServices _main;
+        private readonly IMessagingServices _msg;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IAccountServices accServices,
+            IMessagingServices msgServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _main = accServices;
+            _msg = msgServices;
         }
 
+        #region Base methods
         [TempData]
         public string ErrorMessage { get; set; }
 
@@ -53,7 +64,7 @@ namespace groupon.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -430,12 +441,99 @@ namespace groupon.Controllers
             return View();
         }
 
-
         [HttpGet]
         public IActionResult AccessDenied()
         {
             return View();
         }
+        #endregion
+
+        #region Profile
+        [HttpPost]
+        [Route("/api/profile/update")]
+        [AllowAnonymous]
+        public IActionResult UpdateProfile(string name, int company, string field, string workExperience, string education,
+            string location, string picture, string currentlyWorking)
+        {
+            var result = _main.UpdateProfile(name, company, field, workExperience, education, location, picture,
+                currentlyWorking);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        [Route("/api/profile/overview")]
+        [AllowAnonymous]
+        public IActionResult GetProfileOverview(string id)
+        {
+            if (id != null)
+                return Json(new ProfileOverviewModel(_main.GetUser(id)));
+            else
+                return Json(new RequestErrorViewModel("User not found."));
+        }
+        #endregion
+
+        #region Messaging
+        [HttpPost]
+        [Route("/api/message/send")]
+        public IActionResult SendMessage(string recipientId, string text)
+        {
+            var result = _msg.SendMessage(recipientId, text);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        [Route("/api/messages/with")]
+        public IEnumerable<TextMessage> GetMessages(string recipientId)
+        {
+            return _msg.GetAllMessages(recipientId, 0).Select(i => new TextMessage(i));
+        }
+
+        [HttpGet]
+        [Route("/api/messages/all")]
+        public IEnumerable<Chat> GetAllChats()
+        {
+            return _msg.GetAllChats().Select(i => new Chat(i));
+        }
+        #endregion
+
+        #region Connections
+
+        [HttpPost]
+        [Route("/api/connections/invite")]
+        public IActionResult InviteConnection(string userId, string comment)
+        {
+            var result = _main.InviteToConnect(userId, comment);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        // Double check this one
+        [HttpPost]
+        [Route("/api/connections/approve")]
+        public IActionResult ApproveConnection(string userId)
+        {
+            var result = _main.ApproveConnection(userId);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        [Route("/api/connections/all")]
+        public IEnumerable<ConnectionViewModel> GetAllUsersConnections(string userId)
+        {
+            return _main.GetAllUserConnection(null, null).Select(i => new ConnectionViewModel(i, userId));
+        }
+
+        [HttpGet]
+        [Route("/api/connections/requests")]
+        public IEnumerable<ConnectionViewModel> GetAllConnectionRequests(string userId)
+        {
+            return _main.GetAllConnectionRequests(null, null).Select(i => new ConnectionViewModel(i));
+        }
+
+        #endregion
 
         #region Helpers
 
