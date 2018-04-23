@@ -6,6 +6,10 @@ using groupon.Data;
 using groupon.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Rewrite.Internal.UrlMatches;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace groupon.Services
 {
@@ -18,6 +22,11 @@ namespace groupon.Services
         Result ApproveConnection(string userId);
         IEnumerable<Connection> GetAllConnectionRequests(int? position, int? count);
         IEnumerable<Connection> GetAllUserConnection(int? position, int? count);
+        Task<Result> Login(string email, string password, bool rememberMe);
+        Task<Result> Logout();
+        Result UpdateField(string newField);
+        Result RemoveField(string field);
+        IEnumerable<string> GetAllUsersFields(string userId);
     }
 
     public class AccountServices : IAccountServices
@@ -25,12 +34,52 @@ namespace groupon.Services
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _http;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger<AccountServices> _logger;
 
-        public AccountServices(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContext)
+        public AccountServices(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContext,
+            ILogger<AccountServices> logger, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
             _http = httpContext;
+            _logger = logger;
+            _signInManager = signInManager;
+        }
+
+        public async Task<Result> Login(string email, string password, bool rememberMe)
+        {
+            var result = await _signInManager.PasswordSignInAsync(email, password, rememberMe, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation(String.Format("User {0} logged in.", email));
+                return new Result();
+            }
+            else if (result.IsLockedOut)
+            {
+                _logger.LogInformation(String.Format("Attempt to log in to locked user {0}.", email));
+                return new Result("User locked.", 401);
+            }
+            else
+            {
+                _logger.LogInformation(String.Format("Bad attempt to log in to {0}.", email));
+                return new Result("Invalid login attempt.", 400);
+            }
+        }
+
+        public async Task<Result> Logout()
+        {
+            var result = _signInManager.SignOutAsync();
+            if (result.IsCompletedSuccessfully)
+            {
+                _logger.LogInformation("User logged out.");
+                return new Result();
+            }
+            else
+            {
+                _logger.LogInformation("Failed log out attempt.");
+                return new Result("Failed to log out.", 400);
+            }
         }
 
         public ApplicationUser GetUser(string id)
@@ -234,6 +283,100 @@ namespace groupon.Services
             }
 
             return null;
+        }
+
+        public Result UpdateField(string newField)
+        {
+            Result result = new Result();
+            try
+            {
+                if (!IsAuthenticated())
+                    return new Result(ResultType.Unauthorized);
+
+                var user = GetCurrentUser().Result;
+           
+                if(user.Field != null && Regex.IsMatch(user.Field, String.Format("/{0}/", newField)))
+                    return new Result("You already added this field.", 400);
+
+                if (user.Field != null)
+                {
+                    MatchCollection matches = Regex.Matches(user.Field, @"<(.+?)>");
+
+                    if (matches.Count >= 5)
+                        return new Result("You can't add more than 5 fields.", 400);
+                }
+
+                if (user.Field != null)
+                    user.Field = user.Field + String.Format("<{0}>", newField);
+                else
+                    user.Field = String.Format("<{0}>", newField);
+
+                _context.SaveChanges(true);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                result = new Result(ex);
+            }
+
+            return result;
+        }
+
+        public Result RemoveField(string field)
+        {
+            Result result = new Result();
+            try
+            {
+                if (!IsAuthenticated())
+                    return new Result(ResultType.Unauthorized);
+
+                var user = GetCurrentUser().Result;
+
+                if (user.Field == null || !user.Field.Contains(String.Format("<{0}>", field)))
+                    return new Result("This field doesn't exist.", 400);
+
+                user.Field = user.Field.Replace(String.Format("<{0}>", field), "");
+                _context.SaveChanges(true);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                result = new Result(ex);
+            }
+
+            return result;
+        }
+
+        public IEnumerable<string> GetAllUsersFields(string userId)
+        {
+            List<string> fields = new List<string>();
+            try
+            {
+                if (!IsAuthenticated())
+                    return null;
+
+                var user = _userManager.FindByIdAsync(userId).Result;
+
+                if (user == null)
+                    return null;
+
+                if (user.Field == null)
+                    return null;
+
+                MatchCollection matches = Regex.Matches(user.Field, @"<(.+?)>");
+
+                foreach (var match in matches)
+                {
+                    var cut = match.ToString().Remove(0, 1).Remove(match.ToString().Length - 2, 1);
+                    fields.Add(cut);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+            }
+
+            return fields;
         }
 
         #region Private functions

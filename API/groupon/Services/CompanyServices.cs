@@ -79,6 +79,15 @@ namespace groupon.Services
                     result.StatusCode = 200;
                     var newCompany = new Company { ShortDescription = shortDescription, Title = title, Owner = user };
                     _context.Companies.Add(newCompany);
+                    _context.CompanyTeam.Add(new CompanyTeam
+                    {
+                        RequestDate = DateTime.Today,
+                        ApprovalDate = DateTime.Today,
+                        Approved = true,
+                        Comment = "Init",
+                        CompanyId = newCompany.Id,
+                        UserId = user.Id
+                    });
                     _context.SaveChanges();
                 }
 

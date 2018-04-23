@@ -64,39 +64,75 @@ namespace groupon.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(string email, string password, bool remember)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            var result = await _main.Login(email, password, remember);
+            return StatusCode(result.StatusCode, result);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            var result =  await _main.Logout();
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateField(string newField)
+        {
+            var result = _main.UpdateField(newField);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        public IActionResult RemoveField(string field)
+        {
+            var result = _main.RemoveField(field);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        public IEnumerable<String> GetUserFields(string userId)
+        {
+            return _main.GetAllUsersFields(userId);
+        }
+
+
+        //[HttpPost]
+        //[AllowAnonymous]
+        ////[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
+        //    if (ModelState.IsValid)
+        //    {
+        //        // This doesn't count login failures towards account lockout
+        //        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+        //        var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+        //        if (result.Succeeded)
+        //        {
+        //            _logger.LogInformation("User logged in.");
+        //            return RedirectToLocal(returnUrl);
+        //        }
+        //        if (result.RequiresTwoFactor)
+        //        {
+        //            return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+        //        }
+        //        if (result.IsLockedOut)
+        //        {
+        //            _logger.LogWarning("User account locked out.");
+        //            return RedirectToAction(nameof(Lockout));
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        //            return View(model);
+        //        }
+        //    }
+
+        //    // If we got this far, something failed, redisplay form
+        //    return View(model);
+        //}
 
         [HttpGet]
         [AllowAnonymous]
@@ -252,14 +288,14 @@ namespace groupon.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await _signInManager.SignOutAsync();
+        //    _logger.LogInformation("User logged out.");
+        //    return RedirectToAction(nameof(HomeController.Index), "Home");
+        //}
 
         [HttpPost]
         [AllowAnonymous]
