@@ -13,14 +13,16 @@
         <form>
             <div class="row mt-4 text-left">
                 <div class="col">
-                    <label>Email Address</label>
-                    <input type="text" class="form-control" placeholder="jonsnow@mail.com">
+                    <label asp-for="Email">Email Address</label>
+                    <input asp-for="Email" type="text" class="form-control" placeholder="jonsnow@mail.com">
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
             <div class="row mt-3 text-left">
                 <div class="col">
-                    <label>Password</label>
-                    <input type="password" class="form-control mb-2" placeholder="*********">
+                    <label asp-for="Email">Password</label>
+                    <input asp-for="Password" type="password" class="form-control mb-2" placeholder="*********">
+                    <span asp-validation-for="Password" class="text-danger"></span>
                     <a href="#">Forgot password?</a>
                 </div>
             </div>
@@ -108,21 +110,53 @@
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
-
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+        asp-fallback-test="window.jQuery"
+        crossorigin="anonymous"
+        integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+</script>
 <script>
+
     $("#LoginButton").click(postNew);
 
-    function postNew() {
+    @*function postNew() {
         $.ajax({
             type: "POST",
             url: "https://localhost:44330/Account/Login",
-            data: { Email: $("#Email").val(), Password: $("#Password").val() },
+            data: { email: $("#Email").val(), password: $("#Password").val(), remember: false },
             success: function (data) {
-                if (data.toString() == '200')
-                    console.log("Succesful. " + data);
-                else
+                if (data.toString() == '200') {
+                    console.log("Successful. " + data);
+                    window.location = "@Url.Action("Index", "Home")";
+                }
+                else {
                     console.log("Unsuccesful. " + data);
+                    window.location = "@Url.Action("Login", "Account")";
+                }
             }
         });
+    }*@
+
+    function postNew() {
+        $.ajax({
+            url: "https://localhost:44330/Account/Login",
+            type: 'POST',
+            data: { email: $("#Email").val(), password: $("#Password").val(), remember: false },
+            success: function (data) {
+                if (data.toString() == '200') {
+                    alert(result.someValue);
+                    console.log("Successful. " + data);
+                    window.location = "@Url.Action("Index", "Home")";
+                }
+                else {
+                    console.log("Unsuccesful. " + data);
+                    window.location = "@Url.Action("Index", "Home")";
+                }
+            }
+        });
+        return false;
     }
+
+  
 </script>

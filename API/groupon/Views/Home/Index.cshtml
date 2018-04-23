@@ -1,114 +1,305 @@
 ﻿
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Landing Page";
 }
 
+@*In future it's going to splitted into two View pages, not just one.*@
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        <div class="container-fluid main mt-5 mb-5">
+            <div class="header">
+                <img class="head-img mb-2" src="/images/agile_for_developers.png" />
+                <h1 class="mb-2">Find jobs, create and contribute to projects in seconds</h1>
+                <h2 class="mb-2">We connect students, who seek for experience and companies, who are searching for talent in a modern way </h2>
+                <a asp-area="" asp-controller="Account" asp-action="Register" class="btn-special blue">I WANT TO KNOW MORE</a>
 
-<div class="container-fluid main mt-5 mb-5">
-    <div class="header">
-        <img class="head-img mb-2" src="/images/agile_for_developers.png" />
-        <h1 class="mb-2">Find jobs, create and contribute to projects in seconds</h1>
-        <h2 class="mb-2">We connect students, who seek for experience and companies, who are searching for talent in a modern way </h2>
-        <a asp-area="" asp-controller="Account" asp-action="Register" class="btn-special blue">I WANT TO KNOW MORE</a>
+            </div>
+        </div>
+        <hr></hr>
+        <div class="container-fluid main mt-5 ">
+            <div class="header">
+                <h3 class="mb-5">Contact top companies like these</h3>
+            </div>
+            <div class="row row-companies">
+                <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
+                    <img class="mt-3" src="/images/logo-seatgeek.png" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
+                    <img class="mt-3" src="/images/warby.png" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
+                    <img class="mt-3" src="/images/jet.png" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
+                    <img class="mt-3" src="/images/instacart.png" />
+                </div>
+            </div>
+            <div class="row row-companies">
+                <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
+                    <img class="mt-3" src="/images/warby.png" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
+                    <img class="mt-3" src="/images/jet.png" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
+                    <img class="mt-3" src="/images/instacart.png" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
+                    <img class="mt-3" src="/images/logo-seatgeek.png" />
+                </div>
+            </div>
+        </div>
+        <hr></hr>
+        <div class="container-fluid main mt-5 pb-5">
+            <div class="header">
+                <h3 class="mb-5 long">Build a pool of talented creators for your TEAM</h3>
+                <div class="row row-companies">
+                    <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
+                        <span>
+                            <img src="/images/browser.png" class="border-bottom" />
+                            <p class="mt-3">WEB DEVELOPERS</p>
+                        </span>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
+                        <span>
+                            <img src="/images/smartphone.png" class="border-bottom" />
+                            <p class="mt-3">MOBILE DEVELOPERS</p>
+                        </span>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
+                        <span>
+                            <img src="/images/pencil.png" class="border-bottom" />
+                            <p class="mt-3">DESIGNERS & CREATIVES</p>
+                        </span>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
+                        <span>
+                            <img src="/images/pen.png" class="border-bottom" />
+                            <p class="mt-3">WRITERS</p>
+                        </span>
+                    </div>
+                </div>
 
-    </div>
-</div>
-<hr></hr>
-<div class="container-fluid main mt-5 ">
-    <div class="header">
-        <h3 class="mb-5">Contact top companies like these</h3>
-    </div>
-    <div class="row row-companies">
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/logo-seatgeek.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/warby.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/jet.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/instacart.png" />
-        </div>
-    </div>
-    <div class="row row-companies">
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/warby.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/jet.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/instacart.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/logo-seatgeek.png" />
-        </div>
-    </div>
-</div>
-<hr></hr>
-<div class="container-fluid main mt-5 pb-5">
-    <div class="header">
-        <h3 class="mb-5 long">Build a pool of talented creators for your TEAM</h3>
-        <div class="row row-companies">
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img src="/images/browser.png" class="border-bottom" />
-                    <p class="mt-3">WEB DEVELOPERS</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img src="/images/smartphone.png" class="border-bottom" />
-                    <p class="mt-3">MOBILE DEVELOPERS</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img src="/images/pencil.png" class="border-bottom" />
-                    <p class="mt-3">DESIGNERS & CREATIVES</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img src="/images/pen.png" class="border-bottom" />
-                    <p class="mt-3">WRITERS</p>
-                </span>
+                <div class="row row-companies">
+                    <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
+                        <span>
+                            <img width="115px" src="/images/call-center.png" class="border-bottom" />
+                            <p class="mt-3">VIRTUAL ASSISTANTS</p>
+                        </span>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-labelbox-company">
+                        <span>
+                            <img width="115px" src="/images/man.png" class="border-bottom" />
+                            <p class="mt-3">CUSTOMER SERVICE</p>
+                        </span>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
+                        <span>
+                            <img width="115px" src="/images/analytics.png" class="border-bottom" />
+                            <p class="mt-3">SALES & MARKETING EXPERTS</p>
+                        </span>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
+                        <span>
+                            <img width="115px" src="/images/calculator.png" class="border-bottom" />
+                            <p class="mt-3">ACCOUNTANTS & CONSULTANTS</p>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
+    }else
+    {
+        <div class="container-fluid home mt-5 mb-5">
+            <div class="row">
+                <div class="col-md-4 col-sm-12 col-xs-5 mb-5">
+                    <div class="user-info text-center">
+                        <div class=" col-lg-12 col-sm-12 col-12 main-section text-center">
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12 col-12 profile-header"></div>
+                            </div>
+                            <div class="row user-detail ">
+                                <div class="col-lg-12 col-sm-12 col-12">
+                                    <img src="images/man.png" class="rounded-circle img-thumbnail">
+                                    <h5>Žygimantas Drukteinis</h5>
+                                    <p><i class="fa fa-map-marker" aria-hidden="true"></i> Kaunas, LT.</p>
+                                    <hr>
+                                    <label>Connections</label>
+                                    <p>People in network</p>
+                                    <hr>
+                                    <span>Lorem ips consectetur adipisium ,eiusmod tempor incididuin reprehendeanim.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-12 col-xs-7">
+                    <div class="users">
+                        <h1 class="mb-5">Users in your network</h1>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group list">
+                                    <div href="#" class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <img src="images/man.png" class="pull-left photo">
+                                                <h4 class="list-group-item-heading name">Jonas Baranauskas</h4>
+                                                <p class="list-group-item-text title">Software Engineer</p>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="expertise">
+                                                    <div class="read-more">
+                                                        <button type="button" class="btn btn-primary btn-more">
+                                                            Read More &nbsp;
+                                                            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                    <span class="expertise-label">Areas of Expertise &nbsp;</span>
+                                                    <p>
+                                                        <span class="label label-default expertise ">C#</span>
+                                                        <span class="label label-default expertise ">.NET</span>
+                                                        <span class="label label-default expertise ">SQL</span>
+                                                        <span class="label label-default expertise ">Angular 2</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div href="#" class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <img src="images/customer-service.png" class="pull-left photo">
+                                                <h4 class="list-group-item-heading name">Mantelis Baranauskas</h4>
+                                                <p class="list-group-item-text title">Q/A</p>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="expertise">
+                                                    <div class="read-more">
+                                                        <button type="button" class="btn btn-primary btn-more">
+                                                            Read More &nbsp;
+                                                            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                    <span class="expertise-label">Areas of Expertise &nbsp;</span>
+                                                    <p>
+                                                        <span class="label label-default expertise">Public Speaking</span>
+                                                        <span class="label label-default expertise">IOT</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div href="#" class="list-group-item">
+                                        <div class="row">
 
-        <div class="row row-companies">
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img width="115px" src="/images/call-center.png" class="border-bottom" />
-                    <p class="mt-3">VIRTUAL ASSISTANTS</p>
-                </span>
+                                            <div class="col-lg-12">
+                                                <div class="expertise">
+                                                    <div class="read-more text-center">
+                                                        <h2>Find new people to connect with and start working!</h2>
+                                                        <button type="button" class="mt-3 mb-1 btn btn-primary btn-find">
+                                                            SEARCH OTHER USERS &nbsp;
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h1 class="mt-5 mb-5">Top trending companies</h1>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group list">
+                                    <div href="#" class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-2">
+                                                <img src="images/company1.png" class="pull-left photo">
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <h4 class="list-group-item-heading name">App Store</h4>
+                                                <p class="list-group-item-text title">Remittance, Money Transfer, Remit money to Asia</p>
+
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="expertise">
+                                                    <div class="read-more">
+                                                        <button type="button" class="btn btn-primary btn-more">
+                                                            More &nbsp;
+                                                            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-2">
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <h3 class="mb-3">Jobs</h3>
+                                                <p><b>Software Developer </b><a>€2K – €3K · No Equity · Full Time</a></p>
+                                                <p><b>Java Software Engineer (ML) </b><a>€60K – €80K · 0.0% – 0.2% · Full Time</a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div href="#" class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-2">
+                                                <img src="images/company2.png" class="pull-left photo">
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <h4 class="list-group-item-heading name">Z Art Studio</h4>
+                                                <p class="list-group-item-text title">Art & Graphics</p>
+
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="expertise">
+                                                    <div class="read-more">
+                                                        <button type="button" class="btn btn-primary btn-more">
+                                                            More &nbsp;
+                                                            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-2">
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <h3 class="mb-3">Jobs</h3>
+                                                <p><b>Graphic Designer </b><a>€4K – 6K · No Equity · Full Time</a></p>
+                                                <p><b>Social Media Influencer </b><a>€80K – €120K · 0.0% – 0.2% · Full Time</a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div href="#" class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="expertise">
+                                                    <div class="read-more text-center">
+                                                        <h2>Search for other companies and apply now!</h2>
+                                                        <button type="button" class="mt-3 mb-1 btn btn-primary btn-find">
+                                                            SEARCH COMPANIES &nbsp;
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-labelbox-company">
-                <span>
-                    <img width="115px" src="/images/man.png" class="border-bottom" />
-                    <p class="mt-3">CUSTOMER SERVICE</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img width="115px" src="/images/analytics.png" class="border-bottom" />
-                    <p class="mt-3">SALES & MARKETING EXPERTS</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img width="115px" src="/images/calculator.png" class="border-bottom" />
-                    <p class="mt-3">ACCOUNTANTS & CONSULTANTS</p>
-                </span>
             </div>
 
-        </div>
-
-
-    </div>
-</div>
+    }
+}
 @*﻿<h1>API TEST PAGE</h1>
     <div class="row">
         <div class="col-lg-6">
@@ -121,16 +312,16 @@
         </div>
     </div>
     <br />
-    <br/>
-        <div class="table-bordered">
+    <br />
+    <div class="table-bordered">
         <div class="row" style="margin-left: 10px;">
             <div class="col-lg-2">
                 <h5 style="margin-left: 5px;"><b> POST FORM to add new group:</b></h5>
-                Title*: <input id="title" class="input-sm"/>
-                <br/>
-                Description*: <input id="desc" class="input-sm"/>
-                <br/>
-                <br/>
+                Title*: <input id="title" class="input-sm" />
+                <br />
+                Description*: <input id="desc" class="input-sm" />
+                <br />
+                <br />
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-2">
@@ -142,9 +333,9 @@
                 <br />
             </div>
             <div class="col-lg-2">
-                <br/>
-                <br/>
-                <br/>
+                <br />
+                <br />
+                <br />
                 * Required fields
             </div>
             <br />

@@ -1,7 +1,132 @@
-﻿/***
-h1,h2,h3,nav - opensans
-body, buttons - Roboto
-***/
+﻿/*** h1,h2,h3,nav - opensans body, buttons - Roboto ***/
+/**This is SCSS converted to CSS.*/
+.home {
+    margin: 0 auto;
+    width: 66.9%;
+}
+
+    .home .main-section {
+        border: 1px solid #138496;
+        background-color: #fff;
+    }
+
+    .home .profile-header {
+        background-color: #17a2b8;
+        height: 120px;
+    }
+
+    .home .user-detail {
+        margin: -50px 0px 30px 0px;
+    }
+
+        .home .user-detail img {
+            height: 100px;
+            width: 100px;
+        }
+
+            .home .user-detail img.stats {
+                height: 32px;
+                width: 32px;
+            }
+
+        .home .user-detail h5 {
+            margin: 15px 0px 5px 0px;
+        }
+
+    .home .user-social-detail {
+        padding: 15px 0px;
+        background-color: #17a2b8;
+    }
+
+        .home .user-social-detail a i {
+            color: #fff;
+            font-size: 23px;
+            padding: 0px 5px;
+        }
+
+    .home .users h1 {
+        color: #444;
+        font-size: 2em;
+        font-weight: lighter;
+        margin: 0 auto;
+    }
+
+    .home .users h2 {
+        color: #444;
+        font-size: 1.8em;
+        font-weight: lighter;
+        width: 54%;
+        margin: 0 auto;
+    }
+
+    .home .users h3 {
+        font-size: 1.3em;
+        color: #444;
+        font-style: italic;
+    }
+
+    .home .users h4 {
+        font-size: 1.3em;
+    }
+
+    .home .users p > b {
+        font-weight: 500;
+    }
+
+    .home .users p a {
+        color: #666;
+        font-style: italic;
+    }
+
+    .home .users .btn-find {
+        width: 180px;
+    }
+
+    .home .users .row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .home .users .photo {
+        border-radius: 45px;
+        margin-right: 20px;
+        width: 90px;
+        height: 90px;
+    }
+
+    .home .users .form-control {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .home .users .name {
+        font-weight: 700;
+    }
+
+    .home .users .expertise-label {
+        display: block;
+        font-weight: 700;
+        margin-top: 10px;
+    }
+
+    .home .users .btn-more {
+        width: 100%;
+    }
+
+    .home .users .label {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+        background: #777;
+    }
+
 .main {
     margin: 0 auto;
     width: 66.9%;
@@ -174,27 +299,50 @@ footer {
     -webkit-flex: 0 0 auto;
 }
 
-/*==========  Mobile First Method  ==========*/
+
+/*========== Mobile First Method ==========*/
+
+
 /* Custom, iPhone Retina */
+
+
 /* Extra Small Devices, Phones */
+
+
 /* Small Devices, Tablets */
+
+
 /* Medium Devices, Desktops */
+
+
 /* Large Devices, Wide Screens */
-/*==========  Non-Mobile First Method  ==========*/
+
+
+/*========== Non-Mobile First Method ==========*/
+
 @media only screen and (max-width: 1400px) {
     .main-register-login {
         width: 45.9%;
     }
 }
 
+
 /* Large Devices, Wide Screens */
+
 @media only screen and (max-width: 1200px) {
     .main-register-login {
         width: 50.9%;
     }
+
+    .home {
+        margin: 0 auto;
+        width: 90.9%;
+    }
 }
 
+
 /* Medium Devices, Desktops */
+
 @media only screen and (max-width: 992px) {
     nav a.navbar-brand {
         padding-left: 12%;
@@ -203,9 +351,20 @@ footer {
     .main-register-login {
         width: 65.9%;
     }
+
+    .home {
+        margin: 0 auto;
+        width: 90.9%;
+    }
+
+        .home .users h2 {
+            width: 64%;
+        }
 }
 
+
 /* Small Devices, Tablets */
+
 @media only screen and (max-width: 784px) {
     .main {
         margin: 0 auto;
@@ -243,9 +402,16 @@ footer {
     .main-register-login {
         width: 75.9%;
     }
+
+    .home {
+        margin: 0 auto;
+        width: 95.9%;
+    }
 }
 
+
 /* Extra Small Devices, Phones */
+
 @media only screen and (max-width: 480px) {
     .main {
         margin: 0 auto;
@@ -264,9 +430,19 @@ footer {
     .main-register-login {
         width: 95.9%;
     }
+
+    .home .users h1 {
+        text-align: center;
+    }
+
+    .home .users h2 {
+        width: 94%;
+    }
 }
 
+
 /* Custom, iPhone Retina */
+
 @media only screen and (max-width: 320px) {
     .main {
         margin: 0 auto;

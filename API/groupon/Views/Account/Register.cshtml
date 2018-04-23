@@ -41,7 +41,7 @@
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
             </div>
-            <button type="submit" id="SumbitButton" class="btn-special btn-light blue pr-5  pl-5">Sign Up</button>
+            <button type="submit" id="SubmitButton" class="btn-special btn-light blue pr-5  pl-5">Sign Up</button>
 
 
         </form>
@@ -81,21 +81,29 @@
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
-
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+        asp-fallback-test="window.jQuery"
+        crossorigin="anonymous"
+        integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+</script>
 <script>
     $("#SubmitButton").click(postNew);
 
     function postNew() {
         $.ajax({
-            type: "POST",
             url: "https://localhost:44330/Account/Register",
+            type: "POST",
             data: { Email: $("#Email").val(), Password: $("#Password").val(), ConfirmPassword: $("#ConfirmPassword").val() },
             success: function (data) {
                 if (data.toString() == '200')
                     console.log("Succesful. " + data);
+                    window.location = "@Url.Action("Index", "Home")";
                 else
                     console.log("Unsuccesful. " + data);
+                    window.location = "@Url.Action("Index", "Home")";
             }
         });
+        false;
     }
 </script>
