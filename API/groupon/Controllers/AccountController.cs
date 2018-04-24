@@ -92,6 +92,7 @@ namespace groupon.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IEnumerable<String> GetUserFields(string userId)
         {
             return _main.GetAllUsersFields(userId);
