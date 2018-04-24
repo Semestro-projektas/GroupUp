@@ -7,8 +7,6 @@
 
 <div class="container-fluid main-register-login mt-5 mb-5">
     <h1>Log in</h1>
-    <hr>
-    <!-- <h2 class="mb-5">Sign Up to GroupUp and start using our service.</h2>        -->
     <div class="container sub-register-login">
         <form>
             <div class="row mt-4 text-left">
@@ -23,14 +21,13 @@
                     <label asp-for="Email">Password</label>
                     <input asp-for="Password" type="password" class="form-control mb-2" placeholder="*********">
                     <span asp-validation-for="Password" class="text-danger"></span>
-                    <a href="#">Forgot password?</a>
+                    <a asp-area="" asp-controller="Account" asp-action="ForgotPassword">Forgot password?</a>
                 </div>
             </div>
 
-            <button id="LoginButton" class="btn-special btn-light blue pr-5 mt-4 pl-5">Log In</button>
+            <button id="LoginButton" class="btn-special button-centered blue">Log In</button>
         </form>
     </div>
-
 </div>
 
 
