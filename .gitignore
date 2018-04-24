@@ -3,3 +3,8 @@ API/.vs/API/v15/Server/sqlite3/storage.ide-shm
 API/.vs/API/v15/Server/sqlite3/storage.ide-wal
 API/groupon/appsetings.json
 API/groupon/appsettings.json
+API/groupon/obj/project.assets.json
+API/groupon/obj/groupon.csproj.nuget.g.props
+API/groupon/obj/Debug/netcoreapp2.0/groupon.csproj.FileListAbsolute.txt
+API/groupon/bin/Debug/netcoreapp2.0/groupon.runtimeconfig.dev.json
+API/.vs/config/applicationhost.config
