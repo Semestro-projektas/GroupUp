@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
@@ -9,9 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using groupon.Models;
 using groupon.Models.AccountViewModels;
 using groupon.Services;
@@ -60,42 +57,6 @@ namespace groupon.Controllers
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login(string email, string password, bool remember)
-        {
-            var result = await _main.Login(email, password, remember);
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            var result =  await _main.Logout();
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [HttpPost]
-        public IActionResult UpdateField(string newField)
-        {
-            var result = _main.UpdateField(newField);
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [HttpPost]
-        public IActionResult RemoveField(string field)
-        {
-            var result = _main.RemoveField(field);
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [HttpGet]
-        [Authorize]
-        public IEnumerable<String> GetUserFields(string userId)
-        {
-            return _main.GetAllUsersFields(userId);
         }
 
 
@@ -258,35 +219,6 @@ namespace groupon.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
-                }
-                AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
         }
 
         //[HttpPost]
@@ -482,6 +414,73 @@ namespace groupon.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+        #endregion
+
+        #region Custom base
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            var result = new IdentityResult();
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("User created a new account with password.");
+                    return Json(result);
+                }
+                AddErrors(result);
+                return Json(result);
+            }
+            return Json(ModelState.Values.SelectMany(v => v.Errors));
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string email, string password, bool remember)
+        {
+            var result = await _main.Login(email, password, remember);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            var result = await _main.Logout();
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult UpdateField(string newField)
+        {
+            var result = _main.UpdateField(newField);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult RemoveField(string field)
+        {
+            var result = _main.RemoveField(field);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IEnumerable<String> GetUserFields(string userId)
+        {
+            return _main.GetAllUsersFields(userId);
         }
         #endregion
 
