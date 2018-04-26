@@ -3,13 +3,33 @@
     ViewData["Title"] = "Register";
 }
 
+<div class="modal fade" id="userRegistered" tabindex="-1" role="dialog" aria-labelledby="userRegisteredLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userRegisteredLabel">Registration succeeded</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <a>Your registration was successful and now you will be redirected inside of our page.</a>
+            </div>
+            <div class="modal-footer">
+                <div class="container text-center">
+                    <button id="redirectToMain" class="btn btn-primary" data-dismiss="modal">OK, get me there</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container-fluid main-register-login mt-5 mb-5 ">
     <h1>Registration Form</h1>
     <hr>
     <h2 class="mb-5">Sign Up to GroupUp and start using our service.</h2>
     <div class="container sub-register-login">
-        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+        <form id="form">
             <div class="row mt-4 text-left">
                 <div class="col-md-6">
                     <label> First Name</label>
@@ -41,42 +61,10 @@
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
             </div>
-            <button type="submit" id="SubmitButton" class="btn-special button-centered blue">Sign Up</button>
-
-
+            <button id="SubmitButton" class="btn-special button-centered blue">Sign Up</button>
         </form>
     </div>
-
 </div>
-
-
-
-
-@*<div class="row">
-        <div class="col-md-4">
-            <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-                <h4>Create a new account.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ConfirmPassword"></label>
-                    <input asp-for="ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-                <button type="submit" class="btn btn-default">Register</button>
-            </form>
-        </div>
-    </div>*@
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
@@ -87,23 +75,46 @@
         crossorigin="anonymous"
         integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
 </script>
+<script type="text/javascript">
+    function getToken() {
+        var token = '@Html.AntiForgeryToken()';
+        token = $(token).val();
+        return token;
+   }
+</script>
 <script>
     $("#SubmitButton").click(postNew);
 
-    function postNew() {
+    function postNew(event) {
+        event.preventDefault();
+        if (!$("#form").valid()) return false;
         $.ajax({
             url: "https://localhost:44330/Account/Register",
             type: "POST",
-            data: { Email: $("#Email").val(), Password: $("#Password").val(), ConfirmPassword: $("#ConfirmPassword").val() },
-            success: function (data) {
-                if (data.toString() == '200')
-                    console.log("Succesful. " + data);
-                    window.location = "@Url.Action("Index", "Home")";
-                else
-                    console.log("Unsuccesful. " + data);
-                    window.location = "@Url.Action("Index", "Home")";
+            data: {
+                Email: $("#Email").val(), Password: $("#Password").val(),
+                ConfirmPassword: $("#ConfirmPassword").val(), __RequestVerificationToken: getToken()
+            },
+            statusCode: {
+                200: function () {
+                    $("#userRegistered").modal();
+                    console.log("Successful. ");
+                },
+                400: function () {
+                    console.log("Client side error. ");
+                },
+                500: function () {
+                    console.log("Server side error. ");
+                }
             }
         });
         false;
+    }
+</script>
+<script>
+    $("#redirectToMain").click(toMainPage);
+
+    function toMainPage() {
+        window.location = "@Url.Action("Index", "Home")";
     }
 </script>
