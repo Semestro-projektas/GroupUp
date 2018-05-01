@@ -2,7 +2,11 @@
 @{
     ViewData["Title"] = "Register";
 }
-<div id="handlerid" class="main alert hidden fade" style="text-align: center" role="alert">
+
+<div id="handlerid" class="main alert hidden fade" style="text-align: center" role="alert"></div>
+
+<div id="loader" class="loadingbox hidden">
+    <div class="loader"></div>
 </div>
 
 <div class="modal fade" id="userRegistered" tabindex="-1" role="dialog" aria-labelledby="userRegisteredLabel" aria-hidden="true">
@@ -89,6 +93,7 @@
     function postNew(event) {
         event.preventDefault();
         if (!$("#form").valid()) return false;
+        $('#loader').removeClass("hidden");
         $.ajax({
             url: "https://localhost:44330/Account/Register",
             type: "POST",
@@ -115,6 +120,8 @@
                     ErrorAlert("Error from server side!", "Server failed to respond to request");
                 }
             }
+        }).done(function () {
+            $('#loader').addClass("hidden");
         });
         false;
     }
