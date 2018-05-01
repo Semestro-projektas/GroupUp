@@ -90,6 +90,8 @@
 </script>
 <script>
     $("#SubmitButton").click(postNew);
+
+    var pressCount = 0;
     function postNew(event) {
         event.preventDefault();
         if (!$("#form").valid()) return false;
@@ -127,11 +129,18 @@
     }
     function ErrorAlert(bolded, normal) {
         $('#handlerid').empty().append("<strong>" + bolded + " </strong>" + normal);
-        $('#handlerid').addClass('alert-danger').removeClass("hidden").fadeTo(300, 1).delay(4000).fadeTo(300, 0);
+        pressCount++;
+        $('#handlerid').addClass('alert-danger').removeClass("hidden").fadeTo(300, 1);
 
         setTimeout(function () {
-            $('#handlerid').addClass('hidden').removeClass('alert-danger');
-        }, 5000);
+            if (pressCount == 1) {
+                $('#handlerid').fadeTo(300, 0);
+                setTimeout(function () {
+                    $('#handlerid').addClass('hidden').removeClass('alert-danger');
+                }, 1000);
+            }
+            pressCount--;
+        }, 4000);
     }
 </script>
 <script>
