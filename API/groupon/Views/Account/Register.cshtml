@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Register";
 }
+<div id="handlerid" class="main alert hidden fade" style="text-align: center" role="alert">
+</div>
 
 <div class="modal fade" id="userRegistered" tabindex="-1" role="dialog" aria-labelledby="userRegisteredLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -84,7 +86,6 @@
 </script>
 <script>
     $("#SubmitButton").click(postNew);
-
     function postNew(event) {
         event.preventDefault();
         if (!$("#form").valid()) return false;
@@ -95,20 +96,35 @@
                 Email: $("#Email").val(), Password: $("#Password").val(),
                 ConfirmPassword: $("#ConfirmPassword").val(), __RequestVerificationToken: getToken()
             },
+            dataType: "json",
             statusCode: {
-                200: function () {
-                    $("#userRegistered").modal();
-                    console.log("Successful. ");
+                200: function (data) {
+                    
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        ErrorAlert("Error!", data.errors[0].description);
+                    }
+                    else {
+                        $("#userRegistered").modal();
+                    }
                 },
                 400: function () {
-                    console.log("Client side error. ");
+                    ErrorAlert("Error from client side!", "Bad request was sent to server");
                 },
                 500: function () {
-                    console.log("Server side error. ");
+                    ErrorAlert("Error from server side!", "Server failed to respond to request");
                 }
             }
         });
         false;
+    }
+    function ErrorAlert(bolded, normal) {
+        $('#handlerid').empty().append("<strong>" + bolded + " </strong>" + normal);
+        $('#handlerid').addClass('alert-danger').removeClass("hidden").fadeTo(300, 1).delay(4000).fadeTo(300, 0);
+
+        setTimeout(function () {
+            $('#handlerid').addClass('hidden').removeClass('alert-danger');
+        }, 5000);
     }
 </script>
 <script>
