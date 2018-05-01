@@ -25,4 +25,8 @@
     <Folder Include="Models\MiscViewModels\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\images\avatar-upload.png" />
+  </ItemGroup>
+
 </Project>

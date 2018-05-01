@@ -485,6 +485,12 @@ namespace groupon.Controllers
         #endregion
 
         #region Profile
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
         [HttpPost]
         [Route("/api/profile/update")]
         [AllowAnonymous]

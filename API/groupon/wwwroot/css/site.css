@@ -1,5 +1,37 @@
 ﻿/*** h1,h2,h3,nav - opensans body, buttons - Roboto ***/
 /**This is SCSS converted to CSS.*/
+.profile .input-file {
+    opacity: 0;
+    position: fixed;
+    z-index: -1;
+}
+
+
+
+.profile #profile-avatar {
+    border-radius: 50%;
+}
+
+
+.profile .skills-list {
+    list-style: none;
+}
+
+.profile .expertise .label {
+    display: inline-block;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: left !important;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    background: #777;
+    cursor: pointer;
+}
+
 .home {
     margin: 0 auto;
     width: 66.9%;
