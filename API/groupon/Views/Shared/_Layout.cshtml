@@ -42,7 +42,6 @@
                 <button id="Logout" type="button" class="btn blue nav-button">LOG OUT</button>
             </div>
         </nav>
-
     }
     else
     {
@@ -60,7 +59,7 @@
                     <li class="nav-link mr-4" hreaf="#">FAQ</li>
                 </ul>
                 <button onclick="window.location = '@Url.Action("Login", "Account")';" type="button" class="btn blue nav-button">LOG IN</button>
-             </div>
+            </div>
         </nav>
 
     }
@@ -68,6 +67,11 @@
 
     @RenderBody()
 
+    <div id="handlerid" class="main alert hidden fade" style="text-align: center" role="alert"></div>
+
+    <div id="loader" class="loadingbox hidden">
+        <div class="loader"></div>
+    </div>
     <!--Footer Links-->
     <footer id="myFooter">
         <div class="container">
@@ -130,21 +134,29 @@
     $("#Logout").click(logOut);
 
     function logOut() {
+        $('#loader').removeClass("hidden");
         $.ajax({
             url: "https://localhost:44330/Account/Logout",
             type: 'POST',
-            data: { },
-            success: function (data) {
-                if (data == 200) {
-                    alert(result.someValue);
-                    console.log("Successful. " + data);
-                    window.location = "@Url.Action("Login", "Account")";
-                }
-                else {
-                    console.log("Unsuccesful. " + data);
-                    window.location = "@Url.Action("Login", "Account")";
+            data: {},
+            statusCode: {
+                200: function (data) {
+                    if ($.trim(data.success) == 'false') {
+                        ErrorAlert("Error!", data.error);
+                    }
+                    else {
+                        window.location = "@Url.Action("Login", "Account")";
+                    }
+                },
+                400: function (data) {
+                    ErrorAlert("Error!", "Log out request was invalid");
+                },
+                500: function () {
+                    ErrorAlert("Error from server side!", "Server failed to respond to request");
                 }
             }
+        }).done(function () {
+            $('#loader').addClass("hidden");
         });
         return false;
     }
