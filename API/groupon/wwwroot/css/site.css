@@ -221,6 +221,20 @@
     text-decoration-line: none;
 }
 
+.show {
+    display: block !important;
+}
+
+.hidden {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+
 .button-centered{
     padding-right: 3rem;
     padding-left: 3rem;
