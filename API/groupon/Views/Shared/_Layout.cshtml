@@ -36,13 +36,12 @@
                 <ul class="navbar-nav" id="collapse_target">
                     <li class="nav-link" hreaf="#">Find a Job</li>
                     <li class="nav-link" hreaf="#">Start Hiring</li>
-                    <li class="nav-link" hreaf="#">Abous Us</li>
+                    <li class="nav-link" hreaf="#">About Us</li>
                     <li class="nav-link mr-4" hreaf="#">FAQ</li>
                 </ul>
                 <button id="Logout" type="button" class="btn blue nav-button">LOG OUT</button>
-
+            </div>
         </nav>
-
     }
     else
     {
@@ -56,11 +55,11 @@
                 <ul class="navbar-nav" id="collapse_target">
                     <li class="nav-link" hreaf="#">Find a Job</li>
                     <li class="nav-link" hreaf="#">Start Hiring</li>
-                    <li class="nav-link" hreaf="#">Abous Us</li>
+                    <li class="nav-link" hreaf="#">About Us</li>
                     <li class="nav-link mr-4" hreaf="#">FAQ</li>
                 </ul>
                 <button onclick="window.location = '@Url.Action("Login", "Account")';" type="button" class="btn blue nav-button">LOG IN</button>
-
+            </div>
         </nav>
 
     }
@@ -68,6 +67,11 @@
 
     @RenderBody()
 
+    <div id="handlerid" class="main alert hidden fade" style="text-align: center" role="alert"></div>
+
+    <div id="loader" class="loadingbox hidden">
+        <div class="loader"></div>
+    </div>
     <!--Footer Links-->
     <footer id="myFooter">
         <div class="container">
@@ -128,25 +132,49 @@
 <script>
 
     $("#Logout").click(logOut);
-
+    var pressCount = 0;
     function logOut() {
+        $('#loader').removeClass("hidden");
         $.ajax({
             url: "https://localhost:44330/Account/Logout",
             type: 'POST',
-            data: { },
-            success: function (data) {
-                if (data == 200) {
-                    alert(result.someValue);
-                    console.log("Successful. " + data);
-                    window.location = "@Url.Action("Login", "Account")";
-                }
-                else {
-                    console.log("Unsuccesful. " + data);
-                    window.location = "@Url.Action("Login", "Account")";
+            data: {},
+            statusCode: {
+                200: function (data) {
+                    if ($.trim(data.success) == 'false') {
+                        ErrorAlert("Error!", data.error);
+                    }
+                    else {
+                        window.location = "@Url.Action("Login", "Account")";
+                    }
+                },
+                400: function (data) {
+                    ErrorAlert("Error!", "Log out request was invalid");
+                },
+                500: function () {
+                    ErrorAlert("Error from server side!", "Server failed to respond to request");
                 }
             }
+        }).done(function () {
+            $('#loader').addClass("hidden");
         });
         return false;
+    }
+
+    function ErrorAlert(bolded, normal) {
+        $('#handlerid').empty().append("<strong>" + bolded + " </strong>" + normal);
+        pressCount++;
+        $('#handlerid').addClass('alert-danger').removeClass("hidden").fadeTo(300, 1);
+
+        setTimeout(function () {
+            if (pressCount == 1) {
+                $('#handlerid').fadeTo(300, 0);
+                setTimeout(function () {
+                    $('#handlerid').addClass('hidden').removeClass('alert-danger');
+                }, 1000);
+            }
+            pressCount--;
+        }, 4000);
     }
 
 </script>
