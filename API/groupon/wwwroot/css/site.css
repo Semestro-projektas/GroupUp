@@ -126,6 +126,21 @@
         height: 90px;
     }
 
+    .home .users .subnav {
+        width: 33.33%;
+        white-space: normal;
+        border: 0.2px solid #777;
+        border-radius: 0rem;
+        float: left;
+    }
+
+    .home .users .photo-small {
+        border-radius: 45px;
+        margin-right: 20px;
+        width: 40px;
+        height: 40px;
+    }
+
     .home .users .form-control {
         display: inline-block;
         margin-right: 10px;
@@ -133,6 +148,10 @@
 
     .home .users .name {
         font-weight: 700;
+    }
+
+    .home .users .borderless{
+        padding: 0rem 0rem;
     }
 
     .home .users .expertise-label {

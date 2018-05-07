@@ -8,7 +8,7 @@
     <hr>
     <h2 class="mb-5">Update your profile by changing and adding information</h2>
     <div class="container sub-register-login profile">
-        <form>
+        <form id="form">
             <div class="profile">
                 <div class="profile-avatar-wrap">
                     <img src="~/images/avatar-upload.png" id="profile-avatar" alt="Image for Profile">
@@ -131,60 +131,62 @@
 
 <script>
 
-    @*$.ajax({
-        url: "https://localhost:44330/api/profile/overview",
-        type: "Get",
-        data: {
-            id: "@User.Identity.Name"
-        },
-statusCode: {
-    200: function () {
-        $("#userRegistered").modal();
-        console.log("Successful. ");
-    },
-    400: function () {
-        console.log("Client side error. ");
-    },
-    500: function () {
-        console.log("Server side error. ");
-    }
-}
-});
-false;*@
+    $("#SubmitButton").click(updateProfile);
 
- $("#SubmitButton").click(updateProfile);
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "https://localhost:44330/api/profile/overview",
+            type: "Get",
+            data: {
+                email: "@User.Identity.Name"
+            },
+            statusCode: {
+                200: function (data) {
+                    $("#Name").val(data.name);
+                    console.log("Successful. ");
+                },
+                400: function () {
+                    console.log("Client side error. ");
+                },
+                500: function () {
+                    console.log("Server side error. ");
+                }
+            }
+        });
+        false;
+    });
 
 
     function updateProfile() {
-    //Not the best solution, later will update
-    var labels = document.querySelectorAll('.label-default')
-    var fields = "";
-    for (var x = 0; x < labels.length; x++)
-    {
-        fields += labels[x].innerText + ";"; 
+        //Not the best solution, later will update
+        var labels = document.querySelectorAll('.label-default')
+        var fields = "";
+        for (var x = 0; x < labels.length; x++) {
+            fields += labels[x].innerText + ";";
 
-    }
-
-$.ajax({
-    url: "https://localhost:44330/api/profile/update",
-    type: "POST",
-    data: {
-        Name: $("#Name").val(), Company: 0, field: fields, workExperience: $("#WorkExperience").val(), education: $("#School").val() + ", " + $("#Degree").val() + " in " + $("#StudyField").val(), location: $("#City").val() + ", " + $("#Country").val(), picture: $("#profile-avatar").attr('src'), currentlyWorking: $("#CurrentlyWorkingAt").val() + ", " + $("#CurrentlyWorkingAs").val()
-    },
-    statusCode: {
-        200: function () {
-            console.log("Successful. ");
-        },
-        400: function () {
-            console.log("Client side error. ");
-        },
-        500: function () {
-            console.log("Server side error. ");
         }
+
+        $.ajax({
+            url: "https://localhost:44330/api/profile/update",
+            type: "POST",
+            data: {
+                Name: $("#Name").val(), Company: 0, field: fields, workExperience: $("#WorkExperience").val(), education: $("#School").val() + ", " + $("#Degree").val() + " in " + $("#StudyField").val(), location: $("#City").val() + ", " + $("#Country").val(), picture: $("#profile-avatar").attr('src'), currentlyWorking: $("#CurrentlyWorkingAt").val() + ", " + $("#CurrentlyWorkingAs").val()
+            },
+            statusCode: {
+                200: function () {
+                    console.log("Successful. ");
+                },
+                400: function () {
+                    console.log("Client side error. ");
+                },
+                500: function () {
+                    console.log("Server side error. ");
+                }
+            }
+        });
+        false;
     }
-});
-false;
-}
 
 //function UpdateProfile() {
 //    $.ajax({

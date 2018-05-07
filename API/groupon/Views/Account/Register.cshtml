@@ -122,7 +122,7 @@
                     ErrorAlert("Error from server side!", "Server failed to respond to request");
                 }
             }
-        }).done(function () {
+        }).always(function () {
             $('#loader').addClass("hidden");
         });
         false;
