@@ -65,6 +65,7 @@
                 </div>
             </div>
         </div>
+        @*Group element begining*@
         <div class="col-md-8 col-sm-12 col-xs-7">
             <div class="users">
                 <h1 class="mb-5">Groups searching for memmbers</h1>
@@ -72,7 +73,7 @@
                     <div class="col-md-12">
                         <div class="list-group list">
                             <div href="#" class="list-group-item borderless">
-                                <button type="button" class="btn btn-primary subnav">
+                                <button id="searchGroups" type="button" class="btn btn-primary subnav">
                                     Search for groups &nbsp;
                                 </button>
                                 <button type="button" class="btn btn-primary subnav">
@@ -82,29 +83,33 @@
                                     Create new group &nbsp;
                                 </button>
                             </div>
-                            <div href="#" class="list-group-item">
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <img src="images/man.png" class="pull-left photo">
-                                        <h4 class="list-group-item-heading name">Some group name</h4>
-                                        <p class="list-group-item-text title">Some information about it</p>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="expertise">
-                                            <div class="read-more">
-                                                <button type="button" class="btn btn-primary btn-more mt-1">
-                                                    Read More &nbsp;
-                                                    <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-                                                </button>
+                            @*Group list begining*@
+                            <div id="groupList">
+                                <div href="#" class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <img src="images/man.png" class="pull-left photo">
+                                            <h4 class="list-group-item-heading name">Some group name</h4>
+                                            <p class="list-group-item-text title">Some information about it</p>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="expertise">
+                                                <div class="read-more">
+                                                    <button type="button" class="btn btn-primary btn-more mt-1">
+                                                        Read More &nbsp;
+                                                        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                                <span class="expertise-label">Skills that needed &nbsp;</span>
+                                                <p>
+                                                    <span class="label label-default expertise ">Some skill needed</span>
+                                                </p>
                                             </div>
-                                            <span class="expertise-label">Skills that needed &nbsp;</span>
-                                            <p>
-                                                <span class="label label-default expertise ">Some skill needed</span>
-                                            </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            @*Group list end*@
                             <div href="#" class="list-group-item">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -294,6 +299,9 @@
 <script>
     $("#createGroup").click(showCreateGroupModal);
     $("#confirmGroupCreation").click(confirmGroupCreation);
+
+    $("#searchGroups").click(getGroups);
+
     function showCreateGroupModal() {
         cleanTextField($("#createGroupTitle"), $("#groupTitleError"));
         cleanTextField($("#createGroupDescription"), $("#groupDescriptionError"));
@@ -313,6 +321,65 @@
         field.val("");
         errorField.text("");
     }
+    function getGroups() {
+        $("#searchGroups").addClass('subnav-selected');
+        event.preventDefault();
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/all",
+            type: "GET",
+            data: {},
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        UpdateGroups(data);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    function UpdateGroups(groupsData) {
+        $("#groupList").empty();
+        if (groupsData.length < 0)
+            return false;
+
+        $.each(groupsData, function (index, value) {
+            if (index == 5) {
+                return false;
+            }
+            var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#groupList"));
+            var row = $('<div/>').addClass('row');
+            var colleft = $('<div/>').addClass('col-lg-8');
+            var img = $('<img/>').attr("src", 'images/man.png').addClass('pull-left photo').appendTo(colleft);
+            var title = $('<h4/>').addClass("list-group-item-heading name").text(value.title).appendTo(colleft);
+            var description = $('<p/>').addClass("list-group-item-text title").text(value.shortDescription).appendTo(colleft);
+            var colright = $('<div/>').addClass('col-lg-4');
+            var readmore = $('<div/>').addClass('read-more').appendTo(colright);
+            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/' + value.id).html('Read more &nbsp;').appendTo(readmore);
+            var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
+            var skillsNeeded = $('<span/>').addClass('expertise-label').text('Skills needed').appendTo(colright);
+            row.appendTo(grouplist);
+            colleft.appendTo(row);
+            colright.appendTo(row);
+            console.log(index);
+        });
+     }
+
     function confirmGroupCreation() {
         event.preventDefault();
         if (validateTextField($("#createGroupTitle"), $("#groupTitleError"), "Empty title field")

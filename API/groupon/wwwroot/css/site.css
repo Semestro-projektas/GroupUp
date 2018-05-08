@@ -134,6 +134,10 @@
         float: left;
     }
 
+    .home .users .subnav-selected {
+        background-color: #55acee !important;
+    }
+
     .home .users .photo-small {
         border-radius: 45px;
         margin-right: 20px;
