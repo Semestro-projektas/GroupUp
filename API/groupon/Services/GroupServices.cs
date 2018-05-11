@@ -26,6 +26,7 @@ namespace groupon.Services
         Result AskToJoinRequest(int groupId);
         Result ApproveJoinRequest(string userId, int groupId);
         IEnumerable<GroupTeam> ViewAllJoinRequests(int groupId, int? position, int? count, out string error);
+        IEnumerable<Group> GetAllJoinedGroups(string userId);
     }
 
     public class GroupServices : IGroupServices
@@ -77,6 +78,7 @@ namespace groupon.Services
                 {
                     result.StatusCode = 200;
                     var newGroup = new Group { Description = shortDescription, Title = title, Owner = user };
+                    result.Id = newGroup.Id;
                     _context.Groups.Add(newGroup);
                     _context.GroupTeam.Add(new GroupTeam
                     {
@@ -123,10 +125,18 @@ namespace groupon.Services
         public IEnumerable<Group> GetSearchResult(string filter)
         {
             var selectedGroups = new List<Group>();
-            foreach (var group in _context.Groups)
+            try
             {
-                if(group.Title.Contains(filter) || group.Description.Contains(filter) || group.ShortDescription.Contains(filter))
-                    selectedGroups.Add(group);
+                foreach (var group in _context.Groups)
+                {
+                    if (group.Title.Contains(filter) || group.Description.Contains(filter) ||
+                        group.ShortDescription.Contains(filter))
+                        selectedGroups.Add(group);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
 
             return selectedGroups.AsEnumerable();
@@ -309,6 +319,25 @@ namespace groupon.Services
                 LogException(ex);
             }
             return null;
+        }
+
+        public IEnumerable<Group> GetAllJoinedGroups(string userId)
+        {
+            List<Group> groups = new List<Group>();
+            try
+            {
+                var joinedGroups = _context.GroupTeam.Where(i => i.UserId == userId).Select(i => i.GroupId);
+                foreach (int id in joinedGroups)
+                {
+                    groups.Add(_context.Groups.FirstOrDefault(i => i.Id == id));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+            }
+
+            return groups;
         }
 
         #region Private functions
