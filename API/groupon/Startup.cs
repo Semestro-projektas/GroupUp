@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -12,12 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using groupon.Data;
 using groupon.Models;
 using groupon.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
 namespace groupon
 {
@@ -80,11 +74,6 @@ namespace groupon
 
             services.AddCors();
             services.AddMvc();
-        }
-
-        private Task OnRedirectToLogin(RedirectContext<CookieAuthenticationOptions> redirectContext)
-        {
-            throw new NotImplementedException();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

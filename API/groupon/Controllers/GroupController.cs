@@ -30,6 +30,18 @@ namespace groupon.Controllers
             _main = groupServices;
         }
 
+        #region Views
+
+        [HttpGet]
+        [Route("/groups/")]
+        public IActionResult GroupOverview(int id)
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region API calls
         [HttpGet]
         [Route("/api/groups/")]
         [Route("/api/groups/all")]
@@ -128,5 +140,15 @@ namespace groupon.Controllers
 
             return result;
         }
+
+        [HttpGet]
+        [Route("api/groups/joined")]
+        public IEnumerable<GroupListViewModel> GetMyGroups()
+        {
+            var result = _main.GetAllJoinedGroups(HttpContext.User.Identity.Name).Select(i => new GroupListViewModel(i));
+
+            return result;
+        }
+        #endregion
     }
 }
