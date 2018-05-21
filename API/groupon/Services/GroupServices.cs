@@ -321,11 +321,12 @@ namespace groupon.Services
             return null;
         }
 
-        public IEnumerable<Group> GetAllJoinedGroups(string userId)
+        public IEnumerable<Group> GetAllJoinedGroups(string email)
         {
             List<Group> groups = new List<Group>();
             try
             {
+                var userId = _context.Users.FirstOrDefault(i => i.Email == email).Id;
                 var joinedGroups = _context.GroupTeam.Where(i => i.UserId == userId).Select(i => i.GroupId);
                 foreach (int id in joinedGroups)
                 {
