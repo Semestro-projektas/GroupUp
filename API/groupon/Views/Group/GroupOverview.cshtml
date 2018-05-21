@@ -1,170 +1,120 @@
 ﻿
 @{
-    ViewData["Title"] = "KEISTI SITA VIEW PER GROUPOVERVIEW.CSHTML";
+    ViewData["Title"] = "Groups";
 }
 
-KEISTI SITA VIEW PER GROUPOVERVIEW.CSHTML
-KEISTI SITA VIEW PER GROUPOVERVIEW.CSHTML
-<div class="container-fluid main mt-5 mb-5">
-    <div class="header">
-        <img class="head-img mb-2" src="/images/agile_for_developers.png" />
-        <h1 class="mb-2">Find jobs, create and contribute to projects in seconds</h1>
-        <h2 class="mb-2">We connect students, who seek for experience and companies, who are searching for talent in a modern way </h2>
-        <a asp-area="" asp-controller="Account" asp-action="Register" class="btn-special blue">I WANT TO KNOW MORE</a>
-
-    </div>
-</div>
-<hr></hr>
-<div class="container-fluid main mt-5 ">
-    <div class="header">
-        <h3 class="mb-5">Contact top companies like these</h3>
-    </div>
-    <div class="row row-companies">
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/logo-seatgeek.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/warby.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/jet.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/instacart.png" />
-        </div>
-    </div>
-    <div class="row row-companies">
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/warby.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/jet.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/instacart.png" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 box-company">
-            <img class="mt-3" src="/images/logo-seatgeek.png" />
+<div class="modal fade" id="groupModal" tabindex="-1" role="dialog" aria-labelledby="groupCreateLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="createGroupForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="groupCreateLabel">Create new group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row text-left">
+                        <div class="col-md-12">
+                            <label>Title</label>
+                            <input id="createGroupTitle" class="form-control" x type="text" placeholder="Group title" />
+                            <span id="groupTitleError" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3 text-left">
+                        <div class="col">
+                            <label>Description</label>
+                            <input id="createGroupDescription" type="text" class="form-control" placeholder="Your group description" />
+                            <span id="groupDescriptionError" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="container text-center">
+                        <button id="confirmGroupCreation" type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-<hr></hr>
-<div class="container-fluid main mt-5 pb-5">
-    <div class="header">
-        <h3 class="mb-5 long">Build a pool of talented creators for your TEAM</h3>
-        <div class="row row-companies">
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img src="/images/browser.png" class="border-bottom" />
-                    <p class="mt-3">WEB DEVELOPERS</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img src="/images/smartphone.png" class="border-bottom" />
-                    <p class="mt-3">MOBILE DEVELOPERS</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img src="/images/pencil.png" class="border-bottom" />
-                    <p class="mt-3">DESIGNERS & CREATIVES</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img src="/images/pen.png" class="border-bottom" />
-                    <p class="mt-3">WRITERS</p>
-                </span>
-            </div>
-        </div>
 
-        <div class="row row-companies">
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img width="115px" src="/images/call-center.png" class="border-bottom" />
-                    <p class="mt-3">VIRTUAL ASSISTANTS</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-labelbox-company">
-                <span>
-                    <img width="115px" src="/images/man.png" class="border-bottom" />
-                    <p class="mt-3">CUSTOMER SERVICE</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img width="115px" src="/images/analytics.png" class="border-bottom" />
-                    <p class="mt-3">SALES & MARKETING EXPERTS</p>
-                </span>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-3 col-xs-6 col-xl-3 control-label box-company">
-                <span>
-                    <img width="115px" src="/images/calculator.png" class="border-bottom" />
-                    <p class="mt-3">ACCOUNTANTS & CONSULTANTS</p>
-                </span>
-            </div>
+<div id="handlerid" class="main alert hidden fade" style="text-align: center" role="alert"></div>
 
-        </div>
-
-
-    </div>
+<div id="loader" class="loadingbox hidden">
+    <div class="loader"></div>
 </div>
-@*﻿<h1>API TEST PAGE</h1>
-    <div class="row">
-        <div class="col-lg-6">
-            <h4>To get all group entries to console press button:</h4>
-            <button id="btn" class="btn btn-success">Get all</button>
-        </div>
-        <div class="col-lg-6 right">
-            <h4>To get all company entries to console press button:</h4>
-            <button id="btnCompanies" class="btn btn-success">Get all</button>
+
+@if (ViewBag.Id == 0)
+{
+    <div class="container-fluid home mt-5 mb-5">
+        <div class="users">
+            <h1 class="mb-5">Groups searching for memmbers</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="list-group list">
+                        <div href="#" class="list-group-item borderless">
+                            <button id="searchGroups" type="button" class="btn btn-primary subnav">
+                                Search for groups &nbsp;
+                            </button>
+                            <button id="searchMyGroups" type="button" class="btn btn-primary subnav">
+                                My groups &nbsp;
+                            </button>
+                            <button id="createGroup" type="button" class="btn btn-primary subnav">
+                                Create new &nbsp;
+                            </button>
+                        </div>
+                        <div id="groupList">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <br />
-    <br/>
-        <div class="table-bordered">
-        <div class="row" style="margin-left: 10px;">
-            <div class="col-lg-2">
-                <h5 style="margin-left: 5px;"><b> POST FORM to add new group:</b></h5>
-                Title*: <input id="title" class="input-sm"/>
-                <br/>
-                Description*: <input id="desc" class="input-sm"/>
-                <br/>
-                <br/>
-            </div>
-            <div class="col-lg-4"></div>
-            <div class="col-lg-2">
-                <h5 style="margin-left: 5px;"><b> POST FORM to add new company:</b></h5>
-                Title*: <input id="titleC" class="input-sm" />
-                <br />
-                Description*: <input id="descC" class="input-sm" />
-                <br />
-                <br />
-            </div>
-            <div class="col-lg-2">
-                <br/>
-                <br/>
-                <br/>
-                * Required fields
-            </div>
-            <br />
+}
+else
+{
+    <div class="container-fluid main-register-login mt-5 mb-5">
+        <h1>Group Settings</h1>
+        <hr>
+        <h2 class="mb-5">Update your group by changing and adding information</h2>
+        <div class="container sub-register-login profile">
+            <form id="form">
+                <div class="profile">
+                    <div class="profile-avatar-wrap">
+                        <img src="~/images/avatar-upload.png" id="profile-avatar" alt="Image for Profile">
+                    </div>
+                    <label for="uploader">
+                        <img id="profile-picture" class="mt-3 nav-logo" width="42px" src="~/images/upload.png" />
+                    </label>
+                    <input class="input-file" type="file" id="uploader">
+                </div>
+                <h2 class="mt-5 text-left">Group Information</h2>
+                <hr>    
+                <div class="row mt-4 text-left">
+                    <div class="col-md-12">
+                        <label>Title</label>
+                        <input id="Title" class="form-control" type="text" placeholder="John Smith" />
+                    </div>
+                </div>
+                <div class="row mt-3 text-left">
+                    <div class="col">
+                        <label>Short Description</label>
+                        <input id="shortDescription" type="text" class="form-control" placeholder="johnsmith@mail.com" />
+                    </div>
+                </div>
+                <div class="row mt-3 text-left">
+                    <div class="col">
+                        <label>Full Description</label>
+                        <textarea class="form-control" rows="5" id="fullDescription"></textarea>
+                    </div>
+                </div>
+                <button type="button" id="SubmitButton" class="btn-special button-centered blue">Update Your Group</button>
+            </form>
         </div>
-        <div class="row" style="margin-left: 10px;">
-            <div class="col-lg-2">
-                <button id="post" class="btn btn-info">Create</button>
-            </div>
-            <div class="col-lg-4">
-            </div>
-            <div class="col-lg-2">
-                <button id="postCompany" class="btn btn-info">Create</button>
-            </div>
-            <br />
-            <br />
-        </div>
-    </div>*@
-
-
+    </div>
+}
 <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
         asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
         asp-fallback-test="window.jQuery"
@@ -176,6 +126,30 @@ KEISTI SITA VIEW PER GROUPOVERVIEW.CSHTML
     $("#post").click(postNew);
     $("#btnCompanies").click(getAllCompanies);
     $("#postCompany").click(postNewCompany);
+
+    $("#SubmitButton").click(updateGroup);
+
+    function updateGroup() {
+        $.ajax({
+            url: "https://localhost:44330/api/groups/edit",
+            type: "POST",
+            data: {
+                groupId: @ViewBag.Id, title: $("#Title").val(), type: 0, shortDescription: $("#shortDescription").val(), description: $("#fullDescription").val(), picture: $("#profile-avatar").attr('src')
+            },
+            statusCode: {
+                200: function () {
+                    console.log("Successful. ");
+                },
+                400: function () {
+                    console.log("Client side error. ");
+                },
+                500: function () {
+                    console.log("Server side error. ");
+                }
+            }
+        });
+        false;
+    }
 
     function getAllGroups() {
         $.ajax({
@@ -237,3 +211,226 @@ KEISTI SITA VIEW PER GROUPOVERVIEW.CSHTML
         });
     }
 </script>
+
+<script>
+    $("#createGroup").click(showCreateGroupModal);
+    $("#confirmGroupCreation").click(confirmGroupCreation);
+
+    $("#searchGroups").click(getGroups);
+    $("#searchMyGroups").click(getJoinedGroups);
+
+    function showCreateGroupModal() {
+        cleanTextField($("#createGroupTitle"), $("#groupTitleError"));
+        cleanTextField($("#createGroupDescription"), $("#groupDescriptionError"));
+        $("#groupModal").modal();
+    }
+    function validateTextField(field, errorField, errorText) {
+        if (!$.trim(field.val()).length) {
+            errorField.text(errorText);
+            return false;
+        }
+        else {
+            errorField.text("");
+            return true;
+        }
+    }
+    function cleanTextField(field, errorField) {
+        field.val("");
+        errorField.text("");
+    }
+    function getGroups() {
+        $("#searchMyGroups").removeClass('subnav-selected');
+        $("#searchGroups").addClass('subnav-selected');
+        event.preventDefault();
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/all",
+            type: "GET",
+            data: {},
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        UpdateGroups(data);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    function getJoinedGroups() {
+        $("#searchGroups").removeClass('subnav-selected');
+        $("#searchMyGroups").addClass('subnav-selected');
+        event.preventDefault();
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/joined",
+            type: "GET",
+            data: {
+            },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        UpdateGroups(data);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    function UpdateGroups(groupsData) {
+        $("#groupList").empty();
+        if (groupsData.length < 0)
+            return false;
+
+        $.each(groupsData, function (index, value) {
+            if (index == 20) {
+                return false;
+            }
+            var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#groupList"));
+            var row = $('<div/>').addClass('row');
+            var colleft = $('<div/>').addClass('col-lg-8');
+            var img = $('<img/>').attr("src", 'images/man.png').addClass('pull-left photo').appendTo(colleft);
+            var title = $('<h4/>').addClass("list-group-item-heading name").text(value.title).appendTo(colleft);
+            var description = $('<p/>').addClass("list-group-item-text title").text(value.shortDescription).appendTo(colleft);
+            var colright = $('<div/>').addClass('col-lg-4');
+            var readmore = $('<div/>').addClass('read-more').appendTo(colright);
+            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('Read more &nbsp;').appendTo(readmore);
+            var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
+            var skillsNeeded = $('<span/>').addClass('expertise-label').text('Skills needed').appendTo(colright);
+            row.appendTo(grouplist);
+            colleft.appendTo(row);
+            colright.appendTo(row);
+            console.log(index);
+        });
+    }
+
+    function confirmGroupCreation() {
+        event.preventDefault();
+        if (validateTextField($("#createGroupTitle"), $("#groupTitleError"), "Empty title field")
+            && validateTextField($("#createGroupDescription"), $("#groupDescriptionError"), "Empty description field")) {
+        }
+        else {
+            return false;
+        }
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/create",
+            type: "POST",
+            data: {
+                title: $("#createGroupTitle").val(),
+                description: $("#createGroupDescription").val()
+            },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        Alert("Succeeded!", "Your group has been created", "alert-success");
+                        $("#groupModal").hide();
+                        location.href = 'https://localhost:44330/groups/?id=' + data.id;
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+    function Alert(bolded, normal, alertType) {
+        $('#handlerid').empty().append("<strong>" + bolded + " </strong>" + normal);
+        pressCount++;
+        $('#handlerid').addClass(alertType).removeClass("hidden").fadeTo(300, 1);
+
+        setTimeout(function () {
+            if (pressCount == 1) {
+                $('#handlerid').fadeTo(300, 0);
+                setTimeout(function () {
+                    $('#handlerid').addClass('hidden').removeClass(alertType);
+                }, 1000);
+            }
+            pressCount--;
+        }, 4000);
+    }
+</script>
+
+@if (ViewBag.Id != 0)
+{
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "https://localhost:44330/api/groups/" + @ViewBag.Id,
+                type: "Get",
+                data: {
+                },
+                dataType: "json",
+                statusCode: {
+                    200: function (data) {
+                        console.log("Successful: " + data.succeeded);
+                        if ($.trim(data.succeeded) == 'false') {
+                            Alert("Error!", data.errors[0].description, "alert-danger");
+                        }
+                        else {
+                            $("#Title").val(data.title);
+                            $("#shortDescription").val(data.shortDescription);
+                            $("#fullDescription").val(data.description);
+                        }
+                    },
+                    400: function () {
+                        Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                    },
+                    500: function () {
+                        Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                    }
+                }
+            }).always(function () {
+                $('#loader').addClass("hidden");
+            });
+            false;
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(document).ready(function () {
+            getGroups();
+        })
+    </script>
+}

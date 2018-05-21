@@ -37,6 +37,7 @@ namespace groupon.Controllers
         [Route("/groups/")]
         public IActionResult GroupOverview(int id)
         {
+            ViewBag.Id = id;
             return View();
         }
 

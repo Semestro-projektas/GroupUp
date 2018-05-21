@@ -77,12 +77,17 @@ namespace groupon.Services
                 else
                 {
                     result.StatusCode = 200;
+<<<<<<< HEAD
 
                     var newGroup = new Group { ShortDescription = shortDescription, Title = title, Owner = user };
                     result.Id = newGroup.Id;
 
                    
 
+=======
+                    var newGroup = new Group { ShortDescription = shortDescription, Title = title, Owner = user };
+                    result.Id = newGroup.Id;
+>>>>>>> d91ae52b0a023ef97f4cefb14228532e3b7936aa
                     _context.Groups.Add(newGroup);
                     _context.GroupTeam.Add(new GroupTeam
                     {

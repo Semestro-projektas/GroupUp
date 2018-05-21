@@ -14,7 +14,7 @@
                     <img src="~/images/avatar-upload.png" id="profile-avatar" alt="Image for Profile">
                 </div>
                 <label for="uploader">
-                    <img id="profile-picture" class="mt-3" width="42px" src="~/images/upload.png" />
+                    <img id="profile-picture" class="mt-3 nav-logo" width="42px" src="~/images/upload.png" />
                 </label>
                 <input class="input-file" type="file" id="uploader">
             </div>
@@ -139,6 +139,7 @@
 
     function getUserID() {
 
+<<<<<<< HEAD
         var id = -1;
 
         $.ajax({
@@ -146,6 +147,16 @@
             type: "GET",
             data: {},
             dataType: "json",
+=======
+    $(document).ready(function () {
+        $.get("https://localhost:44330/Account/getuserid", function (userId) {
+        $.ajax({
+            url: "https://localhost:44330/api/profile/overview",
+            type: "Get",
+            data: {
+                id: userId
+            },
+>>>>>>> d91ae52b0a023ef97f4cefb14228532e3b7936aa
             statusCode: {
                 200: function (data) {
                     console.log("Successful: " + data);
@@ -163,6 +174,7 @@
                     Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
                 }
             }
+            });
         });
         false;
     }
@@ -176,7 +188,6 @@
             fields += labels[x].innerText + ";";
 
         }
-
         $.ajax({
             url: "https://localhost:44330/api/profile/update",
             type: "POST",
