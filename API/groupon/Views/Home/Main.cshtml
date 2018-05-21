@@ -74,49 +74,24 @@
                         <div class="list-group list">
                             <div href="#" class="list-group-item borderless">
                                 <button id="searchGroups" type="button" class="btn btn-primary subnav">
-                                    Search for groups &nbsp;
+                                    Search for groups
                                 </button>
                                 <button id="searchMyGroups"type="button" class="btn btn-primary subnav">
-                                    My groups &nbsp;
+                                    My groups
                                 </button>
                                 <button id="createGroup" type="button" class="btn btn-primary subnav">
-                                    Create new &nbsp;
+                                    Create new
                                 </button>
                             </div>
-                            @*Group list begining*@
                             <div id="groupList">
-                                <div href="#" class="list-group-item">
-                                    <div class="row">
-                                        <div class="col-lg-8">
-                                            <img src="images/man.png" class="pull-left photo">
-                                            <h4 class="list-group-item-heading name">Some group name</h4>
-                                            <p class="list-group-item-text title">Some information about it</p>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="expertise">
-                                                <div class="read-more">
-                                                    <button type="button" class="btn btn-primary btn-more mt-1">
-                                                        Read More &nbsp;
-                                                        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-                                                    </button>
-                                                </div>
-                                                <span class="expertise-label">Skills that needed &nbsp;</span>
-                                                <p>
-                                                    <span class="label label-default expertise ">Some skill needed</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                            @*Group list end*@
                             <div href="#" class="list-group-item">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="expertise">
                                             <div class="read-more text-center">
                                                 <h2>Find other groups to connect with and start working!</h2>
-                                                <button type="button" class="mt-3 mb-1 btn btn-primary">
+                                                <button id="goToGroups" type="button" class="mt-3 mb-1 btn btn-primary">
                                                     SEARCH OTHER GROUPS &nbsp;
                                                 </button>
                                             </div>
@@ -300,6 +275,7 @@
     $("#createGroup").click(showCreateGroupModal);
     $("#confirmGroupCreation").click(confirmGroupCreation);
 
+    $("#goToGroups").click(goToGroups);
     $("#searchGroups").click(getGroups);
     $("#searchMyGroups").click(getJoinedGroups);
 
@@ -322,6 +298,10 @@
         field.val("");
         errorField.text("");
     }
+    function goToGroups() {
+        location.href = 'https://localhost:44330/groups';
+    }
+
     function getGroups() {
         $("#searchMyGroups").removeClass('subnav-selected');
         $("#searchGroups").addClass('subnav-selected');
