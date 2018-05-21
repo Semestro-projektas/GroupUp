@@ -13,6 +13,7 @@ namespace groupon.Models.GroupViewModels
         public string Owner { get; set; }
         public string Image { get; set; }
         public string Description { get; set; }
+        public string ShortDescription { get; set; }
 
         public SingleGroupViewModel(Group group)
         {
@@ -22,6 +23,7 @@ namespace groupon.Models.GroupViewModels
             Owner = group.Owner.Name != null ? group.Owner.Name : "";
             Image = group.Image;
             Description = group.Description;
+            ShortDescription = group.ShortDescription;
         }
     }
 
