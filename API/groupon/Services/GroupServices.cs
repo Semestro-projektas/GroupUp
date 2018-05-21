@@ -78,7 +78,6 @@ namespace groupon.Services
                 {
                     result.StatusCode = 200;
                     var newGroup = new Group { Description = shortDescription, Title = title, Owner = user };
-                    result.Id = newGroup.Id;
                     _context.Groups.Add(newGroup);
                     _context.GroupTeam.Add(new GroupTeam
                     {
@@ -89,6 +88,7 @@ namespace groupon.Services
                         GroupId = newGroup.Id,
                         UserId = user.Id
                     });
+                    result.Id = newGroup.Id;
                     _context.SaveChanges();
                 }
 
