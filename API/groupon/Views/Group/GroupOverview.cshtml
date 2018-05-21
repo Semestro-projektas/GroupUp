@@ -50,7 +50,7 @@
 {
     <div class="container-fluid home mt-5 mb-5">
         <div class="users">
-            <h1 class="mb-5">Groups searching for memmbers</h1>
+            <h1 class="mb-5">Groups searching for members</h1>
             <div class="row">
                 <div class="col-md-12">
                     <div class="list-group list">
@@ -75,6 +75,29 @@
 }
 else
 {
+
+    <div class="container-fluid home mt-5 mb-5">
+        <div class="users">
+            <h1 class="mb-5">Groups searching for members</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="list-group list">
+                        <div href="#" class="list-group-item borderless">
+                            <button id="messages" type="button" class="btn btn-primary subnav">
+                                Messages &nbsp;
+                            </button>
+                            <button id="groupOverview" type="button" class="btn btn-primary subnav">
+                                Group Overview &nbsp;
+                            </button>
+                            <button id="members" type="button" class="btn btn-primary subnav">
+                                Members &nbsp;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid main-register-login mt-5 mb-5">
         <h1>Group Settings</h1>
         <hr>
@@ -91,7 +114,7 @@ else
                     <input class="input-file" type="file" id="uploader">
                 </div>
                 <h2 class="mt-5 text-left">Group Information</h2>
-                <hr>    
+                <hr>
                 <div class="row mt-4 text-left">
                     <div class="col-md-12">
                         <label>Title</label>
@@ -218,6 +241,7 @@ else
 
     $("#searchGroups").click(getGroups);
     $("#searchMyGroups").click(getJoinedGroups);
+    $("#members").click(getJoinRequests);
 
     function showCreateGroupModal() {
         cleanTextField($("#createGroupTitle"), $("#groupTitleError"));
@@ -332,6 +356,79 @@ else
         });
     }
 
+    function getJoinRequests() {
+        $("#members").addClass('subnav-selected');
+        $("#messages").removeClass('subnav-selected');
+        $("#groupOverview").removeClass('subnav-selected');
+        groupOverview
+        $.ajax({
+            url: "https://localhost:44330/api/groups/requests",
+            type: "Get",
+            data: {
+                groupId: @ViewBag.Id
+            },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        $("#Title").val(data.title);
+                        $("#shortDescription").val(data.shortDescription);
+                        $("#fullDescription").val(data.description);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    function getCurrentGroupOverview() {
+        $("#members").removeClass('subnav-selected');
+        $("#messages").removeClass('subnav-selected');
+        $("#groupOverview").addClass('subnav-selected');
+        groupOverview
+        $.ajax({
+            url: "https://localhost:44330/api/groups/" + @ViewBag.Id,
+            type: "Get",
+            data: {
+            },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        $("#Title").val(data.title);
+                        $("#shortDescription").val(data.shortDescription);
+                        $("#fullDescription").val(data.description);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
     function confirmGroupCreation() {
         event.preventDefault();
         if (validateTextField($("#createGroupTitle"), $("#groupTitleError"), "Empty title field")
@@ -394,35 +491,7 @@ else
 {
     <script>
         $(document).ready(function () {
-            $.ajax({
-                url: "https://localhost:44330/api/groups/" + @ViewBag.Id,
-                type: "Get",
-                data: {
-                },
-                dataType: "json",
-                statusCode: {
-                    200: function (data) {
-                        console.log("Successful: " + data.succeeded);
-                        if ($.trim(data.succeeded) == 'false') {
-                            Alert("Error!", data.errors[0].description, "alert-danger");
-                        }
-                        else {
-                            $("#Title").val(data.title);
-                            $("#shortDescription").val(data.shortDescription);
-                            $("#fullDescription").val(data.description);
-                        }
-                    },
-                    400: function () {
-                        Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
-                    },
-                    500: function () {
-                        Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
-                    }
-                }
-            }).always(function () {
-                $('#loader').addClass("hidden");
-            });
-            false;
+            getCurrentGroupOverview();
         });
     </script>
 }
