@@ -33,6 +33,12 @@
                 </div>
             </div>
             <div class="row mt-3 text-left">
+                <div class="col">
+                    <label>Phone</label>
+                    <input id="Phone" type="text" class="form-control"  placeholder="+1 (XXX) (XXX)" />
+                </div>
+            </div>
+            <div class="row mt-3 text-left">
                 <div class="col-md-6">
                     <label>Country / Region</label>
                     <input id="Country" type="text" class="form-control" placeholder="USA" />
@@ -57,7 +63,7 @@
             <div class="row mt-3 text-left">
                 <div class="col-md-6">
                     <label>Degree</label>
-                    <input id="School" type="text" class="form-control" placeholder="Bachelors Degree" />
+                    <input id="Degree" type="text" class="form-control" placeholder="Bachelors Degree" />
                 </div>
             </div>
             <h2 class="mt-5 text-left">Specialization & Work Experience</h2>
@@ -75,11 +81,11 @@
             <div class="row mt-4 text-left">
                 <div class="col-md-6">
                     <label>Currently Working</label>
-                    <input id="CurrentlyWorkingAt" type="text" class="form-control" placeholder='UAB "GroupUp"'/>
+                    <input id="CurrentlyWorkingAt" type="text" class="form-control" placeholder='UAB "GroupUp"' />
                 </div>
                 <div class="col-md-6">
                     <label>Position</label>
-                    <input id="CurrentlyWorkingAs" type="text" class="form-control" placeholder='Jr. Software Engineer'/>
+                    <input id="CurrentlyWorkingAs" type="text" class="form-control" placeholder='Jr. Software Engineer' />
                 </div>
             </div>
             <h2 class="mt-5 text-left">Your Skills & Talents</h2>
@@ -88,9 +94,9 @@
                 <div class="col-lg-8">
                     <div class="input-group">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-skills" placeholder="Add skill..." aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+                            <input type="text" class="form-control form-control-skills" placeholder="baking pies..." aria-label="Recipient's username" aria-describedby="basic-addon2" />
                             <div class="input-group-append">
-                                <button class="btn btn-light blue form-control-feedback add-btn" type="button">Button</button>
+                                <button class="btn btn-light blue form-control-feedback add-btn" type="button">Add</button>
                             </div>
                         </div>
                     </div>
@@ -104,9 +110,6 @@
                                 <div class="col-md-12">
                                     <div class="expertise">
                                         <p class="todo-list-1 text-left">
-                                            @*<span class="label label-default expertise ">.NET <i class="fa fa-times"></i></span>
-                                            <span class="label label-default expertise ">SQL <i class="fa fa-times"></i></span>
-                                            <span class="label label-default expertise ">Angular 2 <i class="fa fa-times"></i></span>*@
                                         </p>
                                     </div>
                                 </div>
@@ -132,36 +135,43 @@
 <script>
 
     $("#SubmitButton").click(updateProfile);
+    getUserID();
 
-    $(document).ready(function () {
+    function getUserID() {
+
+        var id = -1;
 
         $.ajax({
-            url: "https://localhost:44330/api/profile/overview",
-            type: "Get",
-            data: {
-                email: "@User.Identity.Name"
-            },
+            url: "https://localhost:44330/account/getuserid",
+            type: "GET",
+            data: {},
+            dataType: "json",
             statusCode: {
                 200: function (data) {
-                    $("#Name").val(data.name);
-                    console.log("Successful. ");
+                    console.log("Successful: " + data);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        getProfile(data);
+                    }
                 },
                 400: function () {
-                    console.log("Client side error. ");
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
                 },
                 500: function () {
-                    console.log("Server side error. ");
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
                 }
             }
         });
         false;
-    });
-
+    }
 
     function updateProfile() {
         //Not the best solution, later will update
         var labels = document.querySelectorAll('.label-default')
         var fields = "";
+
         for (var x = 0; x < labels.length; x++) {
             fields += labels[x].innerText + ";";
 
@@ -171,88 +181,121 @@
             url: "https://localhost:44330/api/profile/update",
             type: "POST",
             data: {
-                Name: $("#Name").val(), Company: 0, field: fields, workExperience: $("#WorkExperience").val(), education: $("#School").val() + ", " + $("#Degree").val() + " in " + $("#StudyField").val(), location: $("#City").val() + ", " + $("#Country").val(), picture: $("#profile-avatar").attr('src'), currentlyWorking: $("#CurrentlyWorkingAt").val() + ", " + $("#CurrentlyWorkingAs").val()
+                Name: $("#Name").val(),
+                Company: 0,
+                field: fields,
+                workExperience: $("#WorkExperience").val(),
+                education: $("#School").val() + ";" + $("#StudyField").val() + ";" + $("#Degree").val(),
+                location: $("#Country").val() + ";" + $("#City").val(),
+                picture: $("#profile-avatar").attr('src'),
+                currentlyWorking: $("#CurrentlyWorkingAt").val() + ";" + $("#CurrentlyWorkingAs").val(),
+                title: $("#Title").val(),
+                phoneNumber: $("#Phone").val(),
+                email: $("Email").val()
             },
             statusCode: {
-                200: function () {
-                    console.log("Successful. ");
+                200: function (data) {
+                    console.log("Successful: " + data);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        Alert("Succeeded!", "Your profile has been updated", "alert-success");
+                    }
                 },
                 400: function () {
-                    console.log("Client side error. ");
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
                 },
                 500: function () {
-                    console.log("Server side error. ");
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
                 }
             }
         });
         false;
     }
 
-//function UpdateProfile() {
-//    $.ajax({
-//        url: "https://localhost:44330/api/profile/update",
-//        type: "POST",
-//        data: {
-//            Name: $("#Name").val(), Company: 0, field: $("#StudyField").val(), workExperience: $("WorkExperience").val(), education: $("#School").val() + ", " + $("#Degree").val() + " in " + $("#StudyField").val(),
-//            location: $("#City").val() + ", " + $("#Country").val(), picture: $("#profile-avatar").val(), currentlyWorking: $("#CurrentlyWorkingAt").val() + ", " + $("#CurrentlyWorkingAs").val()
-//        },
-//        contentType: "application/json;charset=utf-8",
-//        dataType: "json",
-//        success: function (result) {
-//            console.log(result);
-//            console.log($("#StudyField").val());
-//        },
-//        error: function (response) {
-//            console.log($("#StudyField").val());
-//            alert('error when loading groups');
-//        }
-//    });
-//}
+    function getProfile() {
 
-//function GetAllFields() {
-//    $.ajax({
-//        type: "GET",
-//        url: "https://localhost:44330/account/getuserfields",
-//        data: {},
-//        contentType: "application/json;charset=utf-8",
-//        dataType: "json",
-//        success: function (result) {
-//            console.log(result);
-//        },
-//        error: function (response) {
-//            alert('error when loading groups');
-//        }
-//    });
-//}
+        $.ajax({
+            url: "https://localhost:44330/api/profile/overview",
+            type: "GET",
+            data: { id: "44bf008b-00b9-435e-bf8f-14aac716cf1f" },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        setProfile(data);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        });
+        false;
+    }
 
-//function AddNewFields() {
-//    $.ajax({
-//        type: "POST",
-//        url: "https://localhost:44330/account/updatefield",
-//        data: { newField = 'textbox input' },
-//        contentType: "application/json;charset=utf-8",
-//        dataType: "json",
-//        success: function (result) {
-//            console.log(result);
-//        },
-//        error: function (response) {
-//            alert('error when loading groups');
-//        }
-//    });
-//}
+    function setProfile(userData) {
 
-//$(function () {
-//    $('input[name="showthis"]').hide();
+        $("#profile-avatar").attr("src", userData.picture);
+        
+        $('#Name').val(userData.name);
+        $('#Email').val(userData.email);
+        
+        var locationData = userData.location.split(';');
+        $('#Country').val(locationData[0]);
+        $('#City').val(locationData[1]);
 
-//    //show it when the checkbox is clicked
-//    $('input[name="checkbox"]').on('click', function () {
-//        if ($(this).prop('checked')) {
-//            $('input[name="showthis"]').fadeIn();
-//        } else {
-//            $('input[name="showthis"]').hide();
-//        }
-//    });
-//});
+        var educationData = userData.education.split(';');
+        $('#School').val(educationData[0]);
+        $('#StudyField').val(educationData[1]);
+        $('#Degree').val(educationData[2]);
+
+        var currentlyWorkingData = userData.currentlyWorking.split(';');
+
+        $('#Title').val(userData.title);
+        $('#WorkExperience').val(userData.workExperience);
+        $('#CurrentlyWorkingAt').val(currentlyWorkingData[0]);
+        $('#CurrentlyWorkingAs').val(currentlyWorkingData[1]);
+        $('#Phone').val(userData.phoneNumber);
+        var skillsData = userData.education.split(';');
+
+        
+        for (var x = 0; x < skillsData.length; x++)
+        { 
+            //var span = $('<span />').attr({ 'class': 'label label-default expertise' }).html(skillsData[x]).appendTo($('.todo-list-1').last());
+            //var i = $('<i />').attr({ 'class': 'fa fa-times pr-1 ml-1', 'id': 'close' }).html('').appendTo($('.label').last());
+
+            $('.form-control-skills').val(skillsData[x]); //little evil hack
+            addItem();
+        }
+
+        
+    }
+
+    function Alert(bolded, normal, alertType) {
+        $('#handlerid').empty().append("<strong>" + bolded + " </strong>" + normal);
+        pressCount++;
+        $('#handlerid').addClass(alertType).removeClass("hidden").fadeTo(300, 1);
+
+        setTimeout(function () {
+            if (pressCount == 1) {
+                $('#handlerid').fadeTo(300, 0);
+                setTimeout(function () {
+                    $('#handlerid').addClass('hidden').removeClass(alertType);
+                }, 1000);
+            }
+            pressCount--;
+        }, 4000);
+    }
+
 </script>
 <script src="~/js/crop-image.js"></script>
 <script src="~/js/upload-image.js"></script>

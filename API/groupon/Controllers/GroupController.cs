@@ -8,6 +8,7 @@ using groupon.Data;
 using groupon.Models;
 using groupon.Models.GroupViewModels;
 using groupon.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
@@ -143,6 +144,7 @@ namespace groupon.Controllers
 
         [HttpGet]
         [Route("api/groups/joined")]
+        [Authorize]
         public IEnumerable<GroupListViewModel> GetMyGroups()
         {
             var result = _main.GetAllJoinedGroups(HttpContext.User.Identity.Name).Select(i => new GroupListViewModel(i));
