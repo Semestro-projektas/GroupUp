@@ -60,6 +60,9 @@ namespace groupon.Models
         public string Location { get; set; }
         public string Picture { get; set; }
         public string CurrentlyWorking { get; set; }
+        public string Title { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
 
         public UpdateProfileResult()
         {
