@@ -482,6 +482,20 @@ namespace groupon.Controllers
         {
             return _main.GetAllUsersFields(userId);
         }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetUserId()
+        {
+            return Json(_main.GetUserId());
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IEnumerable<UserShortViewModel> GetAllUsers()
+        {
+            return _main.GetAllUsers().Select(i => new UserShortViewModel(i));
+        }
         #endregion
 
         #region Profile

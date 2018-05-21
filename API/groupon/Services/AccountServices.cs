@@ -27,6 +27,8 @@ namespace groupon.Services
         Result UpdateField(string newField);
         Result RemoveField(string field);
         IEnumerable<string> GetAllUsersFields(string userId);
+        string GetUserId();
+        IEnumerable<ApplicationUser> GetAllUsers();
     }
 
     public class AccountServices : IAccountServices
@@ -377,6 +379,38 @@ namespace groupon.Services
             }
 
             return fields;
+        }
+
+        public string GetUserId()
+        {
+            try
+            {
+                if (IsAuthenticated())
+                    return GetCurrentUser().Result.Id;
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+            }
+
+            return null;
+        }
+
+        public IEnumerable<ApplicationUser> GetAllUsers()
+        {
+            try
+            {
+                if (IsAuthenticated())
+                {
+                    return _context.Users.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+            }
+
+            return null;
         }
 
         #region Private functions
