@@ -116,7 +116,7 @@ namespace groupon.Models
 
         public UpdateGroupResult()
         {
-            
+            StatusCode = 200;
         }
 
         public UpdateGroupResult(int statusCode, string error)
