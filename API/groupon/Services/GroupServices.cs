@@ -89,6 +89,7 @@ namespace groupon.Services
                         GroupId = newGroup.Id,
                         UserId = user.Id
                     });
+                    result.Id = newGroup.Id;
                     _context.SaveChanges();
                 }
 

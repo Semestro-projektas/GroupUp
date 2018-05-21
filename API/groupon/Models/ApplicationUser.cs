@@ -58,4 +58,20 @@ namespace groupon.Models
             CurrentlyWorking = user.CurrentlyWorking;
         }
     }
+
+    public class UserShortViewModel
+    {
+        public string UserId { get; set; }
+        public string Name { get; set; }
+        public string Title { get; set; }
+        public string Image { get; set; }
+
+        public UserShortViewModel(ApplicationUser user)
+        {
+            UserId = user.Id;
+            Name = user.Name;
+            Title = user.Title;
+            Image = user.Picture;
+        }
+    }
 }

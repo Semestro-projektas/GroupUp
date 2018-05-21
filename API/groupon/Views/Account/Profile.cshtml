@@ -134,12 +134,12 @@
     $("#SubmitButton").click(updateProfile);
 
     $(document).ready(function () {
-
+        $.get("https://localhost:44330/Account/getuserid", function (userId) {
         $.ajax({
             url: "https://localhost:44330/api/profile/overview",
             type: "Get",
             data: {
-                email: "@User.Identity.Name"
+                id: userId
             },
             statusCode: {
                 200: function (data) {
@@ -153,6 +153,7 @@
                     console.log("Server side error. ");
                 }
             }
+            });
         });
         false;
     });
@@ -166,7 +167,6 @@
             fields += labels[x].innerText + ";";
 
         }
-
         $.ajax({
             url: "https://localhost:44330/api/profile/update",
             type: "POST",
