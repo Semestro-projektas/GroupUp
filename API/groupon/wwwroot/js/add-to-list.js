@@ -15,7 +15,7 @@ function addItem() {
 
     $('.no-items').addClass('hidden');
 
-    $('.form-control-skills').val('').attr('placeholder', 'Add item...');
+    $('.form-control-skills').val('').attr('placeholder', 'baking pies...');
     setTimeout(function () {
         $('.todo-list li').removeClass('animated');
     }, 500);
@@ -59,7 +59,7 @@ $(function () {
     });
 
     $('.form-control-skills').keypress(function (e) {
-        if (e.which == 13) {
+        if (e.which === 13) {
             addItem();
         }
     });
