@@ -59,7 +59,7 @@ $(function () {
     });
 
     $('.form-control-skills').keypress(function (e) {
-        if (e.which == 13) {
+        if (e.which === 13) {
             addItem();
         }
     });
