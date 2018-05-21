@@ -279,6 +279,10 @@
     $("#searchGroups").click(getGroups);
     $("#searchMyGroups").click(getJoinedGroups);
 
+    $(document).ready(function () {
+        getGroups();
+    })
+
     function showCreateGroupModal() {
         cleanTextField($("#createGroupTitle"), $("#groupTitleError"));
         cleanTextField($("#createGroupDescription"), $("#groupDescriptionError"));
