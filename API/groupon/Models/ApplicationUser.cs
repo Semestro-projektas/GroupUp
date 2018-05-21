@@ -45,6 +45,9 @@ namespace groupon.Models
         public string Location { get; set; }
         public string Picture { get; set; }
         public string CurrentlyWorking { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Title { get; set; }
 
         public ProfileOverviewModel(ApplicationUser user)
         {
@@ -56,6 +59,9 @@ namespace groupon.Models
             Location = user.Location;
             Picture = user.Picture;
             CurrentlyWorking = user.CurrentlyWorking;
+            Email = user.Email;
+            PhoneNumber = user.PhoneNumber;
+            Title = user.Title;
         }
     }
 

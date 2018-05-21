@@ -503,10 +503,10 @@ namespace groupon.Controllers
         [Route("/api/profile/update")]
         [AllowAnonymous]
         public IActionResult UpdateProfile(string name, int company, string field, string workExperience, string education,
-            string location, string picture, string currentlyWorking)
+            string location, string picture, string currentlyWorking, string title, string phoneNumber, string email)
         {
             var result = _main.UpdateProfile(name, company, field, workExperience, education, location, picture,
-                currentlyWorking);
+                currentlyWorking, email, title, phoneNumber);
 
             return StatusCode(result.StatusCode, result);
         }

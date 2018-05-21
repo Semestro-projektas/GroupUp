@@ -15,8 +15,9 @@ namespace groupon.Services
 {
     public interface IAccountServices
     {
-        UpdateProfileResult UpdateProfile(string name, int company, string field, string workExperience, string education,
-            string location, string picture, string currentlyWorking);
+        UpdateProfileResult UpdateProfile(string name, int company, string field, string workExperience,
+            string education, string location,
+            string picture, string currentlyWorking, string email, string title, string phoneNumber);
         ApplicationUser GetUser(string id);
         Result InviteToConnect(string userId, string comment);
         Result ApproveConnection(string userId);
@@ -90,7 +91,7 @@ namespace groupon.Services
         }
 
         public UpdateProfileResult UpdateProfile(string name, int company, string field, string workExperience, string education, string location, 
-            string picture, string currentlyWorking)
+            string picture, string currentlyWorking, string email, string title, string phoneNumber)
         {
             UpdateProfileResult result = new UpdateProfileResult();
 
@@ -147,6 +148,24 @@ namespace groupon.Services
                 {
                     user.CurrentlyWorking = currentlyWorking;
                     result.CurrentlyWorking = "OK";
+                }
+
+                if (!String.IsNullOrEmpty(title))
+                {
+                    user.Title = title;
+                    result.Title = "OK";
+                }
+
+                if (!String.IsNullOrEmpty(email))
+                {
+                    user.Email = email;
+                    result.Email = "OK";
+                }
+
+                if (!String.IsNullOrEmpty(phoneNumber))
+                {
+                    user.PhoneNumber = phoneNumber;
+                    result.Phone = phoneNumber;
                 }
 
                 _context.SaveChanges(true);
