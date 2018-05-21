@@ -118,19 +118,19 @@ else
                 <div class="row mt-4 text-left">
                     <div class="col-md-12">
                         <label>Title</label>
-                        <input id="Title" class="form-control" type="text" placeholder="John Smith" />
+                        <input id="Title" class="form-control" type="text" placeholder="Group title" />
                     </div>
                 </div>
                 <div class="row mt-3 text-left">
                     <div class="col">
                         <label>Short Description</label>
-                        <input id="shortDescription" type="text" class="form-control" placeholder="johnsmith@mail.com" />
+                        <input id="shortDescription" type="text" class="form-control" placeholder="Short introduction" />
                     </div>
                 </div>
                 <div class="row mt-3 text-left">
                     <div class="col">
                         <label>Full Description</label>
-                        <textarea class="form-control" rows="5" id="fullDescription"></textarea>
+                        <textarea class="form-control" rows="5" id="fullDescription" placeholder="How you will atract others?"></textarea>
                     </div>
                 </div>
                 <button type="button" id="SubmitButton" class="btn-special button-centered blue">Update Your Group</button>
@@ -242,6 +242,8 @@ else
     $("#searchGroups").click(getGroups);
     $("#searchMyGroups").click(getJoinedGroups);
     $("#members").click(getJoinRequests);
+    $("#messages").click(getMessages);
+    $("#groupOverview").click(getCurrentGroupOverview);
 
     function showCreateGroupModal() {
         cleanTextField($("#createGroupTitle"), $("#groupTitleError"));
@@ -356,11 +358,18 @@ else
         });
     }
 
+    function getMessages() {
+        $("#members").removeClass('subnav-selected');
+        $("#messages").addClass('subnav-selected');
+        $("#groupOverview").removeClass('subnav-selected');
+        // Do stuff
+
+    }
+
     function getJoinRequests() {
         $("#members").addClass('subnav-selected');
         $("#messages").removeClass('subnav-selected');
         $("#groupOverview").removeClass('subnav-selected');
-        groupOverview
         $.ajax({
             url: "https://localhost:44330/api/groups/requests",
             type: "Get",
