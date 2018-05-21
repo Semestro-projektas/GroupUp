@@ -68,7 +68,7 @@
         @*Group element begining*@
         <div class="col-md-8 col-sm-12 col-xs-7">
             <div class="users">
-                <h1 class="mb-5">Groups searching for memmbers</h1>
+                <h1 class="mb-5">Groups searching for members</h1>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="list-group list">
@@ -76,11 +76,11 @@
                                 <button id="searchGroups" type="button" class="btn btn-primary subnav">
                                     Search for groups &nbsp;
                                 </button>
-                                <button type="button" class="btn btn-primary subnav">
-                                    Joined groups &nbsp;
+                                <button id="searchMyGroups"type="button" class="btn btn-primary subnav">
+                                    My groups &nbsp;
                                 </button>
                                 <button id="createGroup" type="button" class="btn btn-primary subnav">
-                                    Create new group &nbsp;
+                                    Create new &nbsp;
                                 </button>
                             </div>
                             @*Group list begining*@
@@ -301,6 +301,7 @@
     $("#confirmGroupCreation").click(confirmGroupCreation);
 
     $("#searchGroups").click(getGroups);
+    $("#searchMyGroups").click(getJoinedGroups);
 
     function showCreateGroupModal() {
         cleanTextField($("#createGroupTitle"), $("#groupTitleError"));
@@ -322,11 +323,45 @@
         errorField.text("");
     }
     function getGroups() {
+        $("#searchMyGroups").removeClass('subnav-selected');
         $("#searchGroups").addClass('subnav-selected');
         event.preventDefault();
         $('#loader').removeClass("hidden");
         $.ajax({
             url: "https://localhost:44330/api/groups/all",
+            type: "GET",
+            data: {},
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        UpdateGroups(data);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    function getJoinedGroups() {
+        $("#searchGroups").removeClass('subnav-selected');
+        $("#searchMyGroups").addClass('subnav-selected');
+        event.preventDefault();
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/joined",
             type: "GET",
             data: {},
             dataType: "json",
@@ -370,7 +405,7 @@
             var description = $('<p/>').addClass("list-group-item-text title").text(value.shortDescription).appendTo(colleft);
             var colright = $('<div/>').addClass('col-lg-4');
             var readmore = $('<div/>').addClass('read-more').appendTo(colright);
-            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/' + value.id).html('Read more &nbsp;').appendTo(readmore);
+            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('Read more &nbsp;').appendTo(readmore);
             var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
             var skillsNeeded = $('<span/>').addClass('expertise-label').text('Skills needed').appendTo(colright);
             row.appendTo(grouplist);
