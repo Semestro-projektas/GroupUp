@@ -27,6 +27,7 @@ namespace groupon.Services
         Result ApproveJoinRequest(string userId, int groupId);
         IEnumerable<GroupTeam> ViewAllJoinRequests(int groupId, int? position, int? count, out string error);
         IEnumerable<Group> GetAllJoinedGroups(string userId);
+        IEnumerable<ApplicationUser> GetAllMembers(int groupId);
     }
 
     public class GroupServices : IGroupServices
@@ -343,6 +344,25 @@ namespace groupon.Services
             }
 
             return groups;
+        }
+
+        public IEnumerable<ApplicationUser> GetAllMembers(int groupId)
+        {
+            List<ApplicationUser> members = new List<ApplicationUser>();
+            try
+            {
+                var groups = _context.GroupTeam.Where(i => i.Approved && i.GroupId == groupId).Select(i => i.UserId);
+                foreach (string user in groups)
+                {
+                    members.Add(_context.Users.FirstOrDefault(i => i.Id == user));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+            }
+
+            return members;
         }
 
         #region Private functions

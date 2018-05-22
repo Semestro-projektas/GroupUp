@@ -152,6 +152,15 @@ namespace groupon.Controllers
 
             return result;
         }
+
+        [HttpGet]
+        [Route("api/groups/members")]
+        public IEnumerable<UserShortViewModel> GetAllMembers(int groupId)
+        {
+            var result = _main.GetAllMembers(groupId).Select(i => new UserShortViewModel(i));
+
+            return result;
+        }
         #endregion
     }
 }
