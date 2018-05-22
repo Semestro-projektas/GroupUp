@@ -93,14 +93,37 @@ else
                                 Members &nbsp;
                             </button>
                         </div>
-                        <div id="memberList" >
+                    </div>
+                </div>
+            </div>
+            <div id="groupMembers" class="hidden">
+                <br />
+                <h1 class="mb-5">Join requests</h1>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="list-group list">
+                            <div id="joinRequestEmpty" class="list-group-item hidden">
+                                <h5 style="text-align: center; margin: 2rem 2rem 2rem 2rem;">There are no join request</h5>
+                            </div>
+                            <div id="joinRequestList">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <h1 class="mb-5">Group members</h1>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="list-group list">
+                            <div id="memberList">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-      
+
     <div id="groupSettingBody" class="container-fluid main-register-login mt-5 mb-5">
     </div>
 }
@@ -110,7 +133,7 @@ else
         crossorigin="anonymous"
         integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
 </script>
-<script>
+    <script>
     $("#btn").click(getAllGroups);
     $("#post").click(postNew);
     $("#btnCompanies").click(getAllCompanies);
@@ -199,15 +222,15 @@ else
             }
         });
     }
-</script>
+                </script>
 
-<script>
+                <script>
     $("#createGroup").click(showCreateGroupModal);
     $("#confirmGroupCreation").click(confirmGroupCreation);
 
     $("#searchGroups").click(getGroups);
     $("#searchMyGroups").click(getJoinedGroups);
-    $("#members").click(getJoinRequests);
+    $("#members").click(getGroupMembers);
     $("#messages").click(getMessages);
     $("#groupOverview").click(getCurrentGroupOverview);
 
@@ -297,6 +320,7 @@ else
         false;
     }
 
+
     function UpdateGroups(groupsData) {
         $("#groupList").empty();
         if (groupsData.length < 0)
@@ -332,12 +356,14 @@ else
 
     }
 
-    function getJoinRequests() {
+    function getGroupMembers() {
         $("#members").addClass('subnav-selected');
         $("#messages").removeClass('subnav-selected');
         $("#groupOverview").removeClass('subnav-selected');
+        getJoinRequests();
+        $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/api/groups/requests",
+            url: "https://localhost:44330/api/groups/members",
             type: "Get",
             data: {
                 groupId: @ViewBag.Id
@@ -352,6 +378,7 @@ else
                     else {
                         $("#groupSettingBody").empty();
                         $("#memberList").empty();
+                        $("#groupMembers").removeClass('hidden');
                         $.each(data, function (index, value) {
                             var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#memberList"));
                             var row = $('<div/>').addClass('row');
@@ -368,6 +395,61 @@ else
                             colleft.appendTo(row);
                             colright.appendTo(row);
                         });
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    function getJoinRequests() {
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/members",
+            type: "Get",
+            data: {
+                groupId: @ViewBag.Id
+            },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        $("#joinRequestEmpty").addClass('hidden');
+                        $("#joinRequestList").empty();
+                        if (data.length > 0) {
+                            $.each(data, function (index, value) {
+                                var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#joinRequestList"));
+                                var row = $('<div/>').addClass('row');
+                                var colleft = $('<div/>').addClass('col-lg-8');
+                                var img = $('<img/>').attr("src", 'images/man.png').addClass('pull-left photo').appendTo(colleft);
+                                var title = $('<h4/>').addClass("list-group-item-heading name").text(value.name).appendTo(colleft);
+                                var description = $('<p/>').addClass("list-group-item-text title").text(value.title).appendTo(colleft);
+                                var colright = $('<div/>').addClass('col-lg-4');
+                                var readmore = $('<div/>').addClass('read-more').appendTo(colright);
+                                var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('More details &nbsp;').appendTo(readmore);
+                                var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
+                                var skillsNeeded = $('<span/>').addClass('expertise-label').text('Areas of Expertise').appendTo(colright);
+                                row.appendTo(grouplist);
+                                colleft.appendTo(row);
+                                colright.appendTo(row);
+                            });
+                        }
+                        else {
+                            $("#joinRequestEmpty").removeClass('hidden');
+
+                        }
                     }
                 },
                 400: function () {
@@ -402,10 +484,11 @@ else
                     else {
                         $("#groupSettingBody").empty();
                         $("#memberList").empty();
+                        $("#groupMembers").addClass('hidden');
                         var divas = document.createElement('div');
                         divas.id = 'groupSettings';
 
-                        divas.innerHTML = 
+                        divas.innerHTML =
                             '<h1>Group Settings</h1>\
                             <hr>\
                             <h2 class="mb-5">Update your group by changing and adding information</h2>\
@@ -519,21 +602,21 @@ else
             pressCount--;
         }, 4000);
     }
-</script>
+                </script>
 
-@if (ViewBag.Id != 0)
-{
-    <script>
-        $(document).ready(function () {
-            getCurrentGroupOverview();
-        });
-    </script>
+                @if (ViewBag.Id != 0)
+        {
+            <script>
+                $(document).ready(function () {
+                    getCurrentGroupOverview();
+                });
+            </script>
 }
 else
 {
-    <script>
-        $(document).ready(function () {
-            getGroups();
-        })
-    </script>
+        <script>
+            $(document).ready(function () {
+                getGroups();
+            })
+        </script>
 }
