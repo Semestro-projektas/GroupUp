@@ -35,7 +35,7 @@
             <div class="row mt-3 text-left">
                 <div class="col">
                     <label>Phone</label>
-                    <input id="Phone" type="text" class="form-control"  placeholder="+1 (XXX) (XXX)" />
+                    <input id="Phone" type="text" class="form-control" placeholder="+1 (XXX) (XXX)" />
                 </div>
             </div>
             <div class="row mt-3 text-left">
@@ -245,10 +245,10 @@
     function setProfile(userData) {
 
         $("#profile-avatar").attr("src", userData.picture);
-        
+
         $('#Name').val(userData.name);
         $('#Email').val(userData.email);
-        
+
         var locationData = userData.location.split(';');
         $('#Country').val(locationData[0]);
         $('#City').val(locationData[1]);
@@ -267,9 +267,8 @@
         $('#Phone').val(userData.phoneNumber);
         var skillsData = userData.education.split(';');
 
-        
-        for (var x = 0; x < skillsData.length; x++)
-        { 
+
+        for (var x = 0; x < skillsData.length; x++) {
             //var span = $('<span />').attr({ 'class': 'label label-default expertise' }).html(skillsData[x]).appendTo($('.todo-list-1').last());
             //var i = $('<i />').attr({ 'class': 'fa fa-times pr-1 ml-1', 'id': 'close' }).html('').appendTo($('.label').last());
 
@@ -277,7 +276,7 @@
             addItem();
         }
 
-        
+
     }
 
     function Alert(bolded, normal, alertType) {
@@ -297,6 +296,4 @@
     }
 
 </script>
-<script src="~/js/crop-image.js"></script>
-<script src="~/js/upload-image.js"></script>
-<script src="~/js/add-to-list.js"></script>
+
