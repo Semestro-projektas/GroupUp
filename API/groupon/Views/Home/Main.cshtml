@@ -384,7 +384,7 @@
             var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#groupList"));
             var row = $('<div/>').addClass('row');
             var colleft = $('<div/>').addClass('col-lg-8');
-            var img = $('<img/>').attr("src", 'images/man.png').addClass('pull-left photo').appendTo(colleft);
+            var img = $('<img/>').attr("src", value.image != null ? value.image : "/images/man.png").addClass('pull-left photo').appendTo(colleft);       
             var title = $('<h4/>').addClass("list-group-item-heading name").text(value.title).appendTo(colleft);
             var description = $('<p/>').addClass("list-group-item-text title").text(value.shortDescription).appendTo(colleft);
             var colright = $('<div/>').addClass('col-lg-4');

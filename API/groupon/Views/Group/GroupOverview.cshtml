@@ -124,8 +124,9 @@ else
         </div>
     </div>
 
-    <div id="groupSettingBody" class="container-fluid main-register-login mt-5 mb-5">
-    </div>
+
+    @await Html.PartialAsync("GroupEdit");
+   
 }
 <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
         asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
@@ -133,35 +134,12 @@ else
         crossorigin="anonymous"
         integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
 </script>
-    <script>
+<script>
     $("#btn").click(getAllGroups);
     $("#post").click(postNew);
     $("#btnCompanies").click(getAllCompanies);
     $("#postCompany").click(postNewCompany);
-
-    $("#SubmitButton").click(updateGroup);
-
-    function updateGroup() {
-        $.ajax({
-            url: "https://localhost:44330/api/groups/edit",
-            type: "POST",
-            data: {
-                groupId: @ViewBag.Id, title: $("#Title").val(), type: 0, shortDescription: $("#shortDescription").val(), description: $("#fullDescription").val(), picture: $("#profile-avatar").attr('src')
-            },
-            statusCode: {
-                200: function () {
-                    console.log("Successful. ");
-                },
-                400: function () {
-                    console.log("Client side error. ");
-                },
-                500: function () {
-                    console.log("Server side error. ");
-                }
-            }
-        });
-        false;
-    }
+    
 
     function getAllGroups() {
         $.ajax({
@@ -222,9 +200,9 @@ else
             }
         });
     }
-                </script>
+</script>
 
-                <script>
+<script>
     $("#createGroup").click(showCreateGroupModal);
     $("#confirmGroupCreation").click(confirmGroupCreation);
 
@@ -232,7 +210,7 @@ else
     $("#searchMyGroups").click(getJoinedGroups);
     $("#members").click(getGroupMembers);
     $("#messages").click(getMessages);
-    $("#groupOverview").click(getCurrentGroupOverview);
+    
 
     function showCreateGroupModal() {
         cleanTextField($("#createGroupTitle"), $("#groupTitleError"));
@@ -333,7 +311,7 @@ else
             var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#groupList"));
             var row = $('<div/>').addClass('row');
             var colleft = $('<div/>').addClass('col-lg-8');
-            var img = $('<img/>').attr("src", 'images/man.png').addClass('pull-left photo').appendTo(colleft);
+            var img = $('<img/>').attr("src", value.image != null ? value.image : "/images/man.png").addClass('pull-left photo').appendTo(colleft);       
             var title = $('<h4/>').addClass("list-group-item-heading name").text(value.title).appendTo(colleft);
             var description = $('<p/>').addClass("list-group-item-text title").text(value.shortDescription).appendTo(colleft);
             var colright = $('<div/>').addClass('col-lg-4');
@@ -383,7 +361,7 @@ else
                             var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#memberList"));
                             var row = $('<div/>').addClass('row');
                             var colleft = $('<div/>').addClass('col-lg-8');
-                            var img = $('<img/>').attr("src", 'images/man.png').addClass('pull-left photo').appendTo(colleft);
+                            var img = $('<img/>').attr("src", value.image != null ? value.image : "/images/man.png").addClass('pull-left photo').appendTo(colleft);       
                             var title = $('<h4/>').addClass("list-group-item-heading name").text(value.name).appendTo(colleft);
                             var description = $('<p/>').addClass("list-group-item-text title").text(value.title).appendTo(colleft);
                             var colright = $('<div/>').addClass('col-lg-4');
@@ -433,7 +411,7 @@ else
                                 var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#joinRequestList"));
                                 var row = $('<div/>').addClass('row');
                                 var colleft = $('<div/>').addClass('col-lg-8');
-                                var img = $('<img/>').attr("src", 'images/man.png').addClass('pull-left photo').appendTo(colleft);
+                                var img = $('<img/>').attr("src", value.image != null ? value.image : "/images/man.png").addClass('pull-left photo').appendTo(colleft);       
                                 var title = $('<h4/>').addClass("list-group-item-heading name").text(value.name).appendTo(colleft);
                                 var description = $('<p/>').addClass("list-group-item-text title").text(value.title).appendTo(colleft);
                                 var colright = $('<div/>').addClass('col-lg-4');
@@ -465,86 +443,7 @@ else
         false;
     }
 
-    function getCurrentGroupOverview() {
-        $("#members").removeClass('subnav-selected');
-        $("#messages").removeClass('subnav-selected');
-        $("#groupOverview").addClass('subnav-selected');
-        $.ajax({
-            url: "https://localhost:44330/api/groups/" + @ViewBag.Id,
-            type: "Get",
-            data: {
-            },
-            dataType: "json",
-            statusCode: {
-                200: function (data) {
-                    console.log("Successful: " + data.succeeded);
-                    if ($.trim(data.succeeded) == 'false') {
-                        Alert("Error!", data.errors[0].description, "alert-danger");
-                    }
-                    else {
-                        $("#groupSettingBody").empty();
-                        $("#memberList").empty();
-                        $("#groupMembers").addClass('hidden');
-                        var divas = document.createElement('div');
-                        divas.id = 'groupSettings';
-
-                        divas.innerHTML =
-                            '<h1>Group Settings</h1>\
-                            <hr>\
-                            <h2 class="mb-5">Update your group by changing and adding information</h2>\
-                            <div class="container sub-register-login profile">\
-                                <form id="form">\
-                                    <div class="profile">\
-                                        <div class="profile-avatar-wrap">\
-                                            <img src="~/images/avatar-upload.png" id="profile-avatar" alt="Image for Profile">\
-                                        </div>\
-                                            <label for="uploader">\
-                                                <img id="profile-picture" class="mt-3 nav-logo" width="42px" src="~/images/upload.png" />\
-                                            </label>\
-                                            <input class="input-file" type="file" id="uploader">\
-                                        </div>\
-                                            <h2 class="mt-5 text-left">Group Information</h2>\
-                                            <hr>\
-                                                <div class="row mt-4 text-left">\
-                                                    <div class="col-md-12">\
-                                                        <label>Title</label>\
-                                                        <input id="Title" class="form-control" type="text" placeholder="Group title" />\
-                                                    </div>\
-                                                </div>\
-                                                <div class="row mt-3 text-left">\
-                                                    <div class="col">\
-                                                        <label>Short Description</label>\
-                                                        <input id="shortDescription" type="text" class="form-control" placeholder="Short introduction" />\
-                                                    </div>\
-                                                </div>\
-                                                <div class="row mt-3 text-left">\
-                                                    <div class="col">\
-                                                        <label>Full Description</label>\
-                                                        <textarea class="form-control" rows="5" id="fullDescription" placeholder="How you will atract others?"></textarea>\
-                                                    </div>\
-                                                </div>\
-                                                <button type="button" id="SubmitButton" class="btn-special button-centered blue">Update Your Group</button>\
-                                            </form>\
-                                        </div>'
-
-                        document.getElementById('groupSettingBody').appendChild(divas);
-                        $("#Title").val(data.title);
-                        $("#shortDescription").val(data.shortDescription);
-                        $("#fullDescription").val(data.description);
-                    }
-                },
-                400: function () {
-                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
-                },
-                500: function () {
-                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
-                }
-            }
-        }).always(function () {
-            $('#loader').addClass("hidden");
-        });
-        false;
-    }
+    
 
     function confirmGroupCreation() {
         event.preventDefault();
@@ -602,21 +501,21 @@ else
             pressCount--;
         }, 4000);
     }
-                </script>
+</script>
 
-                @if (ViewBag.Id != 0)
-        {
-            <script>
-                $(document).ready(function () {
-                    getCurrentGroupOverview();
-                });
-            </script>
+@if (ViewBag.Id != 0)
+{
+    <script>
+        $(document).ready(function () {
+            getCurrentGroupOverview();
+        });
+    </script>
 }
 else
 {
-        <script>
-            $(document).ready(function () {
-                getGroups();
-            })
-        </script>
+    <script>
+        $(document).ready(function () {
+            getGroups();
+        })
+    </script>
 }
