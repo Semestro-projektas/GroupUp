@@ -1,0 +1,456 @@
+﻿<div class="modal fade" id="groupModal" tabindex="-1" role="dialog" aria-labelledby="groupCreateLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="createGroupForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="groupCreateLabel">Create new group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row text-left">
+                        <div class="col-md-12">
+                            <label>Title</label>
+                            <input id="createGroupTitle" class="form-control" x type="text" placeholder="Group title" />
+                            <span id="groupTitleError" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3 text-left">
+                        <div class="col">
+                            <label>Description</label>
+                            <input id="createGroupDescription" type="text" class="form-control" placeholder="Your group description" />
+                            <span id="groupDescriptionError" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="container text-center">
+                        <button id="confirmGroupCreation" type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="handlerid" class="main alert hidden fade" style="text-align: center" role="alert"></div>
+
+<div id="loader" class="loadingbox hidden">
+    <div class="loader"></div>
+</div>
+
+<div class="container-fluid home mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-4 col-sm-12 col-xs-5 mb-5">
+            <div class="user-info text-center">
+                <div class=" col-lg-12 col-sm-12 col-12 main-section text-center">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12 profile-header"></div>
+                    </div>
+                    <div class="row user-detail ">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <img src="images/man.png" class="rounded-circle img-thumbnail">
+                            <h5>Žygimantas Drukteinis</h5>
+                            <p><i class="fa fa-map-marker" aria-hidden="true"></i> Kaunas, LT.</p>
+                            <hr>
+                            <label>Connections</label>
+                            <p>People in network</p>
+                            <button class="btn btn-light blue" onclick="window.location = '@Url.Action("Profile", "Account")';">Edit your profile</button>
+                            <hr>
+                            <span>Lorem ips consectetur adipisium ,eiusmod tempor incididuin reprehendeanim.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Group element begining*@
+        <div class="col-md-8 col-sm-12 col-xs-7">
+            <div class="users">
+                <h1 class="mb-5">Groups searching for members</h1>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="list-group list">
+                            <div href="#" class="list-group-item borderless">
+                                <button id="searchGroups" type="button" class="btn btn-primary subnav">
+                                    Search for groups
+                                </button>
+                                <button id="searchMyGroups"type="button" class="btn btn-primary subnav">
+                                    My groups
+                                </button>
+                                <button id="createGroup" type="button" class="btn btn-primary subnav">
+                                    Create new
+                                </button>
+                            </div>
+                            <div id="groupList">
+                            </div>
+                            <div href="#" class="list-group-item">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="expertise">
+                                            <div class="read-more text-center">
+                                                <h2>Find other groups to connect with and start working!</h2>
+                                                <button id="goToGroups" type="button" class="mt-3 mb-1 btn btn-primary">
+                                                    SEARCH OTHER GROUPS &nbsp;
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="users">
+                    <h1 class="mb-5">Users in your network</h1>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list-group list">
+                                <div href="#" class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <img src="images/man.png" class="pull-left photo">
+                                            <h4 class="list-group-item-heading name">Jonas Baranauskas</h4>
+                                            <p class="list-group-item-text title">Software Engineer</p>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="expertise">
+                                                <div class="read-more">
+                                                    <button type="button" class="btn btn-primary btn-more">
+                                                        Read More &nbsp;
+                                                        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                                <span class="expertise-label">Areas of Expertise &nbsp;</span>
+                                                <p>
+                                                    <span class="label label-default expertise ">C#</span>
+                                                    <span class="label label-default expertise ">.NET</span>
+                                                    <span class="label label-default expertise ">SQL</span>
+                                                    <span class="label label-default expertise ">Angular 2</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div href="#" class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <img src="images/customer-service.png" class="pull-left photo">
+                                            <h4 class="list-group-item-heading name">Mantelis Baranauskas</h4>
+                                            <p class="list-group-item-text title">Q/A</p>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="expertise">
+                                                <div class="read-more">
+                                                    <button type="button" class="btn btn-primary btn-more">
+                                                        Read More &nbsp;
+                                                        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                                <span class="expertise-label">Areas of Expertise &nbsp;</span>
+                                                <p>
+                                                    <span class="label label-default expertise">Public Speaking</span>
+                                                    <span class="label label-default expertise">IOT</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div href="#" class="list-group-item">
+                                    <div class="row">
+
+                                        <div class="col-lg-12">
+                                            <div class="expertise">
+                                                <div class="read-more text-center">
+                                                    <h2>Find new people to connect with and start working!</h2>
+                                                    <button type="button" class="mt-3 mb-1 btn btn-primary btn-find">
+                                                        SEARCH OTHER USERS &nbsp;
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h1 class="mt-5 mb-5">Top trending companies</h1>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list-group list">
+                                <div href="#" class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <img src="images/company1.png" class="pull-left photo">
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <h4 class="list-group-item-heading name">App Store</h4>
+                                            <p class="list-group-item-text title">Remittance, Money Transfer, Remit money to Asia</p>
+
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="expertise">
+                                                <div class="read-more">
+                                                    <button type="button" class="btn btn-primary btn-more">
+                                                        More &nbsp;
+                                                        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                        </div>
+                                        <div class="col-lg-10">
+                                            <h3 class="mb-3">Jobs</h3>
+                                            <p><b>Software Developer </b><a>€2K – €3K · No Equity · Full Time</a></p>
+                                            <p><b>Java Software Engineer (ML) </b><a>€60K – €80K · 0.0% – 0.2% · Full Time</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div href="#" class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <img src="images/company2.png" class="pull-left photo">
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <h4 class="list-group-item-heading name">Z Art Studio</h4>
+                                            <p class="list-group-item-text title">Art & Graphics</p>
+
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="expertise">
+                                                <div class="read-more">
+                                                    <button type="button" class="btn btn-primary btn-more">
+                                                        More &nbsp;
+                                                        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                        </div>
+                                        <div class="col-lg-10">
+                                            <h3 class="mb-3">Jobs</h3>
+                                            <p><b>Graphic Designer </b><a>€4K – 6K · No Equity · Full Time</a></p>
+                                            <p><b>Social Media Influencer </b><a>€80K – €120K · 0.0% – 0.2% · Full Time</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div href="#" class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="expertise">
+                                                <div class="read-more text-center">
+                                                    <h2>Search for other companies and apply now!</h2>
+                                                    <button type="button" class="mt-3 mb-1 btn btn-primary btn-find">
+                                                        SEARCH COMPANIES &nbsp;
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+        asp-fallback-test="window.jQuery"
+        crossorigin="anonymous"
+        integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+</script>
+<script>
+    $("#createGroup").click(showCreateGroupModal);
+    $("#confirmGroupCreation").click(confirmGroupCreation);
+
+    $("#goToGroups").click(goToGroups);
+    $("#searchGroups").click(getGroups);
+    $("#searchMyGroups").click(getJoinedGroups);
+
+    $(document).ready(function () {
+        getGroups();
+    })
+
+    function showCreateGroupModal() {
+        cleanTextField($("#createGroupTitle"), $("#groupTitleError"));
+        cleanTextField($("#createGroupDescription"), $("#groupDescriptionError"));
+        $("#groupModal").modal();
+    }
+    function validateTextField(field, errorField, errorText) {
+        if (!$.trim(field.val()).length) {
+            errorField.text(errorText);
+            return false;
+        }
+        else {
+            errorField.text("");
+            return true;
+        }
+    }
+    function cleanTextField(field, errorField) {
+        field.val("");
+        errorField.text("");
+    }
+    function goToGroups() {
+        location.href = 'https://localhost:44330/groups';
+    }
+
+    function getGroups() {
+        $("#searchMyGroups").removeClass('subnav-selected');
+        $("#searchGroups").addClass('subnav-selected');
+        event.preventDefault();
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/all",
+            type: "GET",
+            data: {},
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        UpdateGroups(data);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    function getJoinedGroups() {
+        $("#searchGroups").removeClass('subnav-selected');
+        $("#searchMyGroups").addClass('subnav-selected');
+        event.preventDefault();
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/joined",
+            type: "GET",
+            data: {},
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        UpdateGroups(data);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    function UpdateGroups(groupsData) {
+        $("#groupList").empty();
+        if (groupsData.length < 0)
+            return false;
+
+        $.each(groupsData, function (index, value) {
+            if (index == 5) {
+                return false;
+            }
+            var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#groupList"));
+            var row = $('<div/>').addClass('row');
+            var colleft = $('<div/>').addClass('col-lg-8');
+            var img = $('<img/>').attr("src", value.image != null ? value.image : "/images/man.png").addClass('pull-left photo').appendTo(colleft);       
+            var title = $('<h4/>').addClass("list-group-item-heading name").text(value.title).appendTo(colleft);
+            var description = $('<p/>').addClass("list-group-item-text title").text(value.shortDescription).appendTo(colleft);
+            var colright = $('<div/>').addClass('col-lg-4');
+            var readmore = $('<div/>').addClass('read-more').appendTo(colright);
+            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('Read more &nbsp;').appendTo(readmore);
+            var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
+            var skillsNeeded = $('<span/>').addClass('expertise-label').text('Skills needed').appendTo(colright);
+            row.appendTo(grouplist);
+            colleft.appendTo(row);
+            colright.appendTo(row);
+        });
+     }
+
+    function confirmGroupCreation() {
+        event.preventDefault();
+        if (validateTextField($("#createGroupTitle"), $("#groupTitleError"), "Empty title field")
+            && validateTextField($("#createGroupDescription"), $("#groupDescriptionError"), "Empty description field")) {
+        }
+        else {
+            return false;
+        }
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/create",
+            type: "POST",
+            data: {
+                title: $("#createGroupTitle").val(),
+                description: $("#createGroupDescription").val()
+            },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        Alert("Succeeded!", "Your group has been created", "alert-success");
+                        $("#groupModal").hide();
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+    function Alert(bolded, normal, alertType) {
+        $('#handlerid').empty().append("<strong>" + bolded + " </strong>" + normal);
+        pressCount++;
+        $('#handlerid').addClass(alertType).removeClass("hidden").fadeTo(300, 1);
+
+        setTimeout(function () {
+            if (pressCount == 1) {
+                $('#handlerid').fadeTo(300, 0);
+                setTimeout(function () {
+                    $('#handlerid').addClass('hidden').removeClass(alertType);
+                }, 1000);
+            }
+            pressCount--;
+        }, 4000);
+    }
+</script>

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using groupon.Data;
 using groupon.Models;
 using groupon.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace groupon
 {
@@ -23,23 +24,58 @@ namespace groupon
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(
+                    o =>
+                    {
+                        o.Password.RequireDigit = false;
+                        o.Password.RequireNonAlphanumeric = false;
+                        o.Password.RequireUppercase = false;
+                        o.Password.RequireLowercase = false;
+                        o.Password.RequiredLength = 6;
+                    })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.SlidingExpiration = true;
+                options.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = (ctx) =>
+                    {
+                        ctx.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    },
+                    OnRedirectToAccessDenied = (ctx) =>
+                    {
+                        ctx.Response.StatusCode = 403;
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IGroupServices, GroupServices>();
+            services.AddTransient<ICompanyServices, CompanyServices>();
+            services.AddTransient<IAccountServices, AccountServices>();
+            services.AddTransient<IMessagingServices, MessagingServices>();
+
+            services.AddCors();
             services.AddMvc();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -56,6 +92,7 @@ namespace groupon
             app.UseStaticFiles();
 
             app.UseAuthentication();
+            app.UseCors(builder => builder.WithOrigins("https://localhost:44330/"));
 
             app.UseMvc(routes =>
             {

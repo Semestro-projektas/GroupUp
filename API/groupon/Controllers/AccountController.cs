@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using groupon.Models;
 using groupon.Models.AccountViewModels;
 using groupon.Services;
@@ -17,26 +16,35 @@ using groupon.Services;
 namespace groupon.Controllers
 {
     [Authorize]
+    [Produces("application/json")]
     [Route("[controller]/[action]")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IAccountServices _main;
+        private readonly IMessagingServices _msg;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IAccountServices accServices,
+            IMessagingServices msgServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _main = accServices;
+            _msg = msgServices;
         }
 
+        #region Base methods
         [TempData]
         public string ErrorMessage { get; set; }
 
@@ -51,41 +59,42 @@ namespace groupon.Controllers
             return View();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
-            }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
+        //[HttpPost]
+        //[AllowAnonymous]
+        ////[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
+        //    if (ModelState.IsValid)
+        //    {
+        //        // This doesn't count login failures towards account lockout
+        //        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+        //        var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+        //        if (result.Succeeded)
+        //        {
+        //            _logger.LogInformation("User logged in.");
+        //            return RedirectToLocal(returnUrl);
+        //        }
+        //        if (result.RequiresTwoFactor)
+        //        {
+        //            return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+        //        }
+        //        if (result.IsLockedOut)
+        //        {
+        //            _logger.LogWarning("User account locked out.");
+        //            return RedirectToAction(nameof(Lockout));
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        //            return View(model);
+        //        }
+        //    }
+
+        //    // If we got this far, something failed, redisplay form
+        //    return View(model);
+        //}
 
         [HttpGet]
         [AllowAnonymous]
@@ -212,43 +221,14 @@ namespace groupon.Controllers
             return View();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
-                }
-                AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await _signInManager.SignOutAsync();
+        //    _logger.LogInformation("User logged out.");
+        //    return RedirectToAction(nameof(HomeController.Index), "Home");
+        //}
 
         [HttpPost]
         [AllowAnonymous]
@@ -430,12 +410,186 @@ namespace groupon.Controllers
             return View();
         }
 
-
         [HttpGet]
         public IActionResult AccessDenied()
         {
             return View();
         }
+        #endregion
+
+        #region Custom base
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            var result = new IdentityResult();
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("User created a new account with password.");
+                    return Json(result);
+                }
+                AddErrors(result);
+                return Json(result);
+            }
+            return Json(ModelState.Values.SelectMany(v => v.Errors));
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string email, string password, bool remember)
+        {
+            var result = await _main.Login(email, password, remember);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            var result = await _main.Logout();
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult UpdateField(string newField)
+        {
+            var result = _main.UpdateField(newField);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult RemoveField(string field)
+        {
+            var result = _main.RemoveField(field);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IEnumerable<String> GetUserFields(string userId)
+        {
+            return _main.GetAllUsersFields(userId);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetUserId()
+        {
+            return Json(_main.GetUserId());
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IEnumerable<UserShortViewModel> GetAllUsers()
+        {
+            return _main.GetAllUsers().Select(i => new UserShortViewModel(i));
+        }
+        #endregion
+
+        #region Profile
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("/api/profile/update")]
+        [AllowAnonymous]
+        public IActionResult UpdateProfile(string name, int company, string field, string workExperience, string education,
+            string location, string picture, string currentlyWorking, string title, string phoneNumber, string email)
+        {
+            var result = _main.UpdateProfile(name, company, field, workExperience, education, location, picture,
+                currentlyWorking, email, title, phoneNumber);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        [Route("/api/profile/overview")]
+        [AllowAnonymous]
+        public IActionResult GetProfileOverview(string id)
+        {
+            if (id != null)
+                return Json(new ProfileOverviewModel(_main.GetUser(id)));
+            else
+                return Json(new RequestErrorViewModel("User not found."));
+        }
+        #endregion
+
+        #region Messaging
+        [HttpPost]
+        [Route("/api/message/send")]
+        public IActionResult SendMessage(string recipientId, string text)
+        {
+            var result = _msg.SendMessage(recipientId, text);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        [Route("/api/messages/with")]
+        public IEnumerable<TextMessage> GetMessages(string recipientId)
+        {
+            return _msg.GetAllMessages(recipientId, 0).Select(i => new TextMessage(i));
+        }
+
+        [HttpGet]
+        [Route("/api/messages/all")]
+        public IEnumerable<Chat> GetAllChats()
+        {
+            return _msg.GetAllChats().Select(i => new Chat(i));
+        }
+        #endregion
+
+        #region Connections
+
+        [HttpPost]
+        [Route("/api/connections/invite")]
+        public IActionResult InviteConnection(string userId, string comment)
+        {
+            var result = _main.InviteToConnect(userId, comment);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        // Double check this one
+        [HttpPost]
+        [Route("/api/connections/approve")]
+        public IActionResult ApproveConnection(string userId)
+        {
+            var result = _main.ApproveConnection(userId);
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet]
+        [Route("/api/connections/all")]
+        public IEnumerable<ConnectionViewModel> GetAllUsersConnections(string userId)
+        {
+            return _main.GetAllUserConnection(null, null).Select(i => new ConnectionViewModel(i, userId));
+        }
+
+        [HttpGet]
+        [Route("/api/connections/requests")]
+        public IEnumerable<ConnectionViewModel> GetAllConnectionRequests(string userId)
+        {
+            return _main.GetAllConnectionRequests(null, null).Select(i => new ConnectionViewModel(i));
+        }
+
+        #endregion
 
         #region Helpers
 

@@ -1,0 +1,521 @@
+﻿
+@{
+    ViewData["Title"] = "Groups";
+}
+
+<div class="modal fade" id="groupModal" tabindex="-1" role="dialog" aria-labelledby="groupCreateLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="createGroupForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="groupCreateLabel">Create new group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row text-left">
+                        <div class="col-md-12">
+                            <label>Title</label>
+                            <input id="createGroupTitle" class="form-control" x type="text" placeholder="Group title" />
+                            <span id="groupTitleError" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3 text-left">
+                        <div class="col">
+                            <label>Description</label>
+                            <input id="createGroupDescription" type="text" class="form-control" placeholder="Your group description" />
+                            <span id="groupDescriptionError" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="container text-center">
+                        <button id="confirmGroupCreation" type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="handlerid" class="main alert hidden fade" style="text-align: center" role="alert"></div>
+
+<div id="loader" class="loadingbox hidden">
+    <div class="loader"></div>
+</div>
+
+@if (ViewBag.Id == 0)
+{
+    <div class="container-fluid home mt-5 mb-5">
+        <div class="users">
+            <h1 class="mb-5">Groups searching for members</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="list-group list">
+                        <div href="#" class="list-group-item borderless">
+                            <button id="searchGroups" type="button" class="btn btn-primary subnav">
+                                Search for groups &nbsp;
+                            </button>
+                            <button id="searchMyGroups" type="button" class="btn btn-primary subnav">
+                                My groups &nbsp;
+                            </button>
+                            <button id="createGroup" type="button" class="btn btn-primary subnav">
+                                Create new &nbsp;
+                            </button>
+                        </div>
+                        <div id="groupList">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+
+    <div class="container-fluid home mt-5 mb-5">
+        <div class="users">
+            <h1 class="mb-5">Groups searching for members</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="list-group list">
+                        <div href="#" class="list-group-item borderless">
+                            <button id="messages" type="button" class="btn btn-primary subnav">
+                                Messages &nbsp;
+                            </button>
+                            <button id="groupOverview" type="button" class="btn btn-primary subnav">
+                                Group Overview &nbsp;
+                            </button>
+                            <button id="members" type="button" class="btn btn-primary subnav">
+                                Members &nbsp;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="groupMembers" class="hidden">
+                <br />
+                <h1 class="mb-5">Join requests</h1>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="list-group list">
+                            <div id="joinRequestEmpty" class="list-group-item hidden">
+                                <h5 style="text-align: center; margin: 2rem 2rem 2rem 2rem;">There are no join request</h5>
+                            </div>
+                            <div id="joinRequestList">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <h1 class="mb-5">Group members</h1>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="list-group list">
+                            <div id="memberList">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @await Html.PartialAsync("GroupEdit");
+   
+}
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+        asp-fallback-test="window.jQuery"
+        crossorigin="anonymous"
+        integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+</script>
+<script>
+    $("#btn").click(getAllGroups);
+    $("#post").click(postNew);
+    $("#btnCompanies").click(getAllCompanies);
+    $("#postCompany").click(postNewCompany);
+    
+
+    function getAllGroups() {
+        $.ajax({
+            type: "GET",
+            url: "https://localhost:44330/api/groups/all",
+            data: {},
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (response) {
+                alert('error when loading groups');
+            }
+        });
+    }
+
+    function getAllCompanies() {
+        $.ajax({
+            type: "GET",
+            url: "https://localhost:44330/api/companies/all",
+            data: {},
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (response) {
+                alert('error when loading groups');
+            }
+        });
+    }
+
+    function postNew() {
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44330/api/groups/create",
+            data: { title: $("#title").val(), description: $("#desc").val() },
+            success: function (data) {
+                if (data.toString() == '200')
+                    console.log("Succesful. " + data);
+                else
+                    console.log("Unsuccesful. " + data);
+            }
+        });
+    }
+
+    function postNewCompany() {
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44330/api/companies/create",
+            data: { title: $("#titleC").val(), desc: $("#descC").val() },
+            success: function (data) {
+                if (data.toString() == '200')
+                    console.log("Succesful. " + data);
+                else
+                    console.log("Unsuccesful. " + data);
+            }
+        });
+    }
+</script>
+
+<script>
+    $("#createGroup").click(showCreateGroupModal);
+    $("#confirmGroupCreation").click(confirmGroupCreation);
+
+    $("#searchGroups").click(getGroups);
+    $("#searchMyGroups").click(getJoinedGroups);
+    $("#members").click(getGroupMembers);
+    $("#messages").click(getMessages);
+    
+
+    function showCreateGroupModal() {
+        cleanTextField($("#createGroupTitle"), $("#groupTitleError"));
+        cleanTextField($("#createGroupDescription"), $("#groupDescriptionError"));
+        $("#groupModal").modal();
+    }
+    function validateTextField(field, errorField, errorText) {
+        if (!$.trim(field.val()).length) {
+            errorField.text(errorText);
+            return false;
+        }
+        else {
+            errorField.text("");
+            return true;
+        }
+    }
+    function cleanTextField(field, errorField) {
+        field.val("");
+        errorField.text("");
+    }
+    function getGroups() {
+        $("#searchMyGroups").removeClass('subnav-selected');
+        $("#searchGroups").addClass('subnav-selected');
+        event.preventDefault();
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/all",
+            type: "GET",
+            data: {},
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        UpdateGroups(data);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    function getJoinedGroups() {
+        $("#searchGroups").removeClass('subnav-selected');
+        $("#searchMyGroups").addClass('subnav-selected');
+        event.preventDefault();
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/joined",
+            type: "GET",
+            data: {
+            },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        UpdateGroups(data);
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+
+    function UpdateGroups(groupsData) {
+        $("#groupList").empty();
+        if (groupsData.length < 0)
+            return false;
+
+        $.each(groupsData, function (index, value) {
+            if (index == 20) {
+                return false;
+            }
+            var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#groupList"));
+            var row = $('<div/>').addClass('row');
+            var colleft = $('<div/>').addClass('col-lg-8');
+            var img = $('<img/>').attr("src", value.image != null ? value.image : "/images/man.png").addClass('pull-left photo').appendTo(colleft);       
+            var title = $('<h4/>').addClass("list-group-item-heading name").text(value.title).appendTo(colleft);
+            var description = $('<p/>').addClass("list-group-item-text title").text(value.shortDescription).appendTo(colleft);
+            var colright = $('<div/>').addClass('col-lg-4');
+            var readmore = $('<div/>').addClass('read-more').appendTo(colright);
+            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('Read more &nbsp;').appendTo(readmore);
+            var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
+            var skillsNeeded = $('<span/>').addClass('expertise-label').text('Skills needed').appendTo(colright);
+            row.appendTo(grouplist);
+            colleft.appendTo(row);
+            colright.appendTo(row);
+            console.log(index);
+        });
+    }
+
+    function getMessages() {
+        $("#members").removeClass('subnav-selected');
+        $("#messages").addClass('subnav-selected');
+        $("#groupOverview").removeClass('subnav-selected');
+        // Do stuff
+
+    }
+
+    function getGroupMembers() {
+        $("#members").addClass('subnav-selected');
+        $("#messages").removeClass('subnav-selected');
+        $("#groupOverview").removeClass('subnav-selected');
+        getJoinRequests();
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/members",
+            type: "Get",
+            data: {
+                groupId: @ViewBag.Id
+            },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        $("#groupSettingBody").empty();
+                        $("#memberList").empty();
+                        $("#groupMembers").removeClass('hidden');
+                        $.each(data, function (index, value) {
+                            var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#memberList"));
+                            var row = $('<div/>').addClass('row');
+                            var colleft = $('<div/>').addClass('col-lg-8');
+                            var img = $('<img/>').attr("src", value.image != null ? value.image : "/images/man.png").addClass('pull-left photo').appendTo(colleft);       
+                            var title = $('<h4/>').addClass("list-group-item-heading name").text(value.name).appendTo(colleft);
+                            var description = $('<p/>').addClass("list-group-item-text title").text(value.title).appendTo(colleft);
+                            var colright = $('<div/>').addClass('col-lg-4');
+                            var readmore = $('<div/>').addClass('read-more').appendTo(colright);
+                            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('More details &nbsp;').appendTo(readmore);
+                            var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
+                            var skillsNeeded = $('<span/>').addClass('expertise-label').text('Areas of Expertise').appendTo(colright);
+                            row.appendTo(grouplist);
+                            colleft.appendTo(row);
+                            colright.appendTo(row);
+                        });
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    function getJoinRequests() {
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/members",
+            type: "Get",
+            data: {
+                groupId: @ViewBag.Id
+            },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        $("#joinRequestEmpty").addClass('hidden');
+                        $("#joinRequestList").empty();
+                        if (data.length > 0) {
+                            $.each(data, function (index, value) {
+                                var grouplist = $('<div/>').addClass('list-group-item').appendTo($("#joinRequestList"));
+                                var row = $('<div/>').addClass('row');
+                                var colleft = $('<div/>').addClass('col-lg-8');
+                                var img = $('<img/>').attr("src", value.image != null ? value.image : "/images/man.png").addClass('pull-left photo').appendTo(colleft);       
+                                var title = $('<h4/>').addClass("list-group-item-heading name").text(value.name).appendTo(colleft);
+                                var description = $('<p/>').addClass("list-group-item-text title").text(value.title).appendTo(colleft);
+                                var colright = $('<div/>').addClass('col-lg-4');
+                                var readmore = $('<div/>').addClass('read-more').appendTo(colright);
+                                var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('More details &nbsp;').appendTo(readmore);
+                                var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
+                                var skillsNeeded = $('<span/>').addClass('expertise-label').text('Areas of Expertise').appendTo(colright);
+                                row.appendTo(grouplist);
+                                colleft.appendTo(row);
+                                colright.appendTo(row);
+                            });
+                        }
+                        else {
+                            $("#joinRequestEmpty").removeClass('hidden');
+
+                        }
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+
+    
+
+    function confirmGroupCreation() {
+        event.preventDefault();
+        if (validateTextField($("#createGroupTitle"), $("#groupTitleError"), "Empty title field")
+            && validateTextField($("#createGroupDescription"), $("#groupDescriptionError"), "Empty description field")) {
+        }
+        else {
+            return false;
+        }
+        $('#loader').removeClass("hidden");
+        $.ajax({
+            url: "https://localhost:44330/api/groups/create",
+            type: "POST",
+            data: {
+                title: $("#createGroupTitle").val(),
+                description: $("#createGroupDescription").val()
+            },
+            dataType: "json",
+            statusCode: {
+                200: function (data) {
+                    console.log("Successful: " + data.succeeded);
+                    if ($.trim(data.succeeded) == 'false') {
+                        Alert("Error!", data.errors[0].description, "alert-danger");
+                    }
+                    else {
+                        Alert("Succeeded!", "Your group has been created", "alert-success");
+                        $("#groupModal").hide();
+                        location.href = 'https://localhost:44330/groups/?id=' + data.id;
+                    }
+                },
+                400: function () {
+                    Alert("Error from client side!", "Bad request was sent to server", "alert-danger");
+                },
+                500: function () {
+                    Alert("Error from server side!", "Server failed to respond to request", "alert-danger");
+                }
+            }
+        }).always(function () {
+            $('#loader').addClass("hidden");
+        });
+        false;
+    }
+    function Alert(bolded, normal, alertType) {
+        $('#handlerid').empty().append("<strong>" + bolded + " </strong>" + normal);
+        pressCount++;
+        $('#handlerid').addClass(alertType).removeClass("hidden").fadeTo(300, 1);
+
+        setTimeout(function () {
+            if (pressCount == 1) {
+                $('#handlerid').fadeTo(300, 0);
+                setTimeout(function () {
+                    $('#handlerid').addClass('hidden').removeClass(alertType);
+                }, 1000);
+            }
+            pressCount--;
+        }, 4000);
+    }
+</script>
+
+@if (ViewBag.Id != 0)
+{
+    <script>
+        $(document).ready(function () {
+            getCurrentGroupOverview();
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(document).ready(function () {
+            getGroups();
+        })
+    </script>
+}
