@@ -144,7 +144,7 @@ else
     function getAllGroups() {
         $.ajax({
             type: "GET",
-            url: "https://localhost:44330/api/groups/all",
+            url: "http://80.209.231.87/api/groups/all",
             data: {},
             contentType: "application/json;charset=utf-8",
             dataType: "json",
@@ -160,7 +160,7 @@ else
     function getAllCompanies() {
         $.ajax({
             type: "GET",
-            url: "https://localhost:44330/api/companies/all",
+            url: "http://80.209.231.87/api/companies/all",
             data: {},
             contentType: "application/json;charset=utf-8",
             dataType: "json",
@@ -176,7 +176,7 @@ else
     function postNew() {
         $.ajax({
             type: "POST",
-            url: "https://localhost:44330/api/groups/create",
+            url: "http://80.209.231.87/api/groups/create",
             data: { title: $("#title").val(), description: $("#desc").val() },
             success: function (data) {
                 if (data.toString() == '200')
@@ -190,7 +190,7 @@ else
     function postNewCompany() {
         $.ajax({
             type: "POST",
-            url: "https://localhost:44330/api/companies/create",
+            url: "http://80.209.231.87/api/companies/create",
             data: { title: $("#titleC").val(), desc: $("#descC").val() },
             success: function (data) {
                 if (data.toString() == '200')
@@ -237,7 +237,7 @@ else
         event.preventDefault();
         $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/api/groups/all",
+            url: "http://80.209.231.87/api/groups/all",
             type: "GET",
             data: {},
             dataType: "json",
@@ -270,7 +270,7 @@ else
         event.preventDefault();
         $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/api/groups/joined",
+            url: "http://80.209.231.87/api/groups/joined",
             type: "GET",
             data: {
             },
@@ -316,7 +316,7 @@ else
             var description = $('<p/>').addClass("list-group-item-text title").text(value.shortDescription).appendTo(colleft);
             var colright = $('<div/>').addClass('col-lg-4');
             var readmore = $('<div/>').addClass('read-more').appendTo(colright);
-            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('Read more &nbsp;').appendTo(readmore);
+            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'http://80.209.231.87/groups/?id=' + value.id).html('Read more &nbsp;').appendTo(readmore);
             var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
             var skillsNeeded = $('<span/>').addClass('expertise-label').text('Skills needed').appendTo(colright);
             row.appendTo(grouplist);
@@ -341,7 +341,7 @@ else
         getJoinRequests();
         $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/api/groups/members",
+            url: "http://80.209.231.87/api/groups/members",
             type: "Get",
             data: {
                 groupId: @ViewBag.Id
@@ -366,7 +366,7 @@ else
                             var description = $('<p/>').addClass("list-group-item-text title").text(value.title).appendTo(colleft);
                             var colright = $('<div/>').addClass('col-lg-4');
                             var readmore = $('<div/>').addClass('read-more').appendTo(colright);
-                            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('More details &nbsp;').appendTo(readmore);
+                            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'http://80.209.231.87/groups/?id=' + value.id).html('More details &nbsp;').appendTo(readmore);
                             var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
                             var skillsNeeded = $('<span/>').addClass('expertise-label').text('Areas of Expertise').appendTo(colright);
                             row.appendTo(grouplist);
@@ -391,7 +391,7 @@ else
     function getJoinRequests() {
         $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/api/groups/members",
+            url: "http://80.209.231.87/api/groups/members",
             type: "Get",
             data: {
                 groupId: @ViewBag.Id
@@ -416,7 +416,7 @@ else
                                 var description = $('<p/>').addClass("list-group-item-text title").text(value.title).appendTo(colleft);
                                 var colright = $('<div/>').addClass('col-lg-4');
                                 var readmore = $('<div/>').addClass('read-more').appendTo(colright);
-                                var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('More details &nbsp;').appendTo(readmore);
+                                var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'http://80.209.231.87/groups/?id=' + value.id).html('More details &nbsp;').appendTo(readmore);
                                 var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
                                 var skillsNeeded = $('<span/>').addClass('expertise-label').text('Areas of Expertise').appendTo(colright);
                                 row.appendTo(grouplist);
@@ -455,7 +455,7 @@ else
         }
         $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/api/groups/create",
+            url: "http://80.209.231.87/api/groups/create",
             type: "POST",
             data: {
                 title: $("#createGroupTitle").val(),
@@ -471,7 +471,7 @@ else
                     else {
                         Alert("Succeeded!", "Your group has been created", "alert-success");
                         $("#groupModal").hide();
-                        location.href = 'https://localhost:44330/groups/?id=' + data.id;
+                        location.href = 'http://80.209.231.87/groups/?id=' + data.id;
                     }
                 },
                 400: function () {

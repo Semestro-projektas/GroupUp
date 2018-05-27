@@ -142,7 +142,7 @@
         var id = -1;
 
         $.ajax({
-            url: "https://localhost:44330/account/getuserid",
+            url: "http://80.209.231.87/account/getuserid",
             type: "GET",
             data: {},
             dataType: "json",
@@ -178,7 +178,7 @@
         }
 
         $.ajax({
-            url: "https://localhost:44330/api/profile/update",
+            url: "http://80.209.231.87/api/profile/update",
             type: "POST",
             data: {
                 Name: $("#Name").val(),
@@ -217,7 +217,7 @@
     function getProfile() {
 
         $.ajax({
-            url: "https://localhost:44330/api/profile/overview",
+            url: "http://80.209.231.87/api/profile/overview",
             type: "GET",
             data: { id: "44bf008b-00b9-435e-bf8f-14aac716cf1f" },
             dataType: "json",

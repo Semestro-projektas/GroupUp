@@ -92,7 +92,7 @@ namespace groupon
             app.UseStaticFiles();
 
             app.UseAuthentication();
-            app.UseCors(builder => builder.WithOrigins("https://localhost:44330/"));
+            app.UseCors(builder => builder.WithOrigins("http://localhost:44330/"));
 
             app.UseMvc(routes =>
             {

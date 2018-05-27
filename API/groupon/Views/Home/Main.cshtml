@@ -303,7 +303,7 @@
         errorField.text("");
     }
     function goToGroups() {
-        location.href = 'https://localhost:44330/groups';
+        location.href = 'http://80.209.231.87/groups';
     }
 
     function getGroups() {
@@ -312,7 +312,7 @@
         event.preventDefault();
         $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/api/groups/all",
+            url: "http://80.209.231.87/api/groups/all",
             type: "GET",
             data: {},
             dataType: "json",
@@ -345,7 +345,7 @@
         event.preventDefault();
         $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/api/groups/joined",
+            url: "http://80.209.231.87/api/groups/joined",
             type: "GET",
             data: {},
             dataType: "json",
@@ -389,7 +389,7 @@
             var description = $('<p/>').addClass("list-group-item-text title").text(value.shortDescription).appendTo(colleft);
             var colright = $('<div/>').addClass('col-lg-4');
             var readmore = $('<div/>').addClass('read-more').appendTo(colright);
-            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'https://localhost:44330/groups/?id=' + value.id).html('Read more &nbsp;').appendTo(readmore);
+            var readmorebutton = $('<a/>').addClass('btn btn-primary mt-1').attr("href", 'http://80.209.231.87/groups/?id=' + value.id).html('Read more &nbsp;').appendTo(readmore);
             var readmorecircle = $('<i/>').addClass('fa fa-chevron-circle-right').attr("aria-hidden", 'true').appendTo(readmorebutton);
             var skillsNeeded = $('<span/>').addClass('expertise-label').text('Skills needed').appendTo(colright);
             row.appendTo(grouplist);
@@ -408,7 +408,7 @@
         }
         $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/api/groups/create",
+            url: "http://80.209.231.87/api/groups/create",
             type: "POST",
             data: {
                 title: $("#createGroupTitle").val(),

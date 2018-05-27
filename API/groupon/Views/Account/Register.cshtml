@@ -97,7 +97,7 @@
         if (!$("#form").valid()) return false;
         $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/Account/Register",
+            url: "http://80.209.231.87/     Account/Register",
             type: "POST",
             data: {
                 Email: $("#Email").val(), Password: $("#Password").val(),

@@ -35,7 +35,7 @@
     function getAllGroups() {
         $.ajax({
             type: "GET",
-            url: "https://localhost:44330/api/groups/all",
+            url: "http://80.209.231.87/api/groups/all",
             data: {},
             contentType: "application/json;charset=utf-8",
             dataType: "json",
@@ -51,7 +51,7 @@
     function getAllCompanies() {
         $.ajax({
             type: "GET",
-            url: "https://localhost:44330/api/companies/all",
+            url: "http://80.209.231.87/api/companies/all",
             data: {},
             contentType: "application/json;charset=utf-8",
             dataType: "json",
@@ -67,7 +67,7 @@
     function postNew() {
         $.ajax({
             type: "POST",
-            url: "https://localhost:44330/api/groups/create",
+            url: "http://80.209.231.87/api/groups/create",
             data: { title: $("#title").val(), description: $("#desc").val() },
             success: function (data) {
                 if (data.toString() == '200')
@@ -81,7 +81,7 @@
     function postNewCompany() {
         $.ajax({
             type: "POST",
-            url: "https://localhost:44330/api/companies/create",
+            url: "http://80.209.231.87/api/companies/create",
             data: { title: $("#titleC").val(), desc: $("#descC").val() },
             success: function (data) {
                 if (data.toString() == '200')
@@ -103,7 +103,7 @@
         //function GetAllFields() {
         //    $.ajax({
         //        type: "GET",
-        //        url: "https://localhost:44330/account/getuserfields",
+        //        url: "http://80.209.231.87/account/getuserfields",
         //        data: {},
         //        contentType: "application/json;charset=utf-8",
         //        dataType: "json",
@@ -119,7 +119,7 @@
         //function AddNewFields() {
         //    $.ajax({
         //        type: "POST",
-        //        url: "https://localhost:44330/account/updatefield",
+        //        url: "http://80.209.231.87/account/updatefield",
         //        data: { newField = 'textbox input' },
         //        contentType: "application/json;charset=utf-8",
         //        dataType: "json",

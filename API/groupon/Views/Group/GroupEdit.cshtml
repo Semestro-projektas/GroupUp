@@ -48,7 +48,7 @@
     $("#groupOverview").click(getCurrentGroupOverview);
     function updateGroup() {
             $.ajax({
-                url: "https://localhost:44330/api/groups/edit",
+                url: "http://80.209.231.87/api/groups/edit",
                 type: "POST",
                 data: {
                     groupId: @ViewBag.Id, title: $("#Title").val(), type: 0, shortDescription: $("#shortDescription").val(), description: $("#fullDescription").val(), image: $("#profile-avatar").attr('src')
@@ -73,7 +73,7 @@
         $("#messages").removeClass('subnav-selected');
         $("#groupOverview").addClass('subnav-selected');
         $.ajax({
-            url: "https://localhost:44330/api/groups/" + @ViewBag.Id,
+            url: "http://80.209.231.87/api/groups/" + @ViewBag.Id,
             type: "Get",
             data: {
             },

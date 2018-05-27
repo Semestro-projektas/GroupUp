@@ -40,7 +40,7 @@
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
 <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"      
         asp-fallback-test="window.jQuery"
         crossorigin="anonymous"
         integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
@@ -54,7 +54,7 @@
         if (!$("#form").valid()) return false;
         $('#loader').removeClass("hidden");
         $.ajax({
-            url: "https://localhost:44330/Account/Login",
+            url: "http://80.209.231.87:80/Account/Login",
             type: 'POST',
             data: { email: $("#Email").val(), password: $("#Password").val(), remember: false },
             dataType: "json",
